@@ -1,343 +1,255 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#071b2b">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06172b">
+<meta name="description" content="منصة الجغرافيا الذكية في مدرسة ثابت بن قيس: استكشف عُمان والعالم عبر نظم المعلومات الجغرافية والاستشعار عن بُعد والخرائط الرقمية.">
 <title>منصة الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
-:root{--bg:#071b2b;--panel:#102b40;--panel2:#15374d;--cyan:#43d9df;--gold:#e8bd69;--white:#f4f8fb;--muted:#a9bdc9;--line:#2b4a5d}
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+:root{--navy:#06172b;--navy2:#09243b;--panel:#0d2d49;--panel2:#123b59;--cyan:#22d3ee;--gold:#f4bd55;--white:#f5f9ff;--muted:#b4c7d8;--line:#24506d;--green:#21c69a}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 80% 0%,#16445b 0,transparent 32%),var(--bg);color:var(--white);font-family:Cairo,Arial,sans-serif}
-a{color:var(--cyan);text-decoration:none}
-button{font:inherit;cursor:pointer}
-nav{position:sticky;top:0;z-index:10;background:#061724ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:12px max(4vw,16px);gap:12px}
-.brand{font-weight:900;color:var(--white)}
-.brand span{color:var(--gold)}
-.navlinks{display:flex;gap:16px;flex-wrap:wrap;font-size:.9rem}
-.hero{padding:74px 6vw 56px;min-height:480px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:30px;background:linear-gradient(110deg,#071b2b 15%,#0d3045 70%,#124d60)}
-.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.5px}
-.hero h1{font-size:clamp(2.1rem,5vw,4.2rem);line-height:1.25;margin:12px 0}
-.hero p{color:#c2d3dc;max-width:700px;line-height:2}
-.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.btn{border:0;border-radius:12px;padding:12px 20px;background:var(--cyan);color:#062131;font-weight:900}
-.btn.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
-.orbit{height:280px;max-width:360px;margin:auto;aspect-ratio:1;border:1px solid #4b8994;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#1d6170 0,#10394e 38%,transparent 70%)}
-.earth{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#69d7d0,#147a91 48%,#07344d 75%);box-shadow:0 0 50px #35d5dc66;display:grid;place-items:center;font-size:3rem}
-.sat{position:absolute;top:24px;right:34px;font-size:2rem;animation:float 4s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-12px) rotate(8deg)}}
-section{padding:56px 6vw}
-.section-head{margin-bottom:24px}
-.section-head h2{font-size:clamp(1.5rem,3vw,2.3rem);margin:0 0 8px}
-.section-head p{color:var(--muted);margin:0;line-height:1.9}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{background:linear-gradient(145deg,var(--panel),#0b2234);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 28px #0002}
-.card .ico{font-size:2rem}
-.card h3{margin:10px 0 6px}
-.card p{color:var(--muted);line-height:1.8;margin:0 0 12px}
-.smalllink{font-size:.9rem;font-weight:700}
-.heritage{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.heritage .card{min-height:255px;display:flex;flex-direction:column;justify-content:space-between}
-.fact{border-right:3px solid var(--gold);padding-right:12px;color:#d7e5eb;line-height:1.9}
-.tourbox{background:linear-gradient(135deg,#10364a,#0a2132);border:1px solid #3a6677;border-radius:22px;padding:24px}
-.panorama{height:260px;border-radius:15px;border:1px dashed #5a8795;background:linear-gradient(130deg,#244f5d,#102c3c 55%,#765d3d);display:grid;place-items:center;text-align:center;padding:20px;color:#e8f4f7}
-.panorama strong{display:block;font-size:1.3rem;color:var(--gold)}
-.tour-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-input[type=range]{width:100%;accent-color:var(--cyan)}
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.satbox{background:var(--panel);padding:18px;border-radius:16px;border:1px solid var(--line)}
-.satvisual{height:170px;border-radius:12px;margin:10px 0;background:repeating-linear-gradient(35deg,#254d48 0 14px,#1a3a3a 14px 25px,#a58c55 25px 34px);position:relative;overflow:hidden}
-.satvisual.after{background:repeating-linear-gradient(35deg,#346a52 0 10px,#1d4b40 10px 24px,#c4a56b 24px 31px)}
-.quiz{max-width:760px}
-.quiz button.option{display:block;width:100%;text-align:right;background:#15374d;color:var(--white);border:1px solid var(--line);padding:12px 16px;border-radius:10px;margin:9px 0}
-.quiz button.option:hover{border-color:var(--cyan)}
-#feedback{min-height:28px;color:var(--gold);font-weight:800}
-footer{padding:30px 6vw;background:#04121d;border-top:1px solid var(--line);color:var(--muted);line-height:1.9}
-.footerstrong{color:var(--white);font-weight:800}
-@media(max-width:800px){
-.hero{grid-template-columns:1fr;padding-top:48px}
-.orbit{height:220px}
-.grid{grid-template-columns:1fr 1fr}
-.heritage{grid-template-columns:1fr}
-.navlinks{display:none}
-.compare{grid-template-columns:1fr}
-}
-@media(max-width:520px){
-.grid{grid-template-columns:1fr}
-section{padding:42px 5vw}
-.hero{padding-left:5vw;padding-right:5vw}
-}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--navy);color:var(--white);font-family:'Cairo',Tahoma,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.topbar{position:sticky;top:0;z-index:50;background:#041323ed;backdrop-filter:blur(14px);border-bottom:1px solid #24506d}
+.nav{max-width:1440px;margin:auto;padding:10px 4%;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;line-height:1.35}
+.brand-mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),#087eae);color:#032035;font-size:22px}
+.brand small{display:block;color:var(--gold);font-size:11px;font-weight:700}
+.links{display:flex;align-items:center;gap:17px;font-size:13px;color:#d3e5f2}
+.links a:hover{color:var(--cyan)}
+.menu-btn{display:none;background:transparent;color:white;border:1px solid var(--line);border-radius:10px;padding:7px 12px}
+.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 78% 15%,#0b5275 0,transparent 40%),linear-gradient(120deg,#06172b,#0a2944 60%,#071a30);border-bottom:1px solid var(--line)}
+.hero-inner{max-width:1440px;margin:auto;min-height:550px;padding:48px 4%;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:35px}
+.kicker{color:var(--gold);font-weight:800;font-size:14px}
+.hero h1{font-size:clamp(34px,4.5vw,64px);line-height:1.22;margin:12px 0 14px;font-weight:900}
+.hero h1 span{color:var(--cyan)}
+.hero p{color:#d0e0ec;line-height:2;font-size:17px;max-width:690px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:13px;padding:12px 20px;font-weight:800;background:linear-gradient(135deg,var(--cyan),#13a8c8);color:#032033;box-shadow:0 8px 24px #08b9d833;cursor:pointer}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
+.btn.alt{background:transparent;color:var(--gold);border:1px solid #b98536;box-shadow:none}
+.hero-visual{position:relative;min-height:360px;border-radius:28px;overflow:hidden;border:1px solid #36708d;box-shadow:0 25px 65px #0007}
+.hero-visual img{width:100%;height:100%;min-height:360px;object-fit:cover;display:block}
+.visual-label{position:absolute;bottom:14px;right:14px;left:14px;background:#04182bd9;border:1px solid #3a718d;border-radius:14px;padding:10px 14px;font-size:13px;color:#eaf7ff}
+.visual-label b{color:var(--gold)}
+.hero-glow{position:absolute;width:360px;height:360px;border-radius:50%;background:#1ccde81a;filter:blur(60px);pointer-events:none}
+.stats{max-width:1350px;margin:-1px auto 0;padding:22px 4%;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{display:flex;align-items:center;gap:12px;padding:12px 15px;background:#0a2942;border:1px solid var(--line);border-radius:15px}
+.stat-icon{font-size:25px;color:var(--cyan)}
+.stat strong{display:block;font-size:18px}
+.stat small{color:var(--muted)}
+section{padding:64px 4%}
+.wrap{max-width:1350px;margin:auto}
+.section-head{margin-bottom:25px}
+.eyebrow{color:var(--gold);font-size:13px;font-weight:800}
+.section-head h2{font-size:clamp(25px,3vw,38px);margin:4px 0 8px}
+.section-head p{margin:0;color:var(--muted);line-height:1.9;max-width:850px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.card{background:linear-gradient(145deg,#103451,#0a2239);border:1px solid var(--line);border-radius:20px;padding:22px;transition:.2s;box-shadow:0 12px 30px #0002}
+.card:hover{transform:translateY(-4px);border-color:#2daac4}
+.card-icon{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:#0d5570;color:var(--cyan);font-size:25px;margin-bottom:12px}
+.card h3{margin:0 0 7px;font-size:19px}
+.card p{color:var(--muted);line-height:1.85;margin:0 0 14px;font-size:14px}
+.text-link{color:var(--cyan);font-weight:800;font-size:13px}
+.map-section{background:linear-gradient(135deg,#081e32,#0c3049)}
+.map-layout{display:grid;grid-template-columns:1fr .85fr;gap:20px;align-items:stretch}
+.map-frame{min-height:390px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0b2a43}
+.map-frame iframe{width:100%;height:100%;min-height:390px;border:0}
+.map-info{display:flex;flex-direction:column;gap:13px}
+.map-info .card{height:100%}
+.pill{display:inline-block;border:1px solid #2c718c;color:var(--cyan);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+.heritage-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.heritage-card{overflow:hidden;padding:0}
+.heritage-photo{height:190px;background:linear-gradient(130deg,#214f60,#8b714b);display:grid;place-items:center;font-size:70px}
+.heritage-content{padding:20px}
+.note{border-right:3px solid var(--gold);padding:8px 13px;color:#d7e6f0;line-height:1.9;font-size:14px}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lab-panel{background:#0c2b45;border:1px solid var(--line);border-radius:20px;padding:22px}
+.lab-panel h3{margin-top:0}
+.compare-box{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.compare-image{height:145px;border-radius:12px;display:flex;align-items:end;padding:10px;font-weight:800;background:linear-gradient(145deg,#507e54,#b49a62 48%,#204c57)}
+.compare-image.after{background:linear-gradient(145deg,#2c7553,#d2b16a 40%,#17485c)}
+.compare-image span{background:#031827d9;padding:4px 9px;border-radius:8px;font-size:12px}
+.disclaimer{font-size:12px;color:#f6cd82;line-height:1.8}
+.quiz-box{max-width:800px}
+.answers{display:grid;gap:10px;margin:18px 0}
+.answer{border:1px solid var(--line);background:#10334f;color:white;text-align:right;border-radius:12px;padding:12px 15px;cursor:pointer}
+.answer:hover{border-color:var(--cyan)}
+.answer:disabled{cursor:default;opacity:.9}
+.feedback{min-height:28px;color:var(--gold);font-weight:800}
+.resources{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.resource{background:#0d2d49;border:1px solid var(--line);padding:16px;border-radius:14px}
+.resource b{display:block;margin-bottom:5px}
+.resource small{display:block;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.pledge{background:linear-gradient(120deg,#0c3852,#092239);border:1px solid #31718a;border-radius:22px;padding:26px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.pledge p{color:#d0e0ec;line-height:1.9;margin-bottom:0}
+.pledge-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pledge-status{color:var(--green);font-size:13px;font-weight:800;min-height:24px}
+footer{background:#03101d;border-top:1px solid var(--line);padding:30px 4%;color:var(--muted)}
+.footer-inner{max-width:1350px;margin:auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;line-height:1.9}
+footer b{color:white}
+.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:100;padding:20px}
+.modal.show{display:grid}
+.modal-box{max-width:560px;width:100%;background:#0b2942;border:1px solid #34708a;border-radius:20px;padding:25px;box-shadow:0 25px 70px #0009}
+.modal-box h2{margin-top:0}
+.modal-box p{color:#d1e1ed;line-height:1.9}
+.checkline{display:flex;gap:10px;align-items:flex-start;color:#e5f1f8;font-size:13px;line-height:1.8;margin:15px 0}
+.checkline input{margin-top:7px;accent-color:var(--cyan)}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-visual{max-width:700px;width:100%;margin:auto}.feature-grid{grid-template-columns:repeat(2,1fr)}.resources{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.links{display:none;position:absolute;top:64px;right:0;left:0;background:#041323;padding:18px;flex-direction:column;align-items:stretch}.links.open{display:flex}.menu-btn{display:block}.hero-inner{padding-top:36px}.hero-visual,.hero-visual img{min-height:250px}.feature-grid,.heritage-grid,.lab-grid,.map-layout{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr;padding-top:14px}.stat{padding:10px}.stat strong{font-size:15px}.stat small{font-size:11px}.resources{grid-template-columns:1fr 1fr}.pledge{grid-template-columns:1fr}section{padding:45px 5%}}
+@media(max-width:390px){.stats,.resources{grid-template-columns:1fr}.hero h1{font-size:32px}}
 </style>
 </head>
-
 <body>
-
-<nav>
-<div class="brand">منصة الجغرافيا الذكية <span>مدرسة ثابت بن قيس</span></div>
-<div class="navlinks">
-<a href="#tech">التقنيات</a>
-<a href="#heritage">تراث بركاء</a>
-<a href="#tour">الجولة الافتراضية</a>
-<a href="#lab">مختبر الأقمار</a>
-<a href="#quiz">تحدي المستكشف</a>
-</div>
-</nav>
-
-<header class="hero">
-<div>
-<div class="eyebrow">مدرسة ثابت بن قيس للتعليم الأساسي • سلطنة عُمان</div>
-<h1>الجغرافيا من حولنا<br><span style="color:var(--cyan)">استكشف العالم بالتقنيات الحديثة</span></h1>
-<p>رحلة تفاعلية تجمع نظم المعلومات الجغرافية والاستشعار عن بُعد والتقنيات الحديثة مع استكشاف المعالم التاريخية في ولاية بركاء.</p>
-<div class="actions">
-<a class="btn" href="#heritage">ابدأ استكشاف بركاء</a>
-<a class="btn secondary" href="#lab">ادخل المختبر الرقمي</a>
-</div>
-</div>
-<div class="orbit">
-<div class="earth">🇴🇲</div>
-<div class="sat">🛰️</div>
-</div>
+<header class="topbar">
+  <nav class="nav">
+    <a class="brand" href="#home"><span class="brand-mark">🌐</span><span>منصة الجغرافيا الذكية<small>مدرسة ثابت بن قيس للتعليم الأساسي</small></span></a>
+    <div class="links" id="navLinks">
+      <a href="#tech">التقنيات</a><a href="#map">الخريطة التفاعلية</a><a href="#heritage">متحف بركاء</a><a href="#lab">مختبر الأقمار</a><a href="#quiz">التحديات</a><a href="#resources">المصادر</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة">☰</button>
+  </nav>
 </header>
 
+<main id="home">
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="kicker">🇴🇲 سلطنة عُمان • تعلّم يتجاوز حدود الصف</div>
+      <h1>الجغرافيا من حولنا<br><span>استكشف العالم بالتقنيات الحديثة</span></h1>
+      <p>منصة تعليمية تفاعلية تجعل الطالب مستكشفاً للبيئة والمكان؛ يتعلم نظم المعلومات الجغرافية، ويقرأ صور الأقمار الصناعية، ويكتشف تراث عُمان، ويحوّل المعرفة إلى مشروعات تخدم المجتمع.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#tech">ابدأ رحلة الاستكشاف ←</a>
+        <a class="btn alt" href="#pledge">ميثاق الالتزام الرقمي</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="assets/oman_students_geography.webp" alt="تصميم تعليمي لطلاب عُمانيين يستكشفون الجغرافيا والتقنيات الرقمية">
+      <div class="visual-label"><b>نتعلم • نكتشف • نبتكر</b><br>صورة تصميمية توضيحية لهوية المنصة التعليمية.</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats wrap">
+  <div class="stat"><span class="stat-icon">🗺️</span><div><strong>عُمان والعالم</strong><small>من المكان المحلي إلى الرؤية العالمية</small></div></div>
+  <div class="stat"><span class="stat-icon">🛰️</span><div><strong>بيانات فضائية</strong><small>مصادر موثوقة للتعلم والتحليل</small></div></div>
+  <div class="stat"><span class="stat-icon">🎓</span><div><strong>تعلم تفاعلي</strong><small>استكشاف ومهام وتحديات</small></div></div>
+  <div class="stat"><span class="stat-icon">🏫</span><div><strong>ثابت بن قيس</strong><small>مدرسة تصنع جيلاً جغرافياً مبدعاً</small></div></div>
+</div>
+
 <section id="tech">
-<div class="section-head">
-<h2>بوابة التقنيات الحديثة</h2>
-<p>أدوات تساعد الطالب على قراءة المكان وفهم التغيرات الجغرافية.</p>
-</div>
-
-<div class="grid">
-
-<article class="card">
-<div class="ico">🛰️</div>
-<h3>الاستشعار عن بُعد</h3>
-<p>التعرّف على صور الأقمار الصناعية وكيف نستخدمها لمراقبة السواحل والغطاء النباتي والعمران.</p>
-<a class="smalllink" href="https://earthobservatory.nasa.gov/" target="_blank" rel="noopener">استكشف مرصد الأرض التابع لناسا ↗</a>
-</article>
-
-<article class="card">
-<div class="ico">🗺️</div>
-<h3>نظم المعلومات الجغرافية GIS</h3>
-<p>فهم الطبقات المكانية وربط الموقع بالمعلومة والصورة والبيانات.</p>
-<a class="smalllink" href="https://www.arcgis.com/" target="_blank" rel="noopener">استكشف الخرائط الرقمية ↗</a>
-</article>
-
-<article class="card">
-<div class="ico">🏛️</div>
-<h3>التراث الرقمي</h3>
-<p>توثيق المعالم التاريخية وعرضها رقمياً وربطها بالخريطة والقصص التاريخية.</p>
-<a class="smalllink" href="#heritage">انتقل إلى متحف بركاء ↗</a>
-</article>
-
-<article class="card">
-<div class="ico">🌐</div>
-<h3>الجولات الافتراضية</h3>
-<p>تجربة زيارة رقمية للمواقع التراثية باستخدام صور 360 درجة عند توفرها.</p>
-<a class="smalllink" href="#tour">افتح مساحة الجولة ↗</a>
-</article>
-
-<article class="card">
-<div class="ico">🧭</div>
-<h3>الملاحة والإحداثيات</h3>
-<p>تعلّم قراءة الإحداثيات وتحديد المواقع وربطها بالخرائط.</p>
-<a class="smalllink" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">افتح خريطة العالم المفتوحة ↗</a>
-</article>
-
-<article class="card">
-<div class="ico">🧠</div>
-<h3>الذكاء الاصطناعي الجغرافي</h3>
-<p>التعرّف على كيفية مساعدة الذكاء الاصطناعي في تحليل الصور والأنماط المكانية.</p>
-<a class="smalllink" href="https://www.esa.int/Applications/Observing_the_Earth" target="_blank" rel="noopener">استكشف رصد الأرض ↗</a>
-</article>
-
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">اكتشف أدوات المستقبل</div><h2>مختبر التقنيات الجغرافية</h2><p>مسارات تعلم مبسطة تربط المفاهيم الجغرافية بالتطبيق العملي والمصادر الرقمية.</p></div>
+  <div class="feature-grid">
+    <article class="card"><div class="card-icon">🗺️</div><h3>نظم المعلومات الجغرافية GIS</h3><p>تعرف إلى الطبقات المكانية، وتحليل المواقع، وكيف تتحول البيانات إلى خرائط تساعد على اتخاذ القرار.</p><a class="text-link" href="https://www.esri.com/en-us/industries/education/overview" target="_blank" rel="noopener">استكشف تعليم GIS لدى Esri ↗</a></article>
+    <article class="card"><div class="card-icon">🛰️</div><h3>الاستشعار عن بُعد</h3><p>اكتشف كيف ترصد الأقمار الصناعية الغطاء النباتي والمياه والعمران والتغيرات على سطح الأرض.</p><a class="text-link" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">افتح NASA Worldview ↗</a></article>
+    <article class="card"><div class="card-icon">🌍</div><h3>الكرة الأرضية الرقمية</h3><p>استكشف التضاريس والمدن والحدود والظواهر الجغرافية باستخدام أدوات العرض ثلاثي الأبعاد.</p><a class="text-link" href="https://earth.google.com/web/" target="_blank" rel="noopener">افتح Google Earth ↗</a></article>
+    <article class="card"><div class="card-icon">🤖</div><h3>الذكاء الاصطناعي الجغرافي</h3><p>تعرف إلى دور الذكاء الاصطناعي في تصنيف الصور وتحليل الأنماط المكانية، مع التحقق من النتائج.</p><a class="text-link" href="https://www.esri.com/en-us/arcgis/products/arcgis-online/overview" target="_blank" rel="noopener">استكشف أدوات ArcGIS ↗</a></article>
+    <article class="card"><div class="card-icon">📍</div><h3>الإحداثيات والملاحة</h3><p>تدرب على فهم خطوط الطول ودوائر العرض وتحديد المواقع وقراءة الرموز والاتجاهات.</p><a class="text-link" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">افتح OpenStreetMap ↗</a></article>
+    <article class="card"><div class="card-icon">🏛️</div><h3>التراث الرقمي</h3><p>وثق المعالم العُمانية بالصور والخرائط والروايات التاريخية، مع احترام حقوق الصور والمصادر.</p><a class="text-link" href="#heritage">انتقل إلى متحف بركاء ↗</a></article>
+  </div>
 </div>
 </section>
 
-<section id="heritage" style="background:#091f30">
-<div class="section-head">
-<h2>متحف بركاء الافتراضي</h2>
-<p>معالم موثقة تاريخياً، نربطها بالخريطة وبالتجربة الرقمية.</p>
-</div>
-
-<div class="heritage">
-
-<article class="card">
-<div>
-<div class="ico">🏰</div>
-<h3>حصن بركاء</h3>
-<p class="fact">معلم تاريخي على ساحل الباطنة. تعود أقدم أجزائه إلى عام 1708م، ويضم أبراجاً ركنية وأجزاء دفاعية.</p>
-</div>
-<div>
-<a class="smalllink" href="https://www.omaninfo.om/fr/pages/174/show/562" target="_blank" rel="noopener">المصدر الرسمي للمعلومات ↗</a><br>
-<a class="smalllink" href="https://www.google.com/maps/search/?api=1&query=حصن+بركاء+سلطنة+عمان" target="_blank" rel="noopener">اعرض الموقع على الخريطة ↗</a>
-</div>
-</article>
-
-<article class="card">
-<div>
-<div class="ico">🏛️</div>
-<h3>بيت النعمان</h3>
-<p class="fact">يقع في ولاية بركاء، بناه الإمام سيف بن سلطان اليعربي بين عامي 1692م و1711م، ويتكون من دورين وأبراج دائرية.</p>
-</div>
-<div>
-<a class="smalllink" href="https://www.omaninfo.om/fr/pages/187/show/656" target="_blank" rel="noopener">المصدر الرسمي للمعلومات ↗</a><br>
-<a class="smalllink" href="https://www.google.com/maps/search/?api=1&query=بيت+النعمان+بركاء+عمان" target="_blank" rel="noopener">اعرض الموقع على الخريطة ↗</a>
-</div>
-</article>
-
-</div>
-
-<p style="color:var(--muted);margin-top:16px">ملاحظة توثيقية: أُدرجت المعالم التي أمكن التحقق منها في المصادر الرسمية. لا تُعرض معابد أثرية في بركاء لعدم توفر توثيق موثوق لها ضمن المصادر التي تمت مراجعتها.</p>
-</section>
-
-<section id="tour">
-<div class="section-head">
-<h2>ادخل الجولة الافتراضية</h2>
-<p>مساحة جاهزة لإضافة صور بانورامية 360° أو نموذج ثلاثي الأبعاد بعد توفير مواد تصوير موثقة ومصرّح بنشرها.</p>
-</div>
-
-<div class="tourbox">
-<div class="panorama">
-<div>
-<strong>بوابة الجولة الافتراضية</strong>
-<div>سيظهر هنا المشهد البانورامي الحقيقي للمعلم</div>
-<small>نسخة العرض الحالية: نموذج تجريبي — لم تُضف صور 360° بعد</small>
-</div>
-</div>
-
-<div class="tour-controls">
-<a class="btn" href="https://www.google.com/maps/search/?api=1&query=حصن+بركاء+سلطنة+عمان" target="_blank" rel="noopener">استكشف محيط حصن بركاء</a>
-<a class="btn secondary" href="https://www.google.com/maps/search/?api=1&query=بيت+النعمان+بركاء+عمان" target="_blank" rel="noopener">استكشف محيط بيت النعمان</a>
-</div>
+<section class="map-section" id="map">
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">الجغرافيا تبدأ من المكان</div><h2>استكشف ولاية بركاء على الخريطة</h2><p>استخدم الخريطة للتعرف على موقع الولاية ومحيطها الجغرافي. افتح الخريطة التفاعلية الكاملة لاستكشاف التفاصيل وتحديد المواقع.</p></div>
+  <div class="map-layout">
+    <div class="map-frame"><iframe title="خريطة ولاية بركاء في سلطنة عُمان" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=57.75%2C23.55%2C58.05%2C23.78&layer=mapnik"></iframe></div>
+    <div class="map-info">
+      <article class="card"><span class="pill">نشاط جغرافي</span><h3>مهمة المستكشف</h3><p>حدد موقع بركاء على الخريطة، ثم لاحظ موقعها بالنسبة إلى ساحل بحر عُمان والولايات المجاورة. دوّن ملاحظتين جغرافيتين.</p><a class="text-link" href="https://www.openstreetmap.org/#map=12/23.678/57.889" target="_blank" rel="noopener">افتح الخريطة التفاعلية ↗</a></article>
+      <article class="card"><h3>ما الذي يمكن دراسته؟</h3><p>الموقع النسبي • الساحل • شبكة الطرق • التجمعات العمرانية • استعمالات الأرض.</p><a class="text-link" href="https://earth.google.com/web/" target="_blank" rel="noopener">قارن مع Google Earth ↗</a></article>
+    </div>
+  </div>
 </div>
 </section>
 
-<section id="lab" style="background:#091f30">
-<div class="section-head">
-<h2>مختبر صور الأقمار الصناعية</h2>
-<p>نشاط توضيحي لفكرة المقارنة الزمنية. الصور أدناه رسوم تعليمية وليست صور أقمار صناعية فعلية.</p>
+<section id="heritage">
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">ذاكرة المكان العُماني</div><h2>متحف بركاء الافتراضي</h2><p>نافذة تعليمية للتعرف على معالم مختارة في ولاية بركاء، مع روابط للمعلومات الرسمية. يمكن تطوير هذا القسم لاحقاً بإضافة صور ميدانية مرخصة وجولات 360 درجة.</p></div>
+  <div class="heritage-grid">
+    <article class="card heritage-card"><div class="heritage-photo">🏰</div><div class="heritage-content"><span class="pill">معلم تاريخي</span><h3>حصن بركاء</h3><p>معلم من معالم الولاية يمكن دراسته من حيث الموقع والوظيفة التاريخية والعلاقة بالمجال الساحلي.</p><div class="note">مهمة الطالب: حدد موقع الحصن، ثم اكتب كيف يمكن أن يؤثر موقعه في وظيفته التاريخية.</div><p><a class="text-link" href="https://www.omaninfo.om/fr/pages/174/show/562" target="_blank" rel="noopener">المعلومات الرسمية ↗</a>　<a class="text-link" href="https://www.google.com/maps/search/?api=1&query=حصن+بركاء+سلطنة+عمان" target="_blank" rel="noopener">الموقع على الخريطة ↗</a></p></div></article>
+    <article class="card heritage-card"><div class="heritage-photo">🏛️</div><div class="heritage-content"><span class="pill">تراث عُماني</span><h3>بيت النعمان</h3><p>موقع تراثي في بركاء يتيح للطلاب الربط بين العمارة العُمانية والتاريخ والمكان.</p><div class="note">مهمة الطالب: أنشئ بطاقة تعريفية للمعلم تتضمن الموقع والوصف والمصدر.</div><p><a class="text-link" href="https://www.omaninfo.om/fr/pages/187/show/656" target="_blank" rel="noopener">المعلومات الرسمية ↗</a>　<a class="text-link" href="https://www.google.com/maps/search/?api=1&query=بيت+النعمان+بركاء+عمان" target="_blank" rel="noopener">الموقع على الخريطة ↗</a></p></div></article>
+  </div>
 </div>
-
-<div class="compare">
-<div class="satbox">
-<b>مشهد افتراضي: فترة سابقة</b>
-<div class="satvisual"></div>
-<small style="color:var(--muted)">تمثيل بصري توضيحي</small>
+</section>
+<section class="map-section" id="lab">
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">من الصورة إلى المعلومة</div><h2>مختبر الاستشعار عن بُعد</h2><p>تعلم كيف تقارن الصور الفضائية وتقرأ التغيرات المكانية. انتقل إلى أدوات NASA لمشاهدة بيانات حقيقية وتواريخ التقاطها.</p></div>
+  <div class="lab-grid">
+    <div class="lab-panel"><h3>كيف نقرأ التغير عبر الزمن؟</h3><div class="compare-box"><div class="compare-image"><span>مشهد سابق — تمثيل</span></div><div class="compare-image after"><span>مشهد لاحق — تمثيل</span></div></div><p class="disclaimer">تنبيه: هذان الشكلان رسوم توضيحية فقط، وليسا صورتين فضائيتين حقيقيتين أو مقارنة فعلية لبركاء.</p></div>
+    <div class="lab-panel"><h3>افتح مختبر البيانات الحقيقي</h3><p style="color:var(--muted);line-height:1.9">في NASA Worldview يمكنك استعراض طبقات وصور للأرض، واختيار التاريخ والظاهرة، وملاحظة التغيرات. وثّق اسم الطبقة والتاريخ والمصدر عند استخدام أي صورة في مشروعك.</p><a class="btn" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">ابدأ استكشاف NASA Worldview ↗</a><p style="margin-top:18px"><a class="text-link" href="https://www.nasa.gov/stem-content/earth-observatory/" target="_blank" rel="noopener">موارد NASA التعليمية للمعلمين ↗</a></p></div>
+  </div>
 </div>
-
-<div class="satbox">
-<b>مشهد افتراضي: فترة لاحقة</b>
-<div class="satvisual after"></div>
-<small style="color:var(--muted)">تمثيل بصري توضيحي</small>
-</div>
-</div>
-
-<p style="color:var(--muted);line-height:1.9">لتحويل النشاط إلى تحليل حقيقي، نضيف صورتين فضائيتين موثقتين لبركاء مع تاريخ الالتقاط ومصدر البيانات، ثم ندرس التغير في العمران أو الغطاء النباتي أو الساحل.</p>
 </section>
 
 <section id="quiz">
-<div class="section-head">
-<h2>تحدي المستكشف الجغرافي</h2>
-<p>اختبر معلوماتك في جغرافية بركاء والتراث الرقمي.</p>
-</div>
-
-<div class="card quiz">
-<h3 id="question">أين يقع بيت النعمان؟</h3>
-<div id="options"></div>
-<div id="feedback" aria-live="polite"></div>
-<button class="btn" id="next" style="display:none">السؤال التالي</button>
-<div id="score" style="margin-top:14px;color:var(--muted)"></div>
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">اختبر معرفتك</div><h2>تحدي المستكشف الجغرافي</h2><p>أسئلة قصيرة في الخرائط والتقنيات الجغرافية والتراث العُماني.</p></div>
+  <div class="card quiz-box"><div class="pill" id="qCount">السؤال 1 من 4</div><h3 id="question">ما التقنية التي تساعد على تحليل البيانات المرتبطة بالمواقع؟</h3><div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div><button class="btn" id="nextQ" style="display:none">السؤال التالي ←</button><p id="score" style="color:var(--muted);font-size:13px"></p></div>
 </div>
 </section>
 
-<footer>
-<div class="footerstrong">منصة الجغرافيا الذكية</div>
-مدرسة ثابت بن قيس للتعليم الأساسي<br>
-إعداد وتصميم: د. قناوي حسين<br>
-<small>منصة تعليمية تجريبية. تُراجع المعلومات والمواد البصرية قبل اعتماد النسخة النهائية.</small>
-</footer>
+<section id="resources" class="map-section">
+<div class="wrap">
+  <div class="section-head"><div class="eyebrow">تعلم من مصادر موثوقة</div><h2>مكتبة الجغرافيا العالمية</h2><p>روابط مباشرة إلى منصات علمية وتعليمية تساعد الطلاب والمعلمين على الاستكشاف والتعلم.</p></div>
+  <div class="resources">
+    <a class="resource" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener"><b>🛰️ NASA Worldview</b><small>استعراض صور وطبقات فضائية للأرض.</small><span class="text-link">زيارة الموقع ↗</span></a>
+    <a class="resource" href="https://earthobservatory.nasa.gov/" target="_blank" rel="noopener"><b>🌎 NASA Earth Observatory</b><small>صور وقصص وعلوم عن كوكب الأرض.</small><span class="text-link">زيارة الموقع ↗</span></a>
+    <a class="resource" href="https://earth.google.com/education/" target="_blank" rel="noopener"><b>🌐 Google Earth Education</b><small>أنشطة ومشروعات جغرافية للصفوف.</small><span class="text-link">زيارة الموقع ↗</span></a>
+    <a class="resource" href="https://www.esri.com/en-us/industries/education/overview" target="_blank" rel="noopener"><b>🗺️ Esri Education</b><small>موارد تعليم نظم المعلومات الجغرافية.</small><span class="text-link">زيارة الموقع ↗</span></a>
+  </div>
+</div>
+</section>
+
+<section id="pledge">
+<div class="wrap">
+  <div class="pledge">
+    <div><div class="eyebrow">قيمنا الرقمية</div><h2 style="margin:5px 0">ميثاق الالتزام الرقمي</h2><p>أتعهد باستخدام منصة الجغرافيا الذكية استخداماً مسؤولاً، واحترام حقوق الملكية الفكرية، والتحقق من دقة المعلومات ومصادرها، والمحافظة على الخصوصية، وتوظيف التقنيات الحديثة في التعلم وخدمة المجتمع والوطن، وتمثيل مدرسة ثابت بن قيس بصورة مشرّفة.</p><div class="pledge-status" id="pledgeStatus"></div></div>
+    <div class="pledge-actions"><button class="btn" id="pledgeBtn">أوافق على الميثاق ✓</button><a class="btn alt" href="#home">العودة إلى البداية ↑</a></div>
+  </div>
+</div>
+</section>
+</main>
+
+<footer><div class="footer-inner"><div><b>منصة الجغرافيا الذكية</b><br>التقنيات الحديثة ونظم المعلومات الجغرافية<br>مدرسة ثابت بن قيس للتعليم الأساسي</div><div>إعداد وتصميم: <b>د. قناوي حسين</b><br>التعلم الجغرافي • الابتكار • المسؤولية الرقمية</div><div>جميع الروابط الخارجية تفتح مواقع الجهات المالكة لها.<br>تُراجع المواد والصور قبل استخدامها في المشروعات المدرسية.</div></div></footer>
+
+<div class="modal" id="pledgeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box"><h2 id="modalTitle">ميثاق الالتزام الرقمي</h2><p>قبل البدء، اقرأ الميثاق والتزم باستخدام المحتوى باحترام وأمانة علمية، واذكر مصادر المعلومات والصور، ولا تنشر بيانات شخصية.</p><label class="checkline"><input type="checkbox" id="agreeCheck"> أوافق على الالتزام بميثاق الاستخدام المسؤول للمنصة.</label><button class="btn" id="confirmPledge" disabled>تأكيد الالتزام</button></div>
+</div>
 
 <script>
-const questions=[
-{
-q:"أين يقع بيت النعمان؟",
-a:["ولاية بركاء","ولاية صور","ولاية نزوى"],
-c:0,
-e:"صحيح؛ يقع بيت النعمان في ولاية بركاء بمحافظة جنوب الباطنة."
-},
-{
-q:"ما التقنية التي تستخدم صور الأقمار الصناعية لدراسة سطح الأرض؟",
-a:["الاستشعار عن بُعد","الطباعة ثلاثية الأبعاد","معالجة النصوص"],
-c:0,
-e:"صحيح؛ الاستشعار عن بُعد يتيح جمع معلومات عن الأرض دون التلامس المباشر."
-},
-{
-q:"ما وظيفة نظم المعلومات الجغرافية؟",
-a:["ربط البيانات بالمواقع وتحليلها","تشغيل الصوت فقط","كتابة النصوص فقط"],
-c:0,
-e:"صحيح؛ GIS تربط البيانات بالمكان وتساعد على تحليلها وعرضها."
-}
+const menuBtn=document.getElementById('menuBtn');
+const navLinks=document.getElementById('navLinks');
+menuBtn.addEventListener('click',()=>navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+
+const quiz=[
+ {q:'ما التقنية التي تساعد على تحليل البيانات المرتبطة بالمواقع؟',a:['نظم المعلومات الجغرافية GIS','معالجة النصوص','التسجيل الصوتي'],c:0,why:'GIS تربط البيانات بالمواقع وتتيح تحليلها وعرضها على الخرائط.'},
+ {q:'ما المقصود بالاستشعار عن بُعد؟',a:['جمع معلومات عن سطح الأرض دون ملامسته مباشرة','قياس المسافات بالمسطرة فقط','رسم الخرائط باليد فقط'],c:0,why:'تُجمع البيانات عن بُعد باستخدام مستشعرات على الأقمار الصناعية أو الطائرات.'},
+ {q:'أي جهة توفر منصة NASA Worldview؟',a:['وكالة ناسا','بلدية بركاء','متحف محلي'],c:0,why:'NASA Worldview جزء من منظومة بيانات الأرض التابعة لناسا.'},
+ {q:'ما السلوك الصحيح عند استخدام صورة أو معلومة في مشروع مدرسي؟',a:['ذكر المصدر والتحقق من الدقة','حذف اسم المصدر','نسبها إلى النفس'],c:0,why:'الأمانة العلمية تقتضي توثيق المصدر واحترام حقوق الملكية الفكرية.'}
 ];
+let qi=0,points=0,locked=false;
+const qEl=document.getElementById('question'),aEl=document.getElementById('answers'),fEl=document.getElementById('feedback'),nEl=document.getElementById('nextQ'),sEl=document.getElementById('score'),cEl=document.getElementById('qCount');
+function drawQ(){locked=false;fEl.textContent='';nEl.style.display='none';cEl.textContent=`السؤال ${qi+1} من ${quiz.length}`;qEl.textContent=quiz[qi].q;aEl.innerHTML='';quiz[qi].a.forEach((v,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=v;b.addEventListener('click',()=>choose(i));aEl.appendChild(b)});sEl.textContent=`النقاط: ${points}`;}
+function choose(i){if(locked)return;locked=true;const item=quiz[qi];[...aEl.children].forEach((b,j)=>{b.disabled=true;if(j===item.c)b.style.borderColor='#21c69a'});if(i===item.c){points++;fEl.textContent='إجابة صحيحة! '+item.why}else{fEl.textContent='ليست الإجابة الصحيحة. '+item.why}nEl.style.display='inline-flex';nEl.textContent=qi===quiz.length-1?'عرض النتيجة':'السؤال التالي ←';sEl.textContent=`النقاط: ${points}`;}
+nEl.addEventListener('click',()=>{if(qi<quiz.length-1){qi++;drawQ()}else{qEl.textContent=`انتهى التحدي! نتيجتك ${points} من ${quiz.length}`;aEl.innerHTML='';fEl.textContent='أحسنت. يمكنك إعادة تحميل الصفحة لخوض التحدي من جديد.';nEl.style.display='none';cEl.textContent='اكتمل التحدي';}});
+drawQ();
 
-let qi=0,points=0,answered=false;
-
-const q=document.getElementById('question');
-const opts=document.getElementById('options');
-const fb=document.getElementById('feedback');
-const next=document.getElementById('next');
-const score=document.getElementById('score');
-
-function render(){
-answered=false;
-fb.textContent="";
-next.style.display="none";
-q.textContent=questions[qi].q;
-opts.innerHTML="";
-
-questions[qi].a.forEach((v,i)=>{
-let b=document.createElement('button');
-b.className='option';
-b.textContent=v;
-b.onclick=()=>choose(i);
-opts.appendChild(b);
-});
-
-score.textContent=`السؤال ${qi+1} من ${questions.length} • النقاط: ${points}`;
-}
-
-function choose(i){
-if(answered)return;
-answered=true;
-
-const item=questions[qi];
-
-if(i===item.c){
-points++;
-fb.textContent="إجابة صحيحة! "+item.e;
-}else{
-fb.textContent="حاول مرة أخرى في السؤال القادم. "+item.e;
-}
-
-next.style.display="inline-block";
-next.textContent=qi===questions.length-1?"عرض النتيجة":"السؤال التالي";
-}
-
-next.onclick=()=>{
-if(qi<questions.length-1){
-qi++;
-render();
-}else{
-q.textContent=`انتهى التحدي! نتيجتك ${points} من ${questions.length}`;
-opts.innerHTML="";
-fb.textContent="أحسنت، واصل استكشاف الجغرافيا.";
-next.style.display="none";
-score.textContent="يمكنك إعادة تحميل الصفحة لخوض التحدي مرة أخرى.";
-}
-};
-
-render();
+const pledgeModal=document.getElementById('pledgeModal');
+const agree=document.getElementById('agreeCheck');
+const confirm=document.getElementById('confirmPledge');
+const pledgeBtn=document.getElementById('pledgeBtn');
+const pledgeStatus=document.getElementById('pledgeStatus');
+agree.addEventListener('change',()=>confirm.disabled=!agree.checked);
+confirm.addEventListener('click',()=>{if(!agree.checked)return;pledgeModal.classList.remove('show');pledgeStatus.textContent='✓ تم تأكيد الالتزام في هذه الجلسة. شكراً لمسؤوليتك الرقمية.';pledgeBtn.textContent='تم تأكيد الميثاق ✓';pledgeBtn.disabled=true;});
+pledgeBtn.addEventListener('click',()=>{pledgeModal.classList.add('show');});
 </script>
-
 </body>
 </html>
