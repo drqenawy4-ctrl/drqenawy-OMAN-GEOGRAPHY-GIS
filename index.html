@@ -3,250 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مدرسة ثابت بن قيس | بوابة المعرفة والجغرافيا</title>
+<meta name="description" content="منصة الجغرافيا الرقمية ونظم المعلومات الجغرافية - مدرسة ثابت بن قيس، سلطنة عمان">
+<title>ثابت بن قيس | الجغرافيا الرقمية</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+:root {
+ --bg:#071725;
+ --panel:#10283b;
+ --cyan:#28d9df;
+ --gold:#e9c477;
+ --white:#f3f8ff;
+ --muted:#a7bbca;
+}
+*{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-font-family:Tahoma,Arial,sans-serif;
-background:#f1f5f9;
-color:#172554;
-line-height:1.8
-}
-:root{
---navy:#102a43;
---blue:#087eae;
---gold:#e9ad43;
---light:#eaf6fb;
---white:#fff;
+ margin:0;background:var(--bg);color:var(--white);
+ font-family:'Cairo',sans-serif;
 }
 header{
-background:linear-gradient(120deg,#102a43,#075985);
-color:white;
-padding:18px 6%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-gap:15px;
-position:sticky;
-top:0;
-z-index:2000;
-box-shadow:0 3px 15px #0002
+ position:sticky;top:0;z-index:1000;
+ background:#081c2cf2;
+ border-bottom:1px solid #24475b;
+ padding:12px 5%;
+ display:flex;justify-content:space-between;
+ align-items:center;gap:15px;flex-wrap:wrap;
 }
-.logo{font-size:21px;font-weight:bold}
-.logo span{color:#f5c66a}
-nav{display:flex;gap:16px;flex-wrap:wrap}
-nav a{
-color:white;text-decoration:none;
-font-size:13px;font-weight:bold
+.logo{font-size:20px;font-weight:800;color:var(--gold)}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-size:13px}
+nav a:hover{color:var(--cyan)}
+button{
+ font-family:inherit;cursor:pointer;border:0;
+ border-radius:10px;padding:10px 17px;font-weight:bold;
 }
-nav a:hover{color:#f5c66a}
-
+.primary{background:var(--cyan);color:#06202d}
 .hero{
-min-height:470px;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:55px 20px;
-color:white;
-background:
-linear-gradient(120deg,#082f49ee,#075985d9),
-url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=80') center/cover;
+ min-height:540px;padding:85px 7%;
+ display:flex;align-items:center;
+ background:linear-gradient(90deg,#071725e8,#07172591),
+ url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1800')
+ center/cover;
 }
-.hero-content{max-width:850px}
-.hero h1{font-size:38px;margin-bottom:15px}
-.hero h2{font-size:22px;color:#f5c66a;margin-bottom:15px}
-.hero p{font-size:17px;margin-bottom:25px}
-.btn{
-display:inline-block;
-background:var(--gold);
-color:#102a43;
-padding:11px 24px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-margin:5px;
-border:0;
-cursor:pointer
-}
-.btn:hover{background:#ffd77d}
-.btn-blue{background:#087eae;color:white}
-
-section{padding:55px 6%}
-.section-title{
-text-align:center;
-font-size:27px;
-color:#075985;
-margin-bottom:12px
-}
-.section-desc{
-text-align:center;
-color:#64748b;
-margin:0 auto 30px;
-max-width:750px
-}
-.about{
-background:white;
-text-align:center
-}
-.about p{
-max-width:900px;
-margin:auto;
-font-size:17px;
-color:#475569
-}
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px
+.hero-content{max-width:720px}
+.hero h1{font-size:clamp(32px,6vw,60px);line-height:1.5;margin:0}
+.hero h1 span{color:var(--cyan)}
+.hero p{color:#d4e5ed;font-size:18px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+section{padding:65px 6%}
+.section-title{text-align:center;margin-bottom:35px}
+.section-title h2{color:var(--gold);font-size:30px}
+.section-title p{color:var(--muted)}
+.grid{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:20px;
 }
 .card{
-background:white;
-border-radius:15px;
-padding:24px;
-box-shadow:0 5px 20px #0f172a12;
-border:1px solid #e2e8f0;
-transition:.25s
+ background:var(--panel);border:1px solid #29475c;
+ border-radius:17px;padding:24px;transition:.3s;
 }
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 25px #0f172a20
+.card:hover{transform:translateY(-6px);border-color:var(--cyan)}
+.card .symbol{font-size:38px}
+.card h3{color:var(--cyan)}
+.card p{color:var(--muted);line-height:1.9}
+#map{height:440px;border-radius:17px;z-index:1}
+.map-tools{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.map-tools button{background:#1d465b;color:white}
+.stat{
+ text-align:center;padding:25px;background:#0b3043;
+ border-radius:15px;
 }
-.card .symbol{font-size:38px;margin-bottom:10px}
-.card h3{color:#075985;margin-bottom:8px}
-.card p{font-size:14px;color:#64748b}
-.tour{background:#eaf6fb}
-.tour-card{
-background:white;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 5px 15px #0001
+.stat strong{display:block;font-size:32px;color:var(--cyan)}
+.lab{background:#0b2233}
+.quiz-question{font-size:20px;font-weight:bold}
+.quiz-options{display:grid;gap:12px;margin-top:20px}
+.quiz-options button{
+ background:#183c51;color:white;text-align:right;
+ border:1px solid #426175;
 }
-.tour-image{
-height:155px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:55px;
-background:linear-gradient(135deg,#dbeafe,#bae6fd)
-}
-.tour-info{padding:18px}
-.tour-info h3{color:#075985}
-.tour-info p{font-size:14px;color:#64748b}
-
-.gis{
-background:#102a43;
-color:white
-}
-.gis .section-title{color:#7dd3fc}
-.gis .section-desc{color:#cbd5e1}
-.gis-layout{
-display:grid;
-grid-template-columns:290px 1fr;
-gap:15px;
-align-items:stretch
-}
-.panel{
-background:#1e3a56;
-padding:20px;
-border-radius:12px
-}
-.panel h3{color:#f5c66a;margin-bottom:12px}
-.panel input[type=text]{
-width:100%;
-padding:12px;
-border-radius:7px;
-border:1px solid #64748b;
-margin-bottom:15px;
-background:#0f172a;
-color:white
-}
-.layer{
-display:flex;
-align-items:center;
-gap:9px;
-padding:10px;
-margin-bottom:9px;
-background:#0f172a;
-border-radius:7px;
-font-size:14px
-}
-.layer input{width:17px;height:17px}
-.count{
-margin-right:auto;
-color:#7dd3fc
-}
-#map{
-height:550px;
-width:100%;
-border-radius:12px;
-z-index:1
-}
-.map-buttons{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-margin-top:12px
-}
-.map-buttons button{
-padding:10px;
-border:0;
-border-radius:7px;
-background:#087eae;
-color:white;
-cursor:pointer
-}
-.stats{
-margin-top:12px;
-padding:12px;
-background:#0f172a;
-border-radius:8px;
-text-align:center;
-color:#7dd3fc
-}
-.activities{background:white}
-.activity{
-border-right:4px solid var(--gold)
-}
-.future{
-background:#eaf6fb;
-text-align:center
-}
-.future-box{
-max-width:850px;
-margin:auto;
-background:white;
-border-radius:15px;
-padding:25px;
-box-shadow:0 5px 20px #0001
-}
+.quiz-options button:hover{background:#24627a}
+#quizResult{margin-top:20px;color:var(--gold);font-weight:bold}
 footer{
-background:#081d30;
-color:white;
-text-align:center;
-padding:28px 15px
+ text-align:center;padding:35px;background:#04111c;
+ color:var(--muted);line-height:2
 }
-footer span{color:#f5c66a}
-.small{font-size:12px;color:#94a3b8;margin-top:10px}
-
-.leaflet-popup-content-wrapper{
-direction:rtl;text-align:right
-}
-
-@media(max-width:850px){
-header{position:relative}
-nav{gap:10px}
-.gis-layout{grid-template-columns:1fr}
-#map{height:450px}
-.hero h1{font-size:27px}
-.hero h2{font-size:18px}
-section{padding:40px 5%}
+#clock{color:var(--cyan)}
+@media(max-width:600px){
+ header{justify-content:center}
+ nav{justify-content:center}
+ .hero{padding:65px 6%;min-height:470px}
+ section{padding:45px 5%}
 }
 </style>
 </head>
@@ -254,409 +104,274 @@ section{padding:40px 5%}
 <body>
 
 <header>
-<div class="logo">🏫 مدرسة <span>ثابت بن قيس</span></div>
-<nav>
-<a href="#home">الرئيسية</a>
-<a href="#about">عن المدرسة</a>
-<a href="#tour">جولة المدرسة</a>
-<a href="#facilities">المرافق</a>
-<a href="#gis">نظم المعلومات الجغرافية</a>
-<a href="#activities">الأنشطة</a>
-</nav>
+ <div class="logo">🌍 ثابت بن قيس الذكية</div>
+ <nav>
+  <a href="#home">الرئيسية</a>
+  <a href="#features">التقنيات</a>
+  <a href="#map-section">الخريطة</a>
+  <a href="#lab">المختبر</a>
+  <a href="#quiz">المسابقة</a>
+ </nav>
+ <button class="primary" onclick="toggleTheme()">تغيير المظهر</button>
 </header>
 
-<!-- الواجهة الرئيسية -->
-<div class="hero" id="home">
-<div class="hero-content">
-<h2>بوابة المعرفة والإبداع والابتكار</h2>
-<h1>مدرسة ثابت بن قيس للتعليم الأساسي</h1>
-<p>
-بيئة تعليمية ملهمة تجمع بين المعرفة والتكنولوجيا
-والهوية الوطنية العُمانية.
-</p>
-<a class="btn" href="#about">اكتشف مدرستنا</a>
-<a class="btn btn-blue" href="#gis">استكشف الخريطة التفاعلية</a>
-</div>
-</div>
-
-<!-- عن المدرسة -->
-<section class="about" id="about">
-<h2 class="section-title">من نحن؟</h2>
-<p class="section-desc">مدرسة ثابت بن قيس للتعليم الأساسي</p>
-<p>
-نسعى إلى توفير بيئة تعليمية محفزة للإبداع والابتكار،
-وتنمية مهارات الطلبة في البحث والاستكشاف والتعلم الرقمي،
-وتعزيز الهوية الوطنية والانتماء لسلطنة عُمان،
-من خلال توظيف التقنيات الحديثة والأنشطة التعليمية الهادفة.
-</p>
+<main>
+<section class="hero" id="home">
+ <div class="hero-content">
+  <p>سلطنة عُمان | مدرسة ثابت بن قيس للتعليم الأساسي</p>
+  <h1>اكتشف العالم<br><span>بعين جغرافية رقمية</span></h1>
+  <p>
+   منصة تعليمية تفاعلية تستكشف الجغرافيا الحديثة،
+   والأقمار الصناعية، ونظم المعلومات الجغرافية GIS.
+  </p>
+  <div class="actions">
+   <button class="primary" onclick="goTo('map-section')">استكشف الخريطة</button>
+   <button onclick="goTo('lab')" style="background:#e9c477;color:#071725">
+    ادخل المختبر
+   </button>
+  </div>
+  <p id="clock"></p>
+ </div>
 </section>
 
-<!-- المميزات -->
-<section id="facilities">
-<h2 class="section-title">بوابات المعرفة المدرسية</h2>
-<p class="section-desc">
-تعرف على المجالات التعليمية والمرافق والأنشطة المدرسية.
-</p>
-
-<div class="cards">
-<div class="card">
-<div class="symbol">📚</div>
-<h3>التعلم والمعرفة</h3>
-<p>بيئة تعليمية تدعم القراءة والبحث والتفكير والإبداع.</p>
-</div>
-
-<div class="card">
-<div class="symbol">🧪</div>
-<h3>المختبرات التعليمية</h3>
-<p>تجارب علمية وتطبيقات عملية تربط المعرفة بالحياة.</p>
-</div>
-
-<div class="card">
-<div class="symbol">🌍</div>
-<h3>مختبر الدراسات الاجتماعية</h3>
-<p>استكشاف الجغرافيا والتاريخ والبيئة من خلال الأنشطة والتطبيقات.</p>
-</div>
-
-<div class="card">
-<div class="symbol">🛰️</div>
-<h3>التقنيات الجغرافية</h3>
-<p>الأقمار الصناعية والاستشعار عن بُعد ونظم المعلومات الجغرافية.</p>
-</div>
-
-<div class="card">
-<div class="symbol">💻</div>
-<h3>التعلم الرقمي</h3>
-<p>توظيف الأدوات والمنصات الرقمية في تطوير التعليم.</p>
-</div>
-
-<div class="card">
-<div class="symbol">🇴🇲</div>
-<h3>الهوية الوطنية</h3>
-<p>تعزيز الاعتزاز بتاريخ عُمان وتراثها وإنجازاتها.</p>
-</div>
-</div>
+<section id="features">
+ <div class="section-title">
+  <h2>عالم التقنيات الجغرافية</h2>
+  <p>اكتشف أدوات الجغرافيا في العصر الرقمي</p>
+ </div>
+ <div class="grid">
+  <article class="card">
+   <div class="symbol">🛰️</div>
+   <h3>الاستشعار عن بُعد</h3>
+   <p>التعرف على صور الأقمار الصناعية واستخداماتها في دراسة سطح الأرض.</p>
+  </article>
+  <article class="card">
+   <div class="symbol">🌐</div>
+   <h3>نظم المعلومات الجغرافية</h3>
+   <p>جمع البيانات المكانية وتحليلها وتمثيلها على الخرائط الرقمية.</p>
+  </article>
+  <article class="card">
+   <div class="symbol">📍</div>
+   <h3>نظام GPS</h3>
+   <p>فهم تحديد المواقع والملاحة وتطبيقاتها في الحياة اليومية.</p>
+  </article>
+  <article class="card">
+   <div class="symbol">🤖</div>
+   <h3>الذكاء الاصطناعي</h3>
+   <p>التعرف على دور الذكاء الاصطناعي في تحليل البيانات الجغرافية.</p>
+  </article>
+ </div>
 </section>
 
-<!-- الجولة الافتراضية -->
-<section class="tour" id="tour">
-<h2 class="section-title">🚪 جولة افتراضية داخل المدرسة</h2>
-<p class="section-desc">
-اكتشف مرافق المدرسة من خلال البوابات التفاعلية.
-ستتم إضافة الصور الحقيقية والجولة المصورة لاحقاً.
-</p>
-
-<div class="cards">
-
-<div class="tour-card">
-<div class="tour-image">🏫</div>
-<div class="tour-info">
-<h3>مدخل المدرسة</h3>
-<p>التعرف على مبنى المدرسة وبيئتها التعليمية.</p>
-</div>
-</div>
-
-<div class="tour-card">
-<div class="tour-image">🪑</div>
-<div class="tour-info">
-<h3>الفصول الدراسية</h3>
-<p>التعرف على بيئة التعلم والوسائل التعليمية.</p>
-</div>
-</div>
-
-<div class="tour-card">
-<div class="tour-image">🔬</div>
-<div class="tour-info">
-<h3>المختبرات</h3>
-<p>التجارب والتطبيقات العلمية والتعليمية.</p>
-</div>
-</div>
-
-<div class="tour-card">
-<div class="tour-image">📖</div>
-<div class="tour-info">
-<h3>المكتبة</h3>
-<p>مساحة للقراءة والاطلاع والبحث العلمي.</p>
-</div>
-</div>
-
-<div class="tour-card">
-<div class="tour-image">🗺️</div>
-<div class="tour-info">
-<h3>مختبر الجغرافيا</h3>
-<p>عالم الخرائط والبيانات المكانية والتقنيات الحديثة.</p>
-</div>
-</div>
-
-<div class="tour-card">
-<div class="tour-image">⚽</div>
-<div class="tour-info">
-<h3>المرافق الرياضية</h3>
-<p>الأنشطة الرياضية وتنمية المهارات البدنية.</p>
-</div>
-</div>
-
-</div>
+<section id="map-section">
+ <div class="section-title">
+  <h2>خريطة عُمان التفاعلية</h2>
+  <p>استكشف موقع سلطنة عُمان وتضاريسها جغرافياً</p>
+ </div>
+ <div class="map-tools">
+  <button onclick="showOman()">سلطنة عُمان</button>
+  <button onclick="showBarka()">ولاية بركاء</button>
+  <button onclick="changeLayer()">تغيير طبقة الخريطة</button>
+ </div>
+ <div id="map"></div>
+ <p style="color:var(--muted);text-align:center">
+  الخريطة تعتمد على بيانات OpenStreetMap.
+ </p>
 </section>
 
-<!-- نظم المعلومات الجغرافية -->
-<section class="gis" id="gis">
-<h2 class="section-title">🌐 مختبر نظم المعلومات الجغرافية GIS</h2>
-<p class="section-desc">
-منصة جغرافية تفاعلية لاستكشاف سلطنة عُمان وولاية بركاء
-والمدارس والمعالم التاريخية والطبيعية.
-</p>
-
-<div class="gis-layout">
-
-<div class="panel">
-<h3>🔎 البحث الجغرافي</h3>
-<input id="searchInput" type="text"
-placeholder="ابحث عن مدرسة أو مدينة..."
-oninput="renderFeatures()">
-
-<h3>🗂️ الطبقات الجغرافية</h3>
-
-<label class="layer">
-<input type="checkbox" id="layer-schools"
-checked onchange="toggleLayer('schools')">
-مدارس ولاية بركاء
-<span class="count" id="count-schools">0</span>
-</label>
-
-<label class="layer">
-<input type="checkbox" id="layer-cities"
-checked onchange="toggleLayer('cities')">
-المدن الرئيسية
-<span class="count" id="count-cities">0</span>
-</label>
-
-<label class="layer">
-<input type="checkbox" id="layer-history"
-checked onchange="toggleLayer('history')">
-المواقع التاريخية
-<span class="count" id="count-history">0</span>
-</label>
-
-<label class="layer">
-<input type="checkbox" id="layer-nature"
-checked onchange="toggleLayer('nature')">
-المواقع الطبيعية
-<span class="count" id="count-nature">0</span>
-</label>
-
-<h3 style="margin-top:18px">🗺️ نمط الخريطة</h3>
-<div class="map-buttons">
-<button onclick="changeBasemap('streets')">خريطة الشوارع</button>
-<button onclick="changeBasemap('dark')">النمط المظلم</button>
-</div>
-
-<div class="map-buttons">
-<button onclick="resetMapView()">إعادة التركيز على بركاء</button>
-<button onclick="showOman()">استكشاف عُمان</button>
-</div>
-
-<div class="stats">
-إجمالي المعالم الظاهرة:
-<strong id="total-count">0</strong>
-</div>
-</div>
-
-<div>
-<div id="map"></div>
-</div>
-
-</div>
+<section class="lab" id="lab">
+ <div class="section-title">
+  <h2>مختبر الجغرافيا الرقمية</h2>
+  <p>تعلم بالتجربة والاكتشاف</p>
+ </div>
+ <div class="grid">
+  <article class="card">
+   <div class="symbol">📊</div>
+   <h3>معالجة البيانات</h3>
+   <p>تعرف على مراحل تحويل البيانات إلى معلومات جغرافية مفيدة.</p>
+  </article>
+  <article class="card">
+   <div class="symbol">🗺️</div>
+   <h3>الخرائط الرقمية</h3>
+   <p>تعرف على أهمية الطبقات والرموز والبيانات المكانية.</p>
+  </article>
+  <article class="card">
+   <div class="symbol">🌱</div>
+   <h3>الاستدامة البيئية</h3>
+   <p>اكتشف كيف تساعد التقنيات الجغرافية في حماية البيئة.</p>
+  </article>
+ </div>
 </section>
 
-<!-- الأنشطة المدرسية -->
-<section class="activities" id="activities">
-<h2 class="section-title">🌟 الأنشطة والمبادرات المدرسية</h2>
-<p class="section-desc">
-مساحة لعرض إبداعات الطلبة ومبادرات المعلمين والفعاليات المدرسية.
-</p>
-
-<div class="cards">
-<div class="card activity">
-<div class="symbol">🌍</div>
-<h3>أسبوع الوعي الجغرافي</h3>
-<p>أنشطة وفعاليات للتعريف بعلم الجغرافيا والتقنيات الحديثة.</p>
-</div>
-
-<div class="card activity">
-<div class="symbol">🛰️</div>
-<h3>يوم نظم المعلومات الجغرافية</h3>
-<p>التعرف على تطبيقات GIS في الحياة اليومية.</p>
-</div>
-
-<div class="card activity">
-<div class="symbol">🎙️</div>
-<h3>اعرف وطنك</h3>
-<p>التعريف بتاريخ عُمان وشخصياتها الوطنية وإنجازاتها.</p>
-</div>
-
-<div class="card activity">
-<div class="symbol">🏆</div>
-<h3>إبداعات الطلبة</h3>
-<p>عرض المشروعات والابتكارات والمشاركات الطلابية.</p>
-</div>
-</div>
+<section id="quiz">
+ <div class="section-title">
+  <h2>تحدي العباقرة الجغرافيين</h2>
+  <p>اختبر معلوماتك الجغرافية</p>
+ </div>
+ <div class="card" style="max-width:650px;margin:auto">
+  <div id="questionNumber">السؤال 1</div>
+  <div class="quiz-question" id="question"></div>
+  <div class="quiz-options" id="options"></div>
+  <div id="quizResult" aria-live="polite"></div>
+  <button class="primary" onclick="nextQuestion()" id="next" hidden>السؤال التالي</button>
+ </div>
 </section>
 
-<!-- المستقبل -->
-<section class="future">
-<div class="future-box">
-<h2 class="section-title">مدرستنا نحو المستقبل</h2>
-<p>
-نتطلع إلى مدرسة توظف التكنولوجيا الحديثة،
-وتفتح آفاقاً جديدة للمعرفة والابتكار،
-وتصنع جيلاً قادراً على الاستكشاف والإبداع.
-</p>
-<br>
-<a class="btn btn-blue" href="#home">العودة إلى البداية ↑</a>
-</div>
+<section>
+ <div class="section-title">
+  <h2>إنجازات المنصة</h2>
+  <p>معاً نحو تعلم جغرافي رقمي</p>
+ </div>
+ <div class="grid">
+  <div class="stat"><strong>GIS</strong>نظم المعلومات الجغرافية</div>
+  <div class="stat"><strong>GPS</strong>تحديد المواقع</div>
+  <div class="stat"><strong>AI</strong>الذكاء الاصطناعي</div>
+ </div>
 </section>
+</main>
 
 <footer>
-<h3>مدرسة <span>ثابت بن قيس للتعليم الأساسي</span></h3>
-<p>المعرفة تصنع المستقبل 🇴🇲</p>
-<p class="small">بوابة تعليمية رقمية للتعلم والاستكشاف والابتكار</p>
+ <div style="font-size:23px;color:var(--gold)">مدرسة ثابت بن قيس للتعليم الأساسي</div>
+ <p>منصة الجغرافيا الرقمية ونظم المعلومات الجغرافية</p>
+ <p>تصميم وإعداد: د. قناوي حسين</p>
+ <p>سلطنة عُمان © 2026</p>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
-// إنشاء الخريطة
-const map = L.map('map').setView([23.7042,57.8860],11);
-
-const streets = L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{maxZoom:19,attribution:'© OpenStreetMap'}
-);
-
-const dark = L.tileLayer(
-'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-{maxZoom:19,attribution:'© OpenStreetMap © CARTO'}
-);
-
-streets.addTo(map);
-let currentBasemap=streets;
-
-function changeBasemap(type){
-map.removeLayer(currentBasemap);
-currentBasemap=type==='dark'?dark:streets;
-currentBasemap.addTo(map);
+function goTo(id){
+ document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-// مجموعات الطبقات
-const layers={
-schools:L.layerGroup().addTo(map),
-cities:L.layerGroup().addTo(map),
-history:L.layerGroup().addTo(map),
-nature:L.layerGroup().addTo(map)
-};
+function toggleTheme(){
+ const dark=document.body.dataset.theme!=='light';
+ if(dark){
+  document.documentElement.style.setProperty('--bg','#f1f6fa');
+  document.documentElement.style.setProperty('--panel','#ffffff');
+  document.documentElement.style.setProperty('--white','#10283b');
+  document.documentElement.style.setProperty('--muted','#526879');
+  document.body.dataset.theme='light';
+ }else{
+  document.documentElement.style.setProperty('--bg','#071725');
+  document.documentElement.style.setProperty('--panel','#10283b');
+  document.documentElement.style.setProperty('--white','#f3f8ff');
+  document.documentElement.style.setProperty('--muted','#a7bbca');
+  document.body.dataset.theme='dark';
+ }
+}
 
-// البيانات الجغرافية
-const geoData={
-schools:[
-{coords:[23.7050,57.8820],name:"مدرسة ثابت بن قيس للتعليم الأساسي",desc:"مدرسة تعليمية في ولاية بركاء."},
-{coords:[23.6980,57.8750],name:"مدرسة بركاء للتعليم الأساسي",desc:"مؤسسة تعليمية بولاية بركاء."},
-{coords:[23.7120,57.8950],name:"مدرسة العلاء بن الحضرمي",desc:"مؤسسة تعليمية."},
-{coords:[23.6850,57.8600],name:"مدرسة أم عمارة للبنات",desc:"مؤسسة تعليمية."},
-{coords:[23.6720,57.9100],name:"مدرسة الرميس للتعليم الأساسي",desc:"مؤسسة تعليمية."}
-],
-cities:[
-{coords:[23.7072,57.8861],name:"مركز ولاية بركاء",desc:"ولاية بمحافظة جنوب الباطنة."},
-{coords:[23.5880,58.3829],name:"مسقط",desc:"عاصمة سلطنة عُمان."},
-{coords:[23.3959,57.4244],name:"الرستاق",desc:"مدينة تاريخية في جنوب الباطنة."},
-{coords:[24.3474,56.7094],name:"صحار",desc:"مدينة في محافظة شمال الباطنة."}
-],
-history:[
-{coords:[23.7114,57.8878],name:"حصن بركاء",desc:"معلم تاريخي وتراثي."},
-{coords:[23.6961,57.9044],name:"بيت النعمان",desc:"معلم تراثي في ولاية بركاء."},
-{coords:[22.9333,57.5333],name:"قلعة نزوى",desc:"من المعالم التاريخية الشهيرة في عُمان."}
-],
-nature:[
-{coords:[23.7810,57.7720],name:"جزر الديمانيات",desc:"محمية طبيعية بحرية."},
-{coords:[23.5500,57.8500],name:"مناطق وادي المعاول",desc:"مناطق طبيعية قريبة من بركاء."},
-{coords:[23.1450,57.2650],name:"الجبل الأخضر",desc:"منطقة جبلية في سلسلة جبال الحجر."}
-]
-};
+function updateClock(){
+ document.getElementById('clock').textContent=
+ 'رحلة معرفية مستمرة | '+new Date().toLocaleString('ar-OM');
+}
+updateClock();
+setInterval(updateClock,1000);
 
-const colors={
-schools:"#0ea5e9",
-cities:"#f59e0b",
-history:"#ef4444",
-nature:"#10b981"
-};
-
-// رسم المعالم
-function renderFeatures(){
-const query=document.getElementById('searchInput')
-.value.trim().toLowerCase();
-
-let total=0;
-
-Object.keys(geoData).forEach(category=>{
-layers[category].clearLayers();
-let count=0;
-
-geoData[category].forEach(item=>{
-if(
-item.name.toLowerCase().includes(query)||
-item.desc.toLowerCase().includes(query)
-){
-const marker=L.circleMarker(item.coords,{
-radius:9,
-fillColor:colors[category],
-color:"#ffffff",
-weight:2,
-fillOpacity:0.9
+// Interactive map
+const map=L.map('map').setView([23.6,58.5],6);
+const street=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+ attribution:'© OpenStreetMap contributors'
 });
-
-marker.bindPopup(
-'<b>'+item.name+'</b><br>'+item.desc
+const satellite=L.tileLayer(
+ 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+ {attribution:'Tiles © Esri'}
 );
+street.addTo(map);
 
-marker.addTo(layers[category]);
-count++;
-}
-});
+L.marker([23.5859,58.4059]).addTo(map)
+ .bindPopup('مسقط – سلطنة عُمان');
 
-document.getElementById('count-'+category).textContent=count;
-
-if(document.getElementById('layer-'+category).checked){
-total+=count;
-}
-});
-
-document.getElementById('total-count').textContent=total;
-}
-
-// تشغيل وإخفاء الطبقات
-function toggleLayer(category){
-const checked=document.getElementById('layer-'+category).checked;
-
-if(checked){
-layers[category].addTo(map);
-}else{
-map.removeLayer(layers[category]);
-}
-renderFeatures();
-}
-
-// إعادة التركيز على بركاء
-function resetMapView(){
-map.setView([23.7042,57.8860],12);
-}
-
-// عرض سلطنة عمان
 function showOman(){
-map.setView([21.5,57.5],6);
+ map.setView([20.8,56.5],6);
+}
+function showBarka(){
+ map.setView([23.678,57.888],11);
+ L.marker([23.678,57.888]).addTo(map)
+ .bindPopup('ولاية بركاء – سلطنة عُمان').openPopup();
+}
+let satelliteMode=false;
+function changeLayer(){
+ if(satelliteMode){
+  map.removeLayer(satellite);
+  street.addTo(map);
+ }else{
+  map.removeLayer(street);
+  satellite.addTo(map);
+ }
+ satelliteMode=!satelliteMode;
 }
 
-// تشغيل أولي
-renderFeatures();
-</script>
+// Educational quiz
+const questions=[
+ {q:'ما المقصود بنظم المعلومات الجغرافية؟',
+  a:['نظام لتحليل البيانات المكانية','جهاز لقياس الحرارة','نوع من الخرائط الورقية'],
+  c:0},
+ {q:'ما التقنية المستخدمة في تحديد المواقع؟',
+  a:['GPS','GIS','HTML'],c:0},
+ {q:'ماذا تقدم الأقمار الصناعية للجغرافي؟',
+  a:['صور وبيانات عن سطح الأرض','أصوات فقط','كتب مدرسية'],c:0},
+ {q:'ما المقصود بالاستشعار عن بُعد؟',
+  a:['جمع معلومات دون اتصال مباشر بالهدف','قياس المسافة بالمسطرة','رسم الخرائط يدوياً'],c:0}
+];
 
+let current=0,score=0,answered=false;
+
+function renderQuestion(){
+ const q=questions[current];
+ document.getElementById('questionNumber').textContent=
+ 'السؤال '+(current+1)+' من '+questions.length;
+ document.getElementById('question').textContent=q.q;
+ document.getElementById('quizResult').textContent='';
+ document.getElementById('next').hidden=true;
+ answered=false;
+ const options=document.getElementById('options');
+ options.innerHTML='';
+ q.a.forEach((answer,i)=>{
+  const b=document.createElement('button');
+  b.textContent=answer;
+  b.onclick=()=>checkAnswer(i);
+  options.appendChild(b);
+ });
+}
+function checkAnswer(i){
+ if(answered)return;
+ answered=true;
+ const q=questions[current];
+ if(i===q.c){
+  score++;
+  document.getElementById('quizResult').textContent='إجابة صحيحة! أحسنت.';
+ }else{
+  document.getElementById('quizResult').textContent=
+  'إجابة غير صحيحة. الإجابة الصحيحة: '+q.a[q.c];
+ }
+ document.querySelectorAll('.quiz-options button').forEach(b=>b.disabled=true);
+ document.getElementById('next').hidden=false;
+ document.getElementById('next').textContent=
+ current===questions.length-1?'عرض النتيجة':'السؤال التالي';
+}
+function nextQuestion(){
+ if(!answered)return;
+ if(current<questions.length-1){
+  current++;
+  renderQuestion();
+ }else{
+  document.getElementById('question').textContent=
+  'انتهى التحدي! نتيجتك: '+score+' من '+questions.length;
+  document.getElementById('options').innerHTML='';
+  document.getElementById('quizResult').textContent=
+  score===questions.length?'ممتاز! حققت الدرجة الكاملة.':'استمر في التعلم والتقدم.';
+  document.getElementById('next').hidden=true;
+  current=0;
+  score=0;
+  answered=false;
+  const restart=document.createElement('button');
+  restart.className='primary';
+  restart.textContent='إعادة التحدي';
+  restart.onclick=renderQuestion;
+  document.getElementById('options').appendChild(restart);
+ }
+}
+renderQuestion();
+</script>
 </body>
 </html>
