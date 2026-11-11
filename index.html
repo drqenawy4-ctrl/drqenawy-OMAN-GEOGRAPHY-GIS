@@ -3,562 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الاتحاد المستكشف العماني | Global GIS & Remote Sensing Platform</title>
-    <!-- Tailwind CSS CDN -->
+    <title>الاتحاد المستكشف العماني | د. قناوي حسين</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Pro / Free -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Cairo & Amiri & Tajawal -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                        amiri: ['Amiri', 'serif'],
-                        tajawal: ['Tajawal', 'sans-serif'],
-                    },
-                    colors: {
-                        omanRed: '#C8102E',
-                        omanGreen: '#00853F',
-                        omanWhite: '#FFFFFF',
-                        royalGold: '#D4AF37',
-                        darkNavy: '#0B0F19',
-                        deepBg: '#05070B',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #05070B;
-            color: #F8FAFC;
-            overflow-x: hidden;
+            font-family: 'Cairo', sans-serif;
+            background-color: #060913;
+            color: #ffffff;
         }
-        /* خلفية القلاع والحصون العمانية الملكية مع طبقة عتمة احترافية */
-        .oman-heritage-bg {
-            background: linear-gradient(to bottom, rgba(5, 7, 11, 0.85), rgba(11, 15, 25, 0.95)), 
+        /* خلفية القلاع والحصون العمانية مع العلم العماني */
+        .hero-heritage-bg {
+            background: linear-gradient(135deg, rgba(6, 9, 19, 0.88), rgba(15, 23, 42, 0.94)), 
                         url('https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.78);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        .gold-border {
+            border: 2px solid #D4AF37;
         }
-        .glass-card-hover {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .gold-text {
+            color: #D4AF37;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
         }
-        .glass-card-hover:hover {
-            transform: translateY(-5px);
-            border-color: rgba(212, 175, 55, 0.6);
-            box-shadow: 0 25px 50px rgba(212, 175, 55, 0.15);
-        }
-        .gold-glow {
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0B0F19;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #D4AF37;
-            border-radius: 4px;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
-        }
-        .floating-badge {
-            animation: float 4s ease-in-out infinite;
+        .glass-box {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
     </style>
 </head>
-<body class="oman-heritage-bg min-h-screen flex flex-col custom-scrollbar">
+<body class="hero-heritage-bg min-h-screen flex flex-col">
 
-    <!-- الشريط الوطني العلوي -->
-    <div class="bg-gradient-to-r from-omanRed via-darkNavy to-omanGreen text-white text-xs sm:text-sm py-2 px-4 text-center font-bold tracking-wider border-b border-royalGold/30 flex justify-center items-center gap-3">
-        <span>🇴🇲 سلطنة عُمان</span>
-        <span>•</span>
-        <span>الاتحاد المستكشف العماني لنظم المعلومات الجغرافية والاستشعار عن بعد</span>
-        <span>•</span>
-        <span>إشراف: أ.د. قناوي حسين</span>
+    <!-- شريط الإعلان العلوي والرسمي -->
+    <div class="bg-gradient-to-r from-red-700 via-emerald-800 to-red-700 text-white py-2 px-4 text-center font-bold text-sm shadow-md border-b border-amber-400">
+        🇴🇲 سلطنة عُمان | المنصة العالمية التفاعلية لنظم المعلومات الجغرافية والاستشعار عن بعد
     </div>
 
-    <!-- النافبار العالمي فائق الحداثة -->
-    <header class="glass-panel sticky top-0 z-50 px-4 sm:px-10 py-4 border-b border-royalGold/30">
+    <!-- الهيدر الرئيسي - بارز فيه تصميم د. قناوي حسين -->
+    <header class="glass-box sticky top-0 z-50 px-6 py-4 border-b border-amber-500/40">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             
-            <!-- الشعار والعنوان -->
+            <!-- الشعار والاتحاد -->
             <div class="flex items-center gap-4">
-                <div class="relative">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-royalGold via-amber-600 to-omanRed flex items-center justify-center text-darkNavy font-black text-2xl shadow-xl border-2 border-omanWhite floating-badge">
-                        <i class="fa-solid fa-earth-americas text-white"></i>
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-omanGreen rounded-full border-2 border-darkNavy flex items-center justify-center text-[10px] text-white">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-red-600 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg gold-border">
+                    <i class="fa-solid fa-compass text-white"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-black text-royalGold font-amiri tracking-wide">الاتحاد المستكشف العماني</h1>
-                    <p class="text-xs text-slate-300 font-medium">Oman Explorer GIS & Remote Sensing Union</p>
+                    <h1 class="text-2xl font-black font-amiri gold-text">الاتحاد المستكشف العماني</h1>
+                    <p class="text-xs text-slate-300">نظم المعلومات الجغرافية والاستشعار عن بعد (GIS & RS)</p>
                 </div>
             </div>
 
-            <!-- بطاقة إشراف العالم د. قناوي حسين -->
-            <div class="flex items-center gap-3 bg-darkNavy/90 px-5 py-2.5 rounded-2xl border-2 border-royalGold/50 shadow-inner">
-                <div class="w-10 h-10 rounded-xl bg-royalGold/20 text-royalGold flex items-center justify-center text-lg">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-                <div>
-                    <span class="text-[10px] text-royalGold font-bold uppercase tracking-wider block">إعداد وتصميم العالم التربوي</span>
-                    <span class="text-sm sm:text-base font-black text-white font-amiri">أ.د. قناوي حسين</span>
-                </div>
+            <!-- توقيع د. قناوي حسين الرئيسي البارز -->
+            <div class="bg-gradient-to-r from-amber-500/20 via-slate-900 to-amber-500/20 px-6 py-3 rounded-2xl border-2 border-amber-400 shadow-xl text-center">
+                <span class="text-xs text-amber-300 font-bold block">إعداد وتصميم وإشراف العالم التربوي</span>
+                <span class="text-xl font-black text-white font-amiri tracking-wide">د. قناوي حسين</span>
             </div>
+
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي للمنصة العالمية -->
-    <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 space-y-10">
+    <!-- واجهة المنصة العالمية -->
+    <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-8 space-y-10">
 
-        <!-- قسم الهيرو (Hero Section) العالمي المبهر -->
-        <section class="glass-panel rounded-3xl p-6 sm:p-12 relative overflow-hidden shadow-2xl border-2 border-royalGold/40 text-center md:text-right">
-            <!-- خلفيات جمالية مضيئة -->
-            <div class="absolute -right-32 -top-32 w-80 h-80 bg-royalGold/15 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-32 -bottom-32 w-80 h-80 bg-omanGreen/15 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
-                <div class="md:col-span-8 space-y-6">
-                    <div class="inline-flex items-center gap-2 bg-royalGold/20 text-royalGold px-4 py-1.5 rounded-full text-xs font-bold border border-royalGold/40">
-                        <i class="fa-solid fa-satellite-dish animate-pulse"></i> منصة جيومكانية عالمية المستوى
+        <!-- قسم الترحيب والقلاع العمانية -->
+        <section class="glass-box rounded-3xl p-8 sm:p-12 text-center md:text-right relative overflow-hidden shadow-2xl gold-border">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-8 space-y-4">
+                    <div class="inline-block bg-red-600/30 text-red-400 border border-red-500 px-4 py-1 rounded-full text-xs font-bold">
+                        <i class="fa-solid fa-landmark"></i> إرث القلاع والحصون العمانية بتقنيات الفضاء
                     </div>
-                    <h2 class="text-3xl sm:text-5xl font-black font-amiri text-white leading-tight gold-glow">
-                        بوابة الاستكشاف الجغرافي والفضائي لسلطنة عُمان
+                    <h2 class="text-3xl sm:text-5xl font-black font-amiri text-white leading-tight gold-text">
+                        منصة د. قناوي حسين للاستكشاف الجيومكاني العالمي
                     </h2>
-                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
-                        نظام رقمي تفاعلي متقدم يربط عراقة الحصون والقلاع العمانية التاريخية بأحدث تقنيات نظم المعلومات الجغرافية (GIS) والاستشعار عن بعد (Remote Sensing)، خصيصاً برؤية عالمية متطورة.
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        مرحباً بكم في منصة "الاتحاد المستكشف العماني". نظام عالمي متطور يربط بين تاريخ وحضارة سلطنة عُمان (القلاع، الحصون، والأفلاج) وأحدث تقنيات الاستشعار عن بعد ونظم المعلومات الجغرافية.
                     </p>
-
-                    <!-- أزرار التنقل السريع -->
-                    <div class="flex flex-wrap gap-4 pt-2 justify-center md:justify-start">
-                        <button onclick="scrollToSection('quiz-section')" class="bg-gradient-to-r from-omanRed via-red-600 to-red-800 hover:from-red-700 hover:to-omanRed text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:-translate-y-1 flex items-center gap-3 border border-red-500/50">
-                            <i class="fa-solid fa-brain text-royalGold text-lg"></i> ابدأ بنك الأسئلة العالمي
-                        </button>
-                        <button onclick="scrollToSection('interactive-modules')" class="bg-darkNavy/90 hover:bg-slate-800 text-royalGold font-bold px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:-translate-y-1 border border-royalGold/40 flex items-center gap-3">
-                            <i class="fa-solid fa-compass-drafting text-lg"></i> استكشف المحاور المعرفية
+                    <div class="pt-4 flex flex-wrap gap-4 justify-center md:justify-start">
+                        <button onclick="document.getElementById('quiz').scrollIntoView({behavior: 'smooth'})" class="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg border border-amber-400">
+                            <i class="fa-solid fa-graduation-cap ml-2"></i> ابدأ بنك الأسئلة الموسع
                         </button>
                     </div>
                 </div>
-
-                <!-- شارة القلاع والعلم العماني البارزة -->
-                <div class="md:col-span-4 flex flex-col items-center justify-center">
-                    <div class="w-full max-w-xs glass-panel p-6 rounded-3xl border-2 border-royalGold/60 text-center space-y-4 shadow-2xl relative">
-                        <div class="absolute -top-3 right-1/2 translate-x-1/2 bg-omanRed text-white text-[10px] px-3 py-0.5 rounded-full font-bold uppercase tracking-widest border border-royalGold">
-                            تراث وحضارة
-                        </div>
-                        <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-tr from-royalGold to-amber-500 flex items-center justify-center text-darkNavy text-4xl shadow-lg border-2 border-white">
-                            <i class="fa-solid fa-chess-rook"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-royalGold font-amiri">القلاع والحصون العمانية</h3>
-                        <p class="text-xs text-slate-300">توثيق جغرافي رقمي لقلاع نزوى، بهلا، نخل، وبركاء باستخدام أحدث تقنيات الـ GIS.</p>
-                        <div class="pt-2 flex justify-center items-center gap-2 text-xs font-bold text-omanGreen bg-omanGreen/10 py-1.5 rounded-xl border border-omanGreen/30">
-                            <span>علم عُمان الخفاق</span> <i class="fa-solid fa-flag text-omanRed"></i>
+                <!-- بطاقة التراث -->
+                <div class="md:col-span-4 text-center">
+                    <div class="glass-box p-6 rounded-2xl border-2 border-amber-400 space-y-3">
+                        <i class="fa-solid fa-chess-rook text-5xl text-amber-400"></i>
+                        <h3 class="text-xl font-bold font-amiri text-white">تراث عُمان الخالد</h3>
+                        <p class="text-xs text-slate-300">توثيق قلعة نخل، قلعة نزوى، وحصن بركاء بنظم الخرائط الرقمية ثلاثية الأبعاد.</p>
+                        <div class="text-xs font-bold text-emerald-400 bg-emerald-950/60 py-2 rounded-xl border border-emerald-500">
+                            تصميم: د. قناوي حسين 🇴🇲
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- المحاور المعرفية العالمية -->
-        <section id="interactive-modules" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- المحور الأول -->
-            <div class="glass-panel rounded-3xl p-6 glass-card-hover border border-royalGold/30 space-y-4">
-                <div class="w-14 h-14 rounded-2xl bg-omanRed/20 text-omanRed flex items-center justify-center text-2xl border border-omanRed/40 shadow-md">
-                    <i class="fa-solid fa-satellite"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white font-amiri">الاستشعار عن بُعد (Remote Sensing)</h3>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    تحليل صور الأقمار الصناعية متعددة الأطياف لدراسة الغطاء النباتي، السواحل العمانية، الموارد المائية، والتغيرات البيئية بدقة فائقة.
-                </p>
-                <div class="pt-2 flex items-center gap-2 text-xs text-royalGold font-semibold">
-                    <i class="fa-solid fa-check-circle"></i> تقنيات الرصد الفضائي الحديثة
-                </div>
+        <!-- بنك الأسئلة الموسع الشامل -->
+        <section id="quiz" class="glass-box rounded-3xl p-6 sm:p-10 gold-border shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-4 py-1 rounded-full border border-amber-400">اختبار جغرافية عُمان والاستشعار عن بعد</span>
+                <h3 class="text-3xl font-black font-amiri text-white">بنك الأسئلة التفاعلي العالمي</h3>
+                <p class="text-xs text-slate-300">إعداد وتصنيف: د. قناوي حسين</p>
             </div>
 
-            <!-- المحور الثاني -->
-            <div class="glass-panel rounded-3xl p-6 glass-card-hover border border-royalGold/30 space-y-4">
-                <div class="w-14 h-14 rounded-2xl bg-royalGold/20 text-royalGold flex items-center justify-center text-2xl border border-royalGold/40 shadow-md">
-                    <i class="fa-solid fa-map-location-dot"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white font-amiri">نظم المعلومات الجغرافية (GIS)</h3>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    إدارة قواعد البيانات المكانية والوصفية، نمذجة الخرائط الرقمية، وتحليل الشبكات والطرق لدعم اتخاذ القرار في مشاريع التنمية.
-                </p>
-                <div class="pt-2 flex items-center gap-2 text-xs text-royalGold font-semibold">
-                    <i class="fa-solid fa-check-circle"></i> التحليل المكاني المتقدم
-                </div>
-            </div>
-
-            <!-- المحور الثالث -->
-            <div class="glass-panel rounded-3xl p-6 glass-card-hover border border-royalGold/30 space-y-4">
-                <div class="w-14 h-14 rounded-2xl bg-omanGreen/20 text-omanGreen flex items-center justify-center text-2xl border border-omanGreen/40 shadow-md">
-                    <i class="fa-solid fa-monument"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white font-amiri">تراث وحضارة سلطنة عُمان</h3>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    إسقاط المواقع التاريخية الأثرية والحصون على الخرائط الرقمية لتوثيق الإرث العماني الخالد وحمايته للأجيال القادمة.
-                </p>
-                <div class="pt-2 flex items-center gap-2 text-xs text-royalGold font-semibold">
-                    <i class="fa-solid fa-check-circle"></i> التراث المعماري العماني
-                </div>
-            </div>
-        </section>
-
-        <!-- قسم بنك الأسئلة الموسع الشامل العالمي -->
-        <section id="quiz-section" class="glass-panel rounded-3xl p-6 sm:p-12 shadow-2xl border-2 border-royalGold/50 relative">
-            <div class="absolute top-6 left-6 hidden sm:block">
-                <span class="bg-royalGold/20 text-royalGold px-4 py-1.5 rounded-full text-xs font-bold border border-royalGold/40">
-                    <i class="fa-solid fa-award ml-1"></i> بنك الأسئلة الموسع الاحترافي
-                </span>
-            </div>
-
-            <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
-                <h3 class="text-3xl sm:text-4xl font-black text-royalGold font-amiri">التحدي الجغرافي والجيومكاني العالمي</h3>
-                <p class="text-slate-300 text-sm sm:text-base">أجب عن الأسئلة المتقدمة في نظم المعلومات، الاستشعار عن بعد، وجغرافية وتاريخ سلطنة عُمان.</p>
-            </div>
-
-            <!-- حاوية الاختبار التفاعلي -->
-            <div id="quiz-box" class="max-w-3xl mx-auto bg-darkNavy/90 rounded-3xl p-6 sm:p-10 border border-royalGold/40 shadow-2xl space-y-6">
-                <!-- مؤشر التقدم والفئة -->
-                <div class="flex justify-between items-center text-sm border-b border-slate-700 pb-4">
-                    <span id="question-progress" class="font-bold text-royalGold text-base">السؤال 1 من 15</span>
-                    <span id="question-category" class="bg-royalGold/20 text-royalGold px-4 py-1.5 rounded-xl text-xs font-bold border border-royalGold/40">الفئة</span>
+            <!-- حاوية الأسئلة -->
+            <div id="quiz-container" class="max-w-3xl mx-auto bg-slate-950/90 rounded-2xl p-6 sm:p-8 border border-amber-500/40 space-y-6">
+                <div class="flex justify-between items-center text-sm border-b border-slate-800 pb-3">
+                    <span id="q-count" class="font-bold text-amber-400">السؤال 1 من 10</span>
+                    <span id="q-cat" class="bg-amber-400/20 text-amber-300 px-3 py-1 rounded-lg text-xs font-bold">الفئة</span>
                 </div>
 
-                <!-- نص السؤال -->
-                <h4 id="question-text" class="text-xl sm:text-2xl font-bold text-white leading-relaxed min-h-[4rem] font-amiri">
-                    جاري تحميل الأسئلة...
-                </h4>
+                <h4 id="q-text" class="text-lg sm:text-xl font-bold text-white min-h-[3.5rem]">جاري التحميل...</h4>
 
-                <!-- خيارات الإجابة -->
-                <div id="options-grid" class="grid grid-cols-1 gap-3.5">
-                    <!-- تُحقن ديناميكياً -->
-                </div>
+                <div id="q-options" class="grid grid-cols-1 gap-3"></div>
 
-                <!-- شريط التوجيه وزر الانتقال -->
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-700">
-                    <div id="feedback-message" class="text-sm font-bold"></div>
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden w-full sm:w-auto bg-gradient-to-r from-royalGold via-amber-500 to-yellow-600 hover:from-yellow-600 hover:to-royalGold text-darkNavy font-black px-8 py-3 rounded-xl shadow-lg transition transform hover:scale-105">
-                        السؤال التالي <i class="fa-solid fa-arrow-left mr-2"></i>
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                    <div id="q-feedback" class="text-sm font-bold"></div>
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-6 py-2.5 rounded-xl transition">
+                        السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- شاشة النتيجة النهائية الاحترافية -->
-            <div id="result-box" class="hidden max-w-2xl mx-auto text-center space-y-6 py-10 bg-darkNavy/95 rounded-3xl border-2 border-royalGold p-8 shadow-2xl">
-                <div class="w-24 h-24 bg-royalGold/20 text-royalGold rounded-full flex items-center justify-center text-5xl mx-auto border-2 border-royalGold gold-glow animate-bounce">
-                    <i class="fa-solid fa-trophy"></i>
-                </div>
-                <h4 class="text-3xl sm:text-4xl font-bold text-white font-amiri">أتممت الاختبار العالمي بنجاح!</h4>
-                <p class="text-xl text-slate-300">درجتك النهائية هي: <span id="final-score" class="text-royalGold font-black text-3xl">0</span> من <span id="total-questions">15</span></p>
-                <p id="result-comment" class="text-sm text-slate-400 max-w-md mx-auto leading-relaxed"></p>
-                <div class="pt-4 flex justify-center gap-4">
-                    <button onclick="restartQuiz()" class="bg-gradient-to-r from-omanRed to-red-700 hover:from-red-700 hover:to-omanRed text-white font-bold px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:-translate-y-1">
-                        <i class="fa-solid fa-rotate-right ml-2"></i> إعادة الاختبار
-                    </button>
-                </div>
+            <div id="result-container" class="hidden text-center space-y-4 py-8">
+                <i class="fa-solid fa-trophy text-6xl text-amber-400"></i>
+                <h4 class="text-3xl font-bold font-amiri text-white">أحسنت! أتممت الاختبار بنجاح</h4>
+                <p class="text-lg text-slate-300">النتيجة: <span id="score-text" class="text-amber-400 font-black text-2xl">0</span> / 10</p>
+                <button onclick="restartQuiz()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3 rounded-xl">إعادة الاختبار</button>
             </div>
         </section>
 
     </main>
 
-    <!-- الفوتر العالمي الفخم -->
-    <footer class="glass-panel border-t border-royalGold/30 mt-16 py-8 px-4 sm:px-10 text-center text-xs sm:text-sm text-slate-400">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <p>© 2026 الاتحاد المستكشف العماني | جميع الحقوق محفوظة.</p>
-            <div class="flex items-center gap-3 bg-darkNavy/80 px-4 py-2 rounded-xl border border-royalGold/30">
-                <i class="fa-solid fa-graduation-cap text-royalGold text-lg"></i>
-                <span class="font-bold text-white">إعداد وإشراف: أ.د. قناوي حسين</span>
-            </div>
-            <p class="text-slate-400 font-medium">سلطنة عُمان - محافظة جنوب الباطنة (ولاية بركاء)</p>
-        </div>
+    <!-- الفوتر مع حقوق د. قناوي حسين -->
+    <footer class="glass-box mt-12 py-6 px-6 text-center text-xs text-slate-400 border-t border-amber-500/40">
+        <p>© 2026 الاتحاد المستكشف العماني | جميع الحقوق محفوظة</p>
+        <p class="text-amber-400 font-bold mt-1">إعداد وتصميم وتنفيذ: د. قناوي حسين — سلطنة عُمان (ولاية بركاء)</p>
     </footer>
 
-    <!-- سكربت التشغيل وبنك الأسئلة الموسع الشامل (15 سؤالاً عالمياً) -->
     <script>
-        const questionBank = [
+        const questions = [
             {
-                category: "جغرافية عُمان والقلاع التاريخية",
-                question: "ما هي المحافظة العمانية التي تضم قلعة النعمان التاريخية وسواحل بحر العرب وتعد مركزاً استراتيجياً بارزاً؟",
-                options: [
-                    "محافظة جنوب الباطنة (ولاية بركاء)",
-                    "محافظة مسندم",
-                    "محافظة ظفار",
-                    "محافظة البريمي"
-                ],
-                correct: 0
+                cat: "جغرافية عُمان",
+                q: "ما هي المحافظة العمانية التي تشتهر بوجود قلعة النعمان التاريخية وسواحل بحر عمان البارزة؟",
+                opts: ["محافظة جنوب الباطنة (ولاية بركاء)", "محافظة ظفار", "محافظة مسندم", "محافظة البريمي"],
+                ans: 0
             },
             {
-                category: "الاستشعار عن بعد (Remote Sensing)",
-                question: "ما هو المبدأ الأساسي الذي تعتمد عليه تقنية الاستشعار عن بعد في دراسة سطح الأرض؟",
-                options: [
-                    "حفر الآبار الاستكشافية اليدوية",
-                    "تجميع البيانات القياسية عبر أجهزة قياس ملامسة للأرض",
-                    "تسجيل الطاقة الكهرومغناطيسية المنعكسة أو المنبعثة من أسطح الأرض عبر المستشعرات الفضائية",
-                    "إجراء التعداد السكاني الميداني"
+                cat: "الاستشعار عن بعد",
+                q: "ما هو المبدأ الأساسي لتقنية الاستشعار عن بعد (Remote Sensing)؟",
+                opts: [
+                    "قياس مساحات الأراضي يدوياً",
+                    "جمع معلومات عن سطح الأرض دون ملامسته مباشرة عبر المستشعرات والأقمار الصناعية",
+                    "قراءة الخرائط الورقية القديمة",
+                    "التنقيب الميداني عن النفط"
                 ],
-                correct: 2
+                ans: 1
             },
             {
-                category: "نظم المعلومات الجغرافية (GIS)",
-                question: "أي مما يلي يمثل المكونات الأربعة الأساسية لأي نظام معلومات جغرافية (GIS) متكامل؟",
-                options: [
-                    "الأجهزة، البرمجيات، البيانات المكانية، والعنصر البشري (المشغلين)",
-                    "الورق، الأقلام الملونة، المساطر، والخرائط الجدارية",
-                    "الكاميرات التناظرية والأفلام القديمة فقط",
-                    "الشبكات الكهربائية والأقمار الصناعية الحربية فقط"
-                ],
-                correct: 0
+                cat: "نظم المعلومات الجغرافية GIS",
+                q: "ما هي البيانات التي تجمع بين الموقع الإحداثي والمعلومات الوصفية في برامج الـ GIS؟",
+                opts: ["البيانات المكانية والوصفية", "الصور الفوتوغرافية فقط", "الملفات الصوتية", "الكتب النصية"],
+                ans: 0
             },
             {
-                category: "تطبيقات الفضاء وعُمان",
-                question: "كيف تساهم صور الأقمار الصناعية الحديثة في دعم قطاع الموارد المائية والأفلاج في سلطنة عُمان؟",
-                options: [
-                    "من خلال قياس درجات الحرارة الجوية اليومية فقط",
-                    "عبر مراقبة مناطق تغذية المياه الجوفية، دراسة المجاري المائية، وتتبع التغيرات في الغطاء النباتي للأفلاج",
-                    "تحديد أسعار المياه في الأسواق العالمية",
-                    "منع هطول الأمطار في المناطق الجافة"
+                cat: "تطبيقات الفضاء في عُمان",
+                q: "كيف تساعد صور الأقمار الصناعية في إدارة الأفلاج والموارد المائية بسلطنة عُمان؟",
+                opts: [
+                    "تتبع التغير في الغطاء النباتي وتحديد مناطق تغذية المياه الجوفية",
+                    "تحديد أسعار السلع الغذائية",
+                    "منع الرياح الموسمية",
+                    "تغيير مسارات الأودية يدوياً"
                 ],
-                correct: 1
+                cat_ans: 0
             },
             {
-                category: "نظم المعلومات الجغرافية (GIS)",
-                question: "ما الفرق الجوهري بين نموذج البيانات الشبكية (Raster) ونموذج البيانات الخطية (Vector) في نظم المعلومات الجغرافية؟",
-                options: [
-                    "الـ Raster يعتمد على الخلايا أو البكسلات، بينما الـ Vector يعتمد على النقاط والخطوط والمضلعات",
-                    "لا يوجد أي فرق بينهما نهائياً",
-                    "الـ Vector يستخدم فقط للصور الفضائية الملونة",
-                    "الـ Raster مخصص للكتب والمقالات النصية"
+                cat: "التراث العماني",
+                q: "كيف تساهم الخرائط الرقمية (GIS) في حماية القلاع والحصون العمانية التاريخية؟",
+                opts: [
+                    "بناء قاعدة بيانات جغرافية لتوثيقها وحمايتها من المخاطر البيئية والسياحية",
+                    "إخفاء مواقعها عن الخرائط",
+                    "تغير أسمائها التاريخية",
+                    "منع الزوار من دخولها"
                 ],
-                correct: 0
-            },
-            {
-                category: "التراث العماني والحصون",
-                question: "لماذا يُعتبر دمج مواقع القلاع والحصون العمانية (مثل قلعة نزوى وحصن نخل) في نظم المعلومات الجغرافية أمراً بالغ الأهمية؟",
-                options: [
-                    "لتوثيقها تاريخياً، تحليل شبكات الطرق السياحية المؤدية إليها، وإدارتها بكفاءة عالية وحمايتها من المخاطر البيئية",
-                    "لإخفاء مواقعها تماماً عن الخرائط الرقمية",
-                    "لتغيير أسمائها وأماكنها جغرافياً",
-                    " لمنع السياح من زيارتها نهائياً"
-                ],
-                correct: 0
-            },
-            {
-                category: "الاستشعار عن بعد (Remote Sensing)",
-                question: "ما هي المستشعرات الفضائية الإيجابية (Active Sensors)؟",
-                options: [
-                    "المستشعرات التي تعتمد كلياً على ضوء الشمس الطبيعي نهاراً",
-                    "المستشعرات التي تطلق طاقة خاصة بها نحو السطح وتقيس الإنعكاس (مثل الرادار والرادار الماص)",
-                    "المستشعرات التي لا تحتاج إلى أي طاقة كهربائية",
-                    "المستشعرات التي تستخدم لقياس سرعة الرياح السطحية يدوياً"
-                ],
-                correct: 1
-            },
-            {
-                category: "جغرافية سلطنة عُمان",
-                question: "تتميز سلطنة عُمان بتنوع تضاريسي فريد. ما هي السلسلة الجبلية الكبرى التي تحتضن أعلى قمة جبلية في السلطنة (جبل شمس)؟",
-                options: [
-                    "جبال الحجر",
-                    "جبال ظفار",
-                    "سلاسل جبال قفص",
-                    "جبال الأبض الكبرى"
-                ],
-                correct: 0
-            },
-            {
-                category: "تطبيقات الـ GIS المتقدمة",
-                question: "ماذا يقصد بتحليل الشبكات (Network Analysis) في نظم المعلومات الجغرافية؟",
-                options: [
-                    "حساب أفضل وأسرع المسارات لسيارات الإسعاف والطوارئ أو توصيل الخدمات بين المدن العمانية",
-                    "تلوين الخرائط بألوان عشوائية مبهجة",
-                    "حساب عدد السكان في القرى الصغيرة",
-                    "دراسة أعماق البحار والمحيطات السحيقة"
-                ],
-                correct: 0
-            },
-            {
-                category: "الاستشعار عن بعد والبيئة",
-                question: "كيف تستخدم سلطنة عُمان تقنيات الاستشعار عن بعد في مراقبة البيئة البحرية والسواحل؟",
-                options: [
-                    "رصد التلوث البحري والبقع النفطية، تتبع التغيرات الساحلية، ودراسة التيارات المائية بدقة",
-                    "صيد الأسماك بالصنارة اليدوية التقليدية",
-                    "بناء السفن الخشبية في الموانئ",
-                    "تخطيط الشوارع الداخلية للمدن"
-                ],
-                correct: 0
-            },
-            {
-                category: "نظم المعلومات الجغرافية",
-                question: "ما هو النظام العالمي لتحديد الموقع الجغرافي والإحداثيات (GPS) ويعتبر جزءاً أساسياً من الـ GIS؟",
-                options: [
-                    "نظام الملاحة بالأقمار الصناعية لتحديد خطوط الطول ودائرة العرض والارتفاع بدقة",
-                    "برنامج لتعديل الصور الشخصية",
-                    "تطبيق لكتابة المقالات العلمية",
-                    "نظام لتخزين الكتب الورقية"
-                ],
-                correct: 0
-            },
-            {
-                category: "تراث سلطنة عُمان",
-                question: "ما هو الدور الذي تلعبه الخرائط الرقمية ثلاثية الأبعاد (3D GIS) في إبراز معالم التراث المعماري العماني؟",
-                options: [
-                    "إعادة بناء وتجسيد القلاع والحصون التاريخية افتراضياً بدقة هندسية عالية لدعم السياحة والتعليم",
-                    "حذف المعالم التاريخية من الوجود الرقمي",
-                    "تغيير التصاميم المعمارية الأثرية بشكل عشوائي",
-                    "تقليل قيمة المواقع الأثرية"
-                ],
-                correct: 0
-            },
-            {
-                category: "الاستشعار عن بعد",
-                question: "ماذا تعني دقة التمييز المكاني (Spatial Resolution) في الصور الفضائية والأقمار الصناعية؟",
-                options: [
-                    "أصغر جسم أو تفصيل يمكن تمييزه بوضوح على الصورة الفضائية (مثل حجم البكسل)",
-                    "عدد الألوان الموجودة في شاشة الحاسوب",
-                    "سرعة انتقال البيانات عبر الإنترنت",
-                    "وزن القمر الصناعي في الفضاء"
-                ],
-                correct: 0
-            },
-            {
-                category: "جغرافية عُمان والتنمية",
-                question: "كيف تدعم نظم المعلومات الجغرافية خطط التنمية المستدامة في محافظات سلطنة عُمان؟",
-                options: [
-                    "من خلال توفير التحليلات المكانية لاختيار أفضل الأماكن للمدارس، المستشفيات، الطرق، والمشاريع الاقتصادية",
-                    "من خلال طباعة الكتب المدرسية فقط",
-                    "عن طريق إيقاف جميع المشاريع العمرانية",
-                    "تحديد مواعيد الفصول الأربعة بدقة"
-                ],
-                correct: 0
-            },
-            {
-                category: "الاتحاد المستكشف العماني",
-                question: "ما هو الهدف الأسمى لإنشاء 'الاتحاد المستكشف العماني' بقيادة أ.د. قناوي حسين؟",
-                options: [
-                    "نشر الثقافة الجغرافية والجيومكانية المتقدمة، ربط التراث العماني بالتكنولوجيا الحديثة، وتأهيل جيل من المستكشفين والباحثين الشباب",
-                    "بيع الأجهزة الإلكترونية والهواتف المحمولة",
-                    "تنظيم رحلات ترفيهية خالية من العلوم",
-                    "إلغاء تدريس مادة الجغرافيا في المدارس"
-                ],
-                correct: 0
+                ans: 0
             }
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let answered = false;
+        let index = 0, score = 0, answered = false;
 
-        function loadQuestion() {
+        function loadQ() {
             answered = false;
-            const q = questionBank[currentQuestionIndex];
-            document.getElementById('question-progress').innerText = `السؤال ${currentQuestionIndex + 1} من ${questionBank.length}`;
-            document.getElementById('question-category').innerText = q.category;
-            document.getElementById('question-text').innerText = q.question;
-            document.getElementById('feedback-message').innerText = '';
+            const q = questions[index];
+            document.getElementById('q-count').innerText = `السؤال ${index + 1} من ${questions.length}`;
+            document.getElementById('q-cat').innerText = q.cat;
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('q-feedback').innerText = '';
             document.getElementById('next-btn').classList.add('hidden');
 
-            const optionsGrid = document.getElementById('options-grid');
-            optionsGrid.innerHTML = '';
-
-            q.options.forEach((option, index) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-right p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700 text-white font-semibold transition flex justify-between items-center group shadow-md";
-                btn.innerHTML = `<span>${option}</span> <span class="w-7 h-7 rounded-xl border border-slate-600 flex items-center justify-center text-xs text-slate-300 group-hover:border-royalGold group-hover:text-royalGold font-bold">${String.fromCharCode(65 + index)}</span>`;
-                btn.onclick = () => selectOption(index, btn);
-                optionsGrid.appendChild(btn);
+            const grid = document.getElementById('q-options');
+            grid.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = "w-full text-right p-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 text-white font-bold transition flex justify-between";
+                b.innerHTML = `<span>${opt}</span> <span class="text-amber-400 font-bold">${String.fromCharCode(65+i)}</span>`;
+                b.onclick = () => check(i, b);
+                grid.appendChild(b);
             });
         }
 
-        function selectOption(selectedIndex, buttonElement) {
-            if (answered) return;
+        function check(i, btn) {
+            if(answered) return;
             answered = true;
-
-            const q = questionBank[currentQuestionIndex];
-            const optionsGrid = document.getElementById('options-grid');
-            const buttons = optionsGrid.children;
-
-            if (selectedIndex === q.correct) {
-                buttonElement.classList.remove('bg-slate-800/80', 'border-slate-700');
-                buttonElement.classList.add('bg-omanGreen/30', 'border-omanGreen', 'text-white', 'shadow-lg');
-                document.getElementById('feedback-message').innerHTML = '<span class="text-omanGreen flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-lg"></i> إجابة صحيحة وموفقة جداً!</span>';
+            const q = questions[index];
+            if(i === q.ans) {
+                btn.classList.add('bg-emerald-900/60', 'border-emerald-500');
+                document.getElementById('q-feedback').innerHTML = '<span class="text-emerald-400">إجابة صحيحة وممتازة!</span>';
                 score++;
             } else {
-                buttonElement.classList.remove('bg-slate-800/80', 'border-slate-700');
-                buttonElement.classList.add('bg-omanRed/30', 'border-omanRed', 'text-white', 'shadow-lg');
-                document.getElementById('feedback-message').innerHTML = '<span class="text-omanRed flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark text-lg"></i> إجابة غير دقيقة. الإجابة الصحيحة باللون الأخضر.</span>';
-                
-                // تلوين الإجابة الصحيحة باللون الأخضر
-                buttons[q.correct].classList.remove('bg-slate-800/80', 'border-slate-700');
-                buttons[q.correct].classList.add('bg-omanGreen/30', 'border-omanGreen');
+                btn.classList.add('bg-red-900/60', 'border-red-500');
+                document.getElementById('q-feedback').innerHTML = '<span class="text-red-400">إجابة خاطئة!</span>';
             }
-
-            // تعطيل جميع الأزرار بعد الاختيار
-            for (let btn of buttons) {
-                btn.style.pointerEvents = 'none';
-            }
-
             document.getElementById('next-btn').classList.remove('hidden');
         }
 
         function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questionBank.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
-
-        function showResults() {
-            document.getElementById('quiz-box').classList.add('hidden');
-            document.getElementById('result-box').classList.remove('hidden');
-            document.getElementById('final-score').innerText = score;
-            document.getElementById('total-questions').innerText = questionBank.length;
-
-            const commentEl = document.getElementById('result-comment');
-            if (score === questionBank.length) {
-                commentEl.innerText = "عالمي وخبير استثنائي! لقد أجبت عن كافة الأسئلة بامتياز تام، وتستحق لقب سفير وجغرافي الاتحاد المستكشف العماني بامتياز.";
-            } else if (score >= 11) {
-                commentEl.innerText = "مستوى مشرف ومبهر للغاية! لديك حصيلة جغرافية وفضائية عالية ومتميزة.";
-            } else {
-                commentEl.innerText = "بداية قوية وممتازة، يمكنك إعادة المحاولة لاختبار معلوماتك وتأكيد تفوقك الجغرافي.";
+            index++;
+            if(index < questions.length) loadQ();
+            else {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('result-container').classList.remove('hidden');
+                document.getElementById('score-text').innerText = score;
             }
         }
 
         function restartQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            document.getElementById('result-box').classList.add('hidden');
-            document.getElementById('quiz-box').classList.remove('hidden');
-            loadQuestion();
+            index = 0; score = 0;
+            document.getElementById('result-container').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            loadQ();
         }
 
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // تشغيل بنك الأسئلة عند تحميل الصفحة
-        window.onload = loadQuestion;
+        window.onload = loadQ;
     </script>
 </body>
 </html>
