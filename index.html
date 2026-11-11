@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام الجيوماب المدرسي | سلطنة عمان</title>
+<title>الجيوماب المدرسي | سلطنة عمان</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 * {
@@ -30,6 +29,8 @@ body {
   padding: 20px;
   background: linear-gradient(180deg,#172b46,#101c30);
   border-left: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   z-index: 1000;
 }
@@ -301,6 +302,8 @@ body {
 
 <body>
 
+<!-- لوحة التحكم -->
+
 <aside id="sidebar">
 
   <div class="header">
@@ -349,13 +352,20 @@ body {
   <div class="section-title">🎨 أنماط الخرائط</div>
 
   <div class="btn-grid">
+
     <button class="btn-action btn-secondary" id="darkBtn">
       🌙 النمط المظلم
     </button>
 
     <button class="btn-action btn-secondary" id="streetBtn">
-      🗺️ الشوارع
+      🗺️ نمط الشوارع
     </button>
+
+    <button class="btn-action" id="satelliteBtn"
+    style="grid-column:span 2;background:#087e8b">
+      🛰️ صور الأقمار الصناعية
+    </button>
+
   </div>
 
   <div class="section-title">📍 أدوات الخريطة</div>
@@ -367,22 +377,27 @@ body {
   <div class="section-title">🎯 دليل الرموز</div>
 
   <div class="legend">
+
     <div class="legend-item">
       <span class="dot" style="background:#38bdf8"></span>
       المدارس
     </div>
+
     <div class="legend-item">
       <span class="dot" style="background:#f59e0b"></span>
       المدن
     </div>
+
     <div class="legend-item">
       <span class="dot" style="background:#ef4444"></span>
       المواقع التاريخية
     </div>
+
     <div class="legend-item">
       <span class="dot" style="background:#10b981"></span>
       البيئة والتضاريس
     </div>
+
   </div>
 
   <div class="footer">
@@ -393,7 +408,10 @@ body {
 
 </aside>
 
+<!-- الخريطة -->
+
 <main id="map-area">
+
   <div id="map"></div>
 
   <div id="map-title">
@@ -404,6 +422,7 @@ body {
     إجمالي المعالم الظاهرة
     <div id="total-count">0</div>
   </div>
+
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -418,6 +437,8 @@ const map = L.map('map').setView(
   [23.7042, 57.8860], 11
 );
 
+// الخريطة المظلمة
+
 const darkBasemap = L.tileLayer(
   'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
   {
@@ -425,6 +446,8 @@ const darkBasemap = L.tileLayer(
     maxZoom: 19
   }
 );
+
+// خريطة الشوارع
 
 const streetsBasemap = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -434,16 +457,45 @@ const streetsBasemap = L.tileLayer(
   }
 );
 
+// صور الأقمار الصناعية
+
+const satelliteBasemap = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {
+    attribution: 'Imagery Sources: Esri, Maxar, Earthstar Geographics and the GIS User Community',
+    maxZoom: 19
+  }
+);
+
+// تشغيل الخريطة المظلمة أولاً
+
 let currentBasemap = darkBasemap.addTo(map);
 
+// التبديل بين الخرائط
+
 function changeBasemap(type) {
+
   map.removeLayer(currentBasemap);
 
-  currentBasemap =
-    type === 'dark' ? darkBasemap : streetsBasemap;
+  if (type === 'dark') {
+    currentBasemap = darkBasemap;
+  }
+
+  else if (type === 'satellite') {
+    currentBasemap = satelliteBasemap;
+  }
+
+  else {
+    currentBasemap = streetsBasemap;
+  }
 
   currentBasemap.addTo(map);
 }
+
+
+// ==================================
+// 2 - ربط أزرار الخرائط
+// ==================================
 
 document.getElementById('darkBtn').onclick =
   () => changeBasemap('dark');
@@ -451,123 +503,156 @@ document.getElementById('darkBtn').onclick =
 document.getElementById('streetBtn').onclick =
   () => changeBasemap('streets');
 
+document.getElementById('satelliteBtn').onclick =
+  () => changeBasemap('satellite');
+
 
 // ==================================
-// 2 - مجموعات الطبقات
+// 3 - مجموعات الطبقات
 // ==================================
 
 const layers = {
+
   schools: L.layerGroup().addTo(map),
+
   cities: L.layerGroup().addTo(map),
+
   history: L.layerGroup().addTo(map),
+
   nature: L.layerGroup().addTo(map)
+
 };
 
 const layerColors = {
+
   schools: '#38bdf8',
+
   cities: '#f59e0b',
+
   history: '#ef4444',
+
   nature: '#10b981'
+
 };
 
 
 // ==================================
-// 3 - قاعدة البيانات الجغرافية
+// 4 - قاعدة البيانات الجغرافية
 // ==================================
 
 const geoData = {
 
   schools: [
+
     {
       coords: [23.7050, 57.8820],
       name: 'مدرسة ثابت بن قيس للتعليم الأساسي',
       desc: 'صرح تعليمي ومحور للأنشطة التعليمية الرقمية والتراثية.'
     },
+
     {
       coords: [23.6980, 57.8750],
       name: 'مدرسة بركاء للتعليم الأساسي',
       desc: 'مؤسسة تعليمية في ولاية بركاء.'
     },
+
     {
       coords: [23.7120, 57.8950],
       name: 'مدرسة العلاء بن الحضرمي',
       desc: 'مدرسة حكومية في ولاية بركاء.'
     },
+
     {
       coords: [23.6850, 57.8600],
       name: 'مدرسة أم عمارة للبنات',
       desc: 'مؤسسة تعليمية للبنات في ولاية بركاء.'
     },
+
     {
       coords: [23.6720, 57.9100],
       name: 'مدرسة الرميس للتعليم الأساسي',
       desc: 'مدرسة تخدم مناطق ولاية بركاء.'
     }
+
   ],
 
   cities: [
+
     {
       coords: [23.7072, 57.8861],
       name: 'مركز ولاية بركاء',
       desc: 'مدينة ساحلية في محافظة جنوب الباطنة.'
     },
+
     {
       coords: [23.5880, 58.3829],
       name: 'مسقط',
       desc: 'عاصمة سلطنة عمان.'
     },
+
     {
       coords: [23.3959, 57.4244],
       name: 'الرستاق',
       desc: 'مدينة تاريخية ومركز محافظة جنوب الباطنة.'
     },
+
     {
       coords: [24.3474, 56.7094],
       name: 'صحار',
       desc: 'مدينة رئيسية في محافظة شمال الباطنة.'
     }
+
   ],
 
   history: [
+
     {
       coords: [23.7114, 57.8878],
       name: 'حصن بركاء',
       desc: 'معلم تاريخي وتراثي بارز في ولاية بركاء.'
     },
+
     {
       coords: [23.6961, 57.9044],
       name: 'بيت النعمان',
       desc: 'معلم تراثي معروف في ولاية بركاء.'
     },
+
     {
       coords: [22.9333, 57.5333],
       name: 'قلعة نزوى',
       desc: 'من أشهر القلاع التاريخية في سلطنة عمان.'
     }
+
   ],
 
   nature: [
+
     {
       coords: [23.7810, 57.7720],
       name: 'جزر الديمانيات الطبيعية',
       desc: 'محمية طبيعية بحرية تضم جزرًا وشعابًا مرجانية.'
     },
+
     {
       coords: [23.5500, 57.8500],
       name: 'وادي المعاول',
       desc: 'من المواقع الطبيعية في محافظة جنوب الباطنة.'
     },
+
     {
       coords: [23.1450, 57.2650],
       name: 'الجبل الأخضر',
       desc: 'من المناطق الجبلية المميزة في سلسلة جبال الحجر.'
     }
+
   ]
+
 };
 
 
 // ==================================
-// 4 - رسم المعالم على الخريطة
+// 5 - رسم المعالم على الخريطة
 // ==================================
 
 function renderFeatures(filterText = '') {
@@ -591,25 +676,35 @@ function renderFeatures(filterText = '') {
       if (!matches) return;
 
       const marker = L.circleMarker(item.coords, {
+
         radius: 9,
+
         fillColor: layerColors[category],
+
         color: '#ffffff',
+
         weight: 2,
+
         opacity: 1,
+
         fillOpacity: 0.9
+
       });
 
       marker.bindPopup(
+
         '<div class="popup-title">' +
         item.name +
         '</div><div class="popup-desc">' +
         item.desc +
         '</div>'
+
       );
 
       marker.addTo(layers[category]);
 
       categoryCount++;
+
     });
 
     document.getElementById(
@@ -621,7 +716,9 @@ function renderFeatures(filterText = '') {
         'layer-' + category
       ).checked
     ) {
+
       totalVisible += categoryCount;
+
     }
 
   });
@@ -629,11 +726,12 @@ function renderFeatures(filterText = '') {
   document.getElementById(
     'total-count'
   ).textContent = totalVisible;
+
 }
 
 
 // ==================================
-// 5 - إظهار وإخفاء الطبقات
+// 6 - إظهار وإخفاء الطبقات
 // ==================================
 
 function toggleLayer(category) {
@@ -643,12 +741,17 @@ function toggleLayer(category) {
   );
 
   if (checkbox.checked) {
+
     map.addLayer(layers[category]);
+
   } else {
+
     map.removeLayer(layers[category]);
+
   }
 
   updateTotalCount();
+
 }
 
 Object.keys(layers).forEach(category => {
@@ -656,14 +759,16 @@ Object.keys(layers).forEach(category => {
   document.getElementById(
     'layer-' + category
   ).addEventListener('change', () => {
+
     toggleLayer(category);
+
   });
 
 });
 
 
 // ==================================
-// 6 - تحديث العدد الإجمالي
+// 7 - تحديث العدد الإجمالي
 // ==================================
 
 function updateTotalCount() {
@@ -679,9 +784,11 @@ function updateTotalCount() {
     ) {
 
       total += parseInt(
+
         document.getElementById(
           'count-' + category
         ).textContent
+
       ) || 0;
 
     }
@@ -691,11 +798,12 @@ function updateTotalCount() {
   document.getElementById(
     'total-count'
   ).textContent = total;
+
 }
 
 
 // ==================================
-// 7 - البحث الجغرافي الفوري
+// 8 - البحث الجغرافي الفوري
 // ==================================
 
 document.getElementById(
@@ -708,7 +816,7 @@ document.getElementById(
 
 
 // ==================================
-// 8 - إعادة التركيز على بركاء
+// 9 - إعادة التركيز على بركاء
 // ==================================
 
 document.getElementById(
@@ -716,8 +824,11 @@ document.getElementById(
 ).addEventListener('click', function() {
 
   map.setView(
+
     [23.7042, 57.8860],
+
     12
+
   );
 
   document.getElementById(
@@ -730,7 +841,7 @@ document.getElementById(
 
 
 // ==================================
-// 9 - التشغيل الأولي
+// 10 - التشغيل الأولي
 // ==================================
 
 renderFeatures();
