@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نظم المعلومات الجغرافية التفاعلي - سلطنة عمان وبركاء</title>
+    <!-- مكتبة Leaflet للخرائط التفاعلية -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #0f172a; color: #f8fafc; overflow: hidden; }
+        
+        /* لوحة التحكم الجانبية الاحترافية */
+        #sidebar {
+            width: 350px;
+            background: #1e293b;
+            border-left: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.6);
+            overflow-y: auto;
+        }
+        #sidebar h2 { font-size: 1.25rem; margin-bottom: 5px; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        #sidebar p { font-size: 0.82rem; color: #94a3b8; margin-bottom: 15px; }
+        
+        .section-title { font-size: 0.9rem; font-weight: bold; margin: 15px 0 8px; color: #fbbf24; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+        
+        /* صندوق البحث الجغرافي */
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: #38bdf8; }
+
+        .layer-toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #334155;
+            transition: all 0.2s;
+        }
+        .layer-toggle:hover { background: #1e293b; border-color: #475569; }
+        .layer-toggle input { margin-left: 10px; width: 18px; height: 18px; accent-color: #38bdf8; cursor: pointer; }
+        .layer-toggle label { cursor: pointer; font-size: 0.88rem; flex-grow: 1; display: flex; justify-content: space-between; align-items: center; }
+        .badge { background: #334155; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; color: #cbd5e1; }
+
+        /* أزرار التحكم والتبديل */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .btn-action {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .btn-action:hover { background: #0369a1; }
+        .btn-secondary { background: #475569; }
+        .btn-secondary:hover { background: #334155; }
+
+        /* منطقة الخريطة التفاعلية */
+        #map { flex-grow: 1; height: 100%; position: relative; }
+
+        /* لوحة الإحصائيات العائمة */
+        #stats-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 41, 59, 0.9);
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: 1px solid #475569;
+            z-index: 999;
+            backdrop-filter: blur(5px);
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        /* تخصيص النوافذ المنبثقة للخرائط */
+        .leaflet-popup-content-wrapper { background: #1e293b; color: #f8fafc; border-radius: 8px; border: 1px solid #475569; }
+        .leaflet-popup-tip { background: #1e293b; }
+        .popup-title { font-weight: bold; color: #38bdf8; font-size: 1rem; margin-bottom: 5px; }
+        .popup-desc { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <!-- لوحة التحكم الجانبية -->
+    <div id="sidebar">
+        <h2>🌐 نظام الجيوماب المدرسي</h2>
+        <p>بوابة البيانات المكانية وتوزيع المرافق في سلطنة عمان وبركاء.</p>
+
+        <div class="section-title">بحث عن معلم جغرافي</div>
+        <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن مدرسة، قلعة، أو مدينة..." onkeyup="filterLocations(event)">
+
+        <div class="section-title">طبقات التحليل الجغرافي</div>
+        
+        <div class="layer-toggle">
+            <input type="checkbox" id="layer-schools" checked onchange="toggleLayer('schools')">
+            <label for="layer-schools">مدارس ولاية بركاء <span class="badge" id="count-schools">0</span></label>
+        </div>
+
+        <div class="layer-toggle">
+            <input type="checkbox" id="layer-cities" checked onchange="toggleLayer('cities')">
+            <label for="layer-cities">المدن الرئيسية <span class="badge" id="count-cities">0</span></label>
+        </div>
+
+        <div class="layer-toggle">
+            <input type="checkbox" id="layer-history" checked onchange="toggleLayer('history')">
+            <label for="layer-history">المواقع التاريخية والتراثية <span class="badge" id="count-history">0</span></label>
+        </div>
+
+        <div class="layer-toggle">
+            <input type="checkbox" id="layer-nature" checked onchange="toggleLayer('nature')">
+            <label for="layer-nature">البيئة والتضاريس <span class="badge" id="count-nature">0</span></label>
+        </div>
+
+        <div class="section-title">نمط العرض الجغرافي</div>
+        <div class="btn-grid">
+            <button class="btn-action btn-secondary" onclick="changeBasemap('dark')">النمط المظلم</button>
+            <button class="btn-action btn-secondary" onclick="changeBasemap('streets')">نمط الشوارع</button>
+        </div>
+
+        <div class="section-title">أدوات إدارية</div>
+        <button class="btn-action" onclick="resetMapView()">إعادة التركيز على بركاء</button>
+    </div>
+
+    <!-- عنصر الخريطة -->
+    <div id="map">
+        <div id="stats-panel">إجمالي المعالم الظاهرة: <span id="total-count" style="font-weight:bold; color:#38bdf8;">0</span></div>
+    </div>
+
+    <!-- جلب سكربت مكتبة الخرائط -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // إعداد الخريطة ومركزها الافتراضي على ولاية بركاء
+        const map = L.map('map').setView([23.7042, 57.8860], 12);
+
+        // إعداد طبقات الأساس المتعددة
+        const darkBasemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap & CARTO', maxZoom: 19
+        });
+
+        const streetsBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap', maxZoom: 19
+        });
+
+        let currentBasemap = darkBasemap.addTo(map);
+
+        function changeBasemap(type) {
+            map.removeLayer(currentBasemap);
+            if (type === 'dark') currentBasemap = darkBasemap.addTo(map);
+            else if (type === 'streets') currentBasemap = streetsBasemap.addTo(map);
+        }
+
+        // مجموعات الطبقات الجغرافية
+        const schoolsLayer = L.layerGroup().addTo(map);
+        const citiesLayer = L.layerGroup().addTo(map);
+        const historyLayer = L.layerGroup().addTo(map);
+        const natureLayer = L.layerGroup().addTo(map);
+
+        // قاعدة البيانات الجغرافية المحدثة
+        const schoolsData = [
+            { coords: [23.7050, 57.8820], name: "مدرسة ثابت بن قيس للتعليم الأساسي", desc: "صرح تعليمي متميز ومحور الأنشطة التعليمية الرقمية والتراثية (سراج عمان)." },
+            { coords: [23.6980, 57.8750], name: "مدرسة بركاء للتعليم الأساسي", desc: "من المؤسسات التعليمية العريقة في الولاية." },
+            { coords: [23.7120, 57.8950], name: "مدرسة العلاء بن الحضرمي", desc: "مدرسة حكومية تخدم قطاع التعليم الأساسي ببركاء." },
+            { coords: [23.6850, 57.8600], name: "مدرسة أم عمارة للبنات", desc: "صرح تعليمي بارز في النطاق السكاني للولاية." },
+            { coords: [23.7200, 57.9100], name: "مدرسة الشسوع للتعليم الأساسي", desc: "تغطي النطاق الشمالي الشرقي لبركاء." }
+        ];
+
+        const citiesData = [
+            { coords: [23.7042, 57.8860], name: "مركز ولاية بركاء", desc: "محافظة جنوب الباطنة، تتميز بنشاطها الساحلي والتجاري والتاريخ
