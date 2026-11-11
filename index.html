@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -95,7 +96,7 @@
         }
 
         /* تخصيص النوافذ المنبثقة للخرائط */
-        .leaflet-popup-content-wrapper { background: #1e293b; color: #f8fafc; border-radius: 8px; border: 1px solid #475569; }
+        .leaflet-popup-content-wrapper { background: #1e293b; color: #f8fafc; border-radius: 8px; border: 1px solid #475569; text-align: right; direction: rtl; }
         .leaflet-popup-tip { background: #1e293b; }
         .popup-title { font-weight: bold; color: #38bdf8; font-size: 1rem; margin-bottom: 5px; }
         .popup-desc { font-size: 0.85rem; color: #cbd5e1; line-height: 1.4; }
@@ -109,7 +110,7 @@
         <p>بوابة البيانات المكانية وتوزيع المرافق في سلطنة عمان وبركاء.</p>
 
         <div class="section-title">بحث عن معلم جغرافي</div>
-        <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن مدرسة، قلعة، أو مدينة..." onkeyup="filterLocations(event)">
+        <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن مدرسة، قلعة، أو مدينة..." onkeyup="filterLocations()">
 
         <div class="section-title">طبقات التحليل الجغرافي</div>
         
@@ -152,7 +153,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // إعداد الخريطة ومركزها الافتراضي على ولاية بركاء
-        const map = L.map('map').setView([23.7042, 57.8860], 12);
+        const map = L.map('map').setView([23.7042, 57.8860], 11);
 
         // إعداد طبقات الأساس المتعددة
         const darkBasemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -172,19 +173,117 @@
         }
 
         // مجموعات الطبقات الجغرافية
-        const schoolsLayer = L.layerGroup().addTo(map);
-        const citiesLayer = L.layerGroup().addTo(map);
-        const historyLayer = L.layerGroup().addTo(map);
-        const natureLayer = L.layerGroup().addTo(map);
+        const layers = {
+            schools: L.layerGroup().addTo(map),
+            cities: L.layerGroup().addTo(map),
+            history: L.layerGroup().addTo(map),
+            nature: L.layerGroup().addTo(map)
+        };
 
-        // قاعدة البيانات الجغرافية المحدثة
-        const schoolsData = [
-            { coords: [23.7050, 57.8820], name: "مدرسة ثابت بن قيس للتعليم الأساسي", desc: "صرح تعليمي متميز ومحور الأنشطة التعليمية الرقمية والتراثية (سراج عمان)." },
-            { coords: [23.6980, 57.8750], name: "مدرسة بركاء للتعليم الأساسي", desc: "من المؤسسات التعليمية العريقة في الولاية." },
-            { coords: [23.7120, 57.8950], name: "مدرسة العلاء بن الحضرمي", desc: "مدرسة حكومية تخدم قطاع التعليم الأساسي ببركاء." },
-            { coords: [23.6850, 57.8600], name: "مدرسة أم عمارة للبنات", desc: "صرح تعليمي بارز في النطاق السكاني للولاية." },
-            { coords: [23.7200, 57.9100], name: "مدرسة الشسوع للتعليم الأساسي", desc: "تغطي النطاق الشمالي الشرقي لبركاء." }
-        ];
+        // قاعدة البيانات الجغرافية المتكاملة
+        const geoData = {
+            schools: [
+                { coords: [23.7050, 57.8820], name: "مدرسة ثابت بن قيس للتعليم الأساسي", desc: "صرح تعليمي متميز ومحور الأنشطة التعليمية الرقمية والتراثية (سراج عمان)." },
+                { coords: [23.6980, 57.8750], name: "مدرسة بركاء للتعليم الأساسي", desc: "من المؤسسات التعليمية العريقة في ولاية بركاء." },
+                { coords: [23.7120, 57.8950], name: "مدرسة العلاء بن الحضرمي", desc: "مدرسة حكومية تخدم قطاع التعليم الأساسي ببركاء." },
+                { coords: [23.6850, 57.8600], name: "مدرسة أم عمارة للبنات", desc: "صرح تعليمي رائد للبنات في ولاية بركاء." },
+                { coords: [23.6720, 57.9100], name: "مدرسة الرميس للتعليم الأساسي", desc: "تخدم المناطق الشرقية من ولاية بركاء." }
+            ],
+            cities: [
+                { coords: [23.7072, 57.8861], name: "مركز ولاية بركاء", desc: "مدينة ساحلية حيوية في محافظة جنوب الباطنة، تشتهر بالزراعة والتجارة." },
+                { coords: [23.5880, 58.3829], name: "مسقط (العاصمة)", desc: "عاصمة سلطنة عُمان والمركز الإداري والاقتصادي." },
+                { coords: [23.3959, 57.4244], name: "الرستاق", desc: "مركز محافظة جنوب الباطنة ومدينة تاريخية عريقة." },
+                { coords: [24.3474, 56.7094], name: "صحار", desc: "مركز محافظة شمال الباطنة وأهم الموانئ الصناعية." }
+            ],
+            history: [
+                { coords: [23.7114, 57.8878], name: "حصن بركاء", desc: "حصن تاريخي ساحلي يطل على بحر عُمان، يتميز بأبراجه الدفاعية العريقة." },
+                { coords: [23.6961, 57.9044], name: "بيت النعمان", desc: "معلم أثري وتراثي بارز في بركاء بناه الإمام سيف بن سلطان اليعربي." },
+                { coords: [22.9333, 57.5333], name: "قلعة نزوى", desc: "من أشهر القلاع التاريخية في سلطنة عُمان ببرجها الدائري الضخم." }
+            ],
+            nature: [
+                { coords: [23.7810, 57.7720], name: "جزر الديمانيات الطبيعية", desc: "محمية طبيعية تضم 9 جزر قبالة سواحل بركاء والسيب، موطن للسلاحف والشعاب المرجانية." },
+                { coords: [23.5500, 57.8500], name: "وادي المعاول - بركاء", desc: "من الأودية الخصبة التي تغذي المياه الجوفية والمزارع في الولاية." },
+                { coords: [23.1450, 57.2650], name: "الجبل الأخضر", desc: "جزء من سلسلة جبال الحجر، يشتهر بمناخه المعتدل ومدرجاته الزراعية." }
+            ]
+        };
 
-        const citiesData = [
-            { coords: [23.7042, 57.8860], name: "مركز ولاية بركاء", desc: "محافظة جنوب الباطنة، تتميز بنشاطها الساحلي والتجاري والتاريخ
+يُرجى استخدام الرمز البرمجي بحذر.
+// ألوان مخصصة لكل طبقة
+const layerColors = {
+schools: "#38bdf8", // أزرق سماوي
+cities: "#f59e0b",  // برتقالي
+history: "#ef4444", // أحمر
+nature: "#10b981"   // أخضر
+};
+let allMarkers = [];
+// دالة إنشاء النقاط ورسمها على الخريطة
+function renderFeatures(filterText = "") {
+const query = filterText.trim().toLowerCase();
+let totalVisible = 0;
+Object.keys(geoData).forEach(category => {
+layers[category].clearLayers();
+let categoryCount = 0;
+geoData[category].forEach(item => {
+if (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
+const marker = L.circleMarker(item.coords, {
+radius: 9,
+fillColor: layerColors[category],
+color: "#ffffff",
+weight: 2,
+opacity: 1,
+fillOpacity: 0.9
+});
+marker.bindPopup(<div class="popup-title">${item.name}</div> <div class="popup-desc">${item.desc}</div>);
+marker.addTo(layers[category]);
+categoryCount++;
+}
+});
+document.getElementById(count-${category}).textContent = categoryCount;
+if (document.getElementById(layer-${category}).checked) {
+totalVisible += categoryCount;
+}
+});
+document.getElementById("total-count").textContent = totalVisible;
+}
+// إظهار أو إخفاء الطبقات
+function toggleLayer(category) {
+const isChecked = document.getElementById(layer-${category}).checked;
+if (isChecked) {
+map.addLayer(layers[category]);
+} else {
+map.removeLayer(layers[category]);
+}
+updateTotalCount();
+}
+// تحديث العداد الإجمالي
+function updateTotalCount() {
+let total = 0;
+Object.keys(layers).forEach(category => {
+if (document.getElementById(layer-${category}).checked) {
+total += parseInt(document.getElementById(count-${category}).textContent) || 0;
+}
+});
+document.getElementById("total-count").textContent = total;
+}
+// البحث الفوري
+function filterLocations() {
+const text = document.getElementById("searchInput").value;
+renderFeatures(text);
+}
+// إعادة التركيز على بركاء
+function resetMapView() {
+map.setView([23.7042, 57.8860], 12);
+}
+// تشغيل الرسم الأولي عند فتح الصفحة
+renderFeatures();
+
+
+
+### خطوات تحديث الملف على GitHub:
+1. ادخل إلى ملف `index.html` في مستودعك على GitHub واضغط على **أيقونة القلم (Edit this file)** في أعلى يمين مربع الكود.
+2. حدد الكود القديم بالكامل (`Ctrl + A`) وامسحه، ثم الصق الكود الجديد أعلاه (`Ctrl + V`).
+3. اضغط على الزر الأخضر **`Commit changes...`** في الأعلى، ثم انتظر دقيقة واحدة وقم بتحديث صفحة موقعك (`F5`) وستظهر الخريطة وجميع المدارس والمعالم فوراً.
+
+<FollowUp>
+بعد استبدال الكود وحفظ التغييرات، أخبرني **هل ظهرت الخريطة وتفعلت الطبقات والأزرار بنجاح**، أم ترغب في إضافة مدارس أو معالم جغرافية إضافية داخل ولاية بركاء؟
+</FollowUp>
