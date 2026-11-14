@@ -1,861 +1,675 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#071b2b">
-<meta name="description" content="منصة الجغرافيا الذكية ونظم المعلومات الجغرافية والاستشعار عن بعد - مدرسة ثابت بن قيس، سلطنة عمان">
-<title>الجغرافيا الذكية العالمية | مدرسة ثابت بن قيس</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-<style>
-:root{
- --bg:#071b2b;--panel:#102b40;--panel2:#16384e;
- --gold:#e8bd65;--cyan:#48d8d0;--white:#f4f8fb;
- --muted:#a9bdca;--line:rgba(255,255,255,.12);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
- margin:0;background:var(--bg);color:var(--white);
- font-family:Tahoma,Arial,sans-serif;line-height:1.8
-}
-a{color:inherit;text-decoration:none}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.container{width:min(1180px,92%);margin:auto}
-
-header{
- position:sticky;top:0;z-index:1000;
- background:rgba(7,27,43,.96);
- backdrop-filter:blur(14px);
- border-bottom:1px solid var(--line)
-}
-.nav{
- min-height:76px;display:flex;align-items:center;
- justify-content:space-between;gap:15px;flex-wrap:wrap
-}
-.brand{display:flex;align-items:center;gap:12px;font-weight:bold}
-.brand-icon{
- width:45px;height:45px;border-radius:14px;
- display:grid;place-items:center;font-size:25px;
- background:linear-gradient(135deg,var(--gold),#a8792e);
- color:#102333
-}
-.brand small{display:block;color:var(--muted);font-weight:normal;font-size:11px}
-nav{display:flex;gap:7px;flex-wrap:wrap}
-nav a{
- padding:8px 12px;border-radius:9px;color:var(--muted);
- font-size:13px;transition:.2s
-}
-nav a:hover{background:var(--panel2);color:var(--gold)}
-
-.hero{
- padding:75px 0 65px;position:relative;overflow:hidden;
- background:
- radial-gradient(circle at 15% 25%,rgba(72,216,208,.13),transparent 30%),
- radial-gradient(circle at 85% 65%,rgba(232,189,101,.13),transparent 28%),
- linear-gradient(120deg,#071b2b,#12364b)
-}
-.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:35px;align-items:center}
-.eyebrow{color:var(--cyan);font-size:14px;font-weight:bold}
-h1{font-size:clamp(34px,5vw,58px);line-height:1.35;margin:12px 0}
-h1 span{color:var(--gold)}
-.hero p{color:var(--muted);font-size:17px;max-width:700px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
-.btn{
- border:0;border-radius:11px;padding:12px 19px;
- font-weight:bold;display:inline-flex;align-items:center;
- justify-content:center;gap:8px;transition:.2s
-}
-.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
-.btn-primary{background:var(--gold);color:#172b38}
-.btn-secondary{background:transparent;border:1px solid var(--cyan);color:var(--cyan)}
-.globe{
- min-height:260px;border:1px solid var(--line);border-radius:28px;
- display:grid;place-items:center;background:rgba(255,255,255,.035);
- position:relative;overflow:hidden
-}
-.globe:before{
- content:"";position:absolute;width:220px;height:220px;border-radius:50%;
- border:1px solid rgba(72,216,208,.35);
- box-shadow:0 0 0 25px rgba(72,216,208,.04),0 0 0 55px rgba(72,216,208,.025)
-}
-.globe-icon{font-size:115px;z-index:1;filter:drop-shadow(0 0 25px rgba(72,216,208,.35))}
-
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-25px;position:relative;z-index:2}
-.stat{
- background:var(--panel);border:1px solid var(--line);
- border-radius:15px;padding:18px;text-align:center
-}
-.stat strong{display:block;font-size:25px;color:var(--gold)}
-.stat span{font-size:12px;color:var(--muted)}
-
-section{padding:65px 0;scroll-margin-top:85px}
-.section-head{margin-bottom:25px}
-.section-head h2{font-size:clamp(24px,3vw,34px);margin:0 0 5px}
-.section-head p{color:var(--muted);margin:0}
-.section-label{color:var(--cyan);font-size:12px;font-weight:bold}
-
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
-.card{
- background:var(--panel);border:1px solid var(--line);
- border-radius:17px;padding:22px;transition:.25s
-}
-.card:hover{transform:translateY(-4px);border-color:rgba(72,216,208,.5)}
-.card-icon{font-size:30px;margin-bottom:8px}
-.card h3{margin:5px 0 8px;color:var(--gold);font-size:18px}
-.card p{color:var(--muted);font-size:14px;margin:0}
-.tag{
- display:inline-block;background:rgba(72,216,208,.1);
- color:var(--cyan);padding:4px 9px;border-radius:20px;
- font-size:11px;margin-top:13px
-}
-
-.map-section{background:#0a2234}
-.map-layout{display:grid;grid-template-columns:270px 1fr;gap:16px}
-.map-tools{
- background:var(--panel);border:1px solid var(--line);
- border-radius:16px;padding:18px
-}
-.map-tools h3{margin-top:0;color:var(--gold)}
-.field{margin:12px 0}
-.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
-.field input,.field select{
- width:100%;padding:11px;border-radius:9px;
- border:1px solid var(--line);background:#071b2b;color:white;
- outline:none
-}
-.field input:focus,.field select:focus{border-color:var(--cyan)}
-.filter-list{display:grid;gap:10px;margin:14px 0}
-.filter-list label{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center}
-.filter-list input{accent-color:var(--cyan)}
-#map{
- width:100%;height:510px;border-radius:16px;
- border:1px solid var(--line);z-index:1
-}
-.map-note{font-size:12px;color:var(--muted);margin-top:12px}
-.map-actions{display:flex;gap:8px;flex-wrap:wrap}
-.small-btn{
- background:var(--panel2);color:var(--white);
- border:1px solid var(--line);padding:8px 11px;
- border-radius:8px;font-size:12px
-}
-.small-btn:hover{border-color:var(--cyan)}
-.result{
- padding:13px;border-radius:12px;background:rgba(72,216,208,.08);
- border:1px solid rgba(72,216,208,.2);margin-top:15px;
- font-size:13px;color:var(--muted)
-}
-
-.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.resource{
- display:flex;align-items:center;gap:13px;
- background:var(--panel);padding:16px;border:1px solid var(--line);
- border-radius:13px;transition:.2s
-}
-.resource:hover{border-color:var(--gold);transform:translateY(-2px)}
-.resource-icon{font-size:25px}
-.resource small{display:block;color:var(--muted);font-size:11px}
-
-.quiz-box{
- max-width:780px;margin:auto;background:var(--panel);
- padding:25px;border:1px solid var(--line);border-radius:18px
-}
-.quiz-progress{height:7px;background:#071b2b;border-radius:9px;overflow:hidden;margin:15px 0 22px}
-.quiz-progress div{height:100%;background:var(--cyan);width:0;transition:.3s}
-.quiz-option{
- display:block;width:100%;text-align:right;margin:9px 0;
- background:#0a2234;color:white;border:1px solid var(--line);
- border-radius:10px;padding:12px
-}
-.quiz-option:hover{border-color:var(--cyan)}
-.quiz-option:disabled{cursor:default;opacity:.9}
-.quiz-option.correct{border-color:#46cf8b;background:rgba(70,207,139,.13)}
-.quiz-option.wrong{border-color:#ff7777;background:rgba(255,119,119,.12)}
-#quizFeedback{margin-top:12px;color:var(--gold);min-height:28px}
-
-.project-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-.project{
- border:1px solid var(--line);border-radius:15px;padding:20px;
- background:linear-gradient(135deg,var(--panel),#0b2436)
-}
-.project h3{color:var(--gold);margin-top:0}
-.project p{color:var(--muted);font-size:14px}
-.notice{
- border-right:3px solid var(--gold);padding:12px 15px;
- background:rgba(232,189,101,.07);color:var(--muted);
- border-radius:8px;font-size:13px;margin-top:20px
-}
-footer{border-top:1px solid var(--line);padding:30px 0;background:#061522}
-.footer-content{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
-footer p{margin:3px;color:var(--muted);font-size:13px}
-footer strong{color:var(--gold)}
-
-@media(max-width:850px){
- .hero-grid{grid-template-columns:1fr}
- .globe{min-height:180px}
- .stats{grid-template-columns:repeat(2,1fr)}
- .cards,.resource-grid{grid-template-columns:repeat(2,1fr)}
- .map-layout{grid-template-columns:1fr}
- #map{height:430px}
-}
-@media(max-width:560px){
- .nav{padding:12px 0}
- nav{width:100%;overflow-x:auto;flex-wrap:nowrap}
- nav a{white-space:nowrap}
- .cards,.resource-grid,.lab-grid,.project-grid{grid-template-columns:1fr}
- .hero{padding:48px 0}
- .stats{gap:8px}
- .stat{padding:12px}
- #map{height:370px}
- section{padding:48px 0}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102b3f">
+  <title>منصة الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root {
+      --navy:#102b3f;--navy-2:#173d55;--blue:#087e9e;
+      --cyan:#39c6d6;--gold:#e9b949;--paper:#f4f7f8;
+      --ink:#173042;--muted:#647987;--line:#d9e3e8;
+      --white:#fff;--shadow:0 12px 32px rgba(11,39,57,.14);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--paper);color:var(--ink)}
+    .app{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) 360px}
+    #map{min-height:100vh;width:100%;background:#dbe8ed}
+    .sidebar{grid-column:2;grid-row:1;z-index:500;background:linear-gradient(160deg,var(--navy),#0b2030);color:white;padding:20px;overflow-y:auto;box-shadow:-8px 0 28px rgba(0,0,0,.16)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+    .brand-mark{width:56px;height:56px;flex:0 0 56px;border-radius:15px;display:grid;place-items:center;font-size:27px;background:linear-gradient(145deg,#fff,#d9edf1);color:var(--navy);border:2px solid rgba(255,255,255,.35)}
+    .flag{display:flex;height:8px;width:100%;border-radius:8px;overflow:hidden;margin:12px 0 16px}
+    .flag span:nth-child(1){background:#df2935;flex:1}
+    .flag span:nth-child(2){background:#fff;flex:1}
+    .flag span:nth-child(3){background:#16834b;flex:1}
+    h1{font-size:20px;line-height:1.5;margin:0;color:#70e2ed}
+    .school{font-size:13px;color:#d7e6ec;margin-top:3px}
+    .intro{color:#c1d4de;font-size:12px;line-height:1.8;margin:0 0 14px}
+    .section-title{color:#ffd477;font-size:13px;font-weight:bold;margin:18px 0 9px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.16)}
+    .search-wrap{position:relative}
+    .search{width:100%;border:1px solid #416176;border-radius:10px;padding:12px 13px;background:#0a2030;color:white;outline:none;font-size:13px}
+    .search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(57,198,214,.14)}
+    .layer{display:flex;align-items:center;gap:9px;padding:10px;margin:7px 0;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);border-radius:10px;cursor:pointer;transition:.2s}
+    .layer:hover{background:rgba(255,255,255,.11)}
+    .layer input{width:17px;height:17px;accent-color:var(--cyan)}
+    .layer label{flex:1;cursor:pointer;font-size:12px}
+    .dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-left:5px}
+    .count{font-size:11px;background:#28495d;padding:3px 8px;border-radius:20px;color:#e4f4f8}
+    .btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    button{border:0;border-radius:9px;padding:11px 9px;cursor:pointer;font:bold 12px Tahoma,Arial,sans-serif;transition:.2s}
+    button:hover{filter:brightness(1.1);transform:translateY(-1px)}
+    button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .btn-primary{background:linear-gradient(135deg,#12a9bf,#087e9e);color:white}
+    .btn-secondary{background:#29495d;color:#f1f7fa;border:1px solid #416176}
+    .btn-gold{background:var(--gold);color:#1b2d38}
+    .full{width:100%;margin-top:8px}
+    .stats{margin-top:17px;padding:13px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);display:flex;justify-content:space-between;align-items:center}
+    .stats strong{color:#70e2ed;font-size:24px}
+    .legend{color:#b9ced8;font-size:11px;line-height:1.8;margin-top:12px}
+    .map-title{position:absolute;z-index:400;top:14px;left:14px;background:rgba(255,255,255,.94);color:var(--navy);padding:10px 14px;border-radius:11px;box-shadow:var(--shadow);font-size:12px;font-weight:bold;max-width:calc(100% - 390px)}
+    .map-title small{display:block;color:var(--muted);font-weight:normal;margin-top:4px}
+    .leaflet-popup-content-wrapper{border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
+    .leaflet-popup-content{margin:0;width:245px!important}
+    .popup{direction:rtl;text-align:right;font-family:Tahoma,Arial,sans-serif}
+    .popup img{width:100%;height:112px;object-fit:cover;display:block;background:#e7eef1}
+    .popup-body{padding:11px 13px 13px}
+    .popup h3{margin:0 0 7px;color:#087e9e;font-size:14px}
+    .popup p{margin:0;color:#425967;font-size:12px;line-height:1.8}
+    .popup .type{display:inline-block;margin-top:9px;padding:4px 8px;border-radius:20px;background:#eaf5f7;color:#087e9e;font-size:10px}
+    .leaflet-control-attribution{font-size:9px!important}
+    .notice{margin-top:12px;color:#b9ced8;font-size:10px;line-height:1.7;border-top:1px solid rgba(255,255,255,.14);padding-top:10px}
+    .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+    .quick-nav a{display:block;text-decoration:none;text-align:center;background:#21465d;color:#fff;border:1px solid #42677b;border-radius:10px;padding:10px 6px;font-size:12px;font-weight:bold}
+    .quick-nav a:hover{background:#087e9e;color:#fff}
+    .content-section{padding:48px max(18px,calc((100% - 1180px)/2));background:#f4f7f8;border-top:1px solid #d9e3e8;scroll-margin-top:15px}
+    .content-section:nth-of-type(even){background:#eaf1f4}
+    .content-section h2{color:#102b3f;margin:0 0 10px;font-size:26px}
+    .section-lead{color:#647987;line-height:1.9;margin:0 0 22px}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+    .portal-card{background:#fff;border:1px solid #d9e3e8;border-radius:15px;padding:18px;box-shadow:0 8px 22px rgba(11,39,57,.07)}
+    .portal-card h3{margin:7px 0;color:#087e9e;font-size:17px}
+    .portal-card p{color:#647987;font-size:13px;line-height:1.8}
+    .portal-icon{font-size:30px;display:inline-block}
+    .portal-btn{display:inline-block;text-decoration:none;border:0;border-radius:9px;padding:10px 14px;background:#087e9e;color:#fff;font-weight:bold;font-size:12px;cursor:pointer}
+    .portal-btn.gold{background:#e9b949;color:#1b2d38}
+    .portal-btn.dark{background:#173d55;color:white}
+    .portal-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:15px 0}
+    .portal-controls label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}
+    .portal-controls select,.portal-controls input{width:100%;padding:12px;border:1px solid #cbd8de;border-radius:9px;background:#fff;color:#173042;font:14px Tahoma}
+    .game-box{background:#102b3f;color:#fff;border-radius:15px;padding:20px}
+    .game-box h3{color:#70e2ed;margin-top:0}
+    .game-options{display:grid;gap:8px;margin-top:12px}
+    .game-options button{background:#244b62;color:white;border:1px solid #557387;text-align:right;padding:12px}
+    .game-options button:disabled{opacity:.8;cursor:default}
+    .game-feedback{min-height:28px;color:#ffd477;font-weight:bold;margin-top:12px}
+    .tour-card{overflow:hidden;padding:0}
+    .tour-card .tour-head{background:linear-gradient(135deg,#173d55,#087e9e);color:#fff;padding:18px;font-size:24px}
+    .tour-card .tour-body{padding:16px}
+    .resource-note{background:#fff8e7;border:1px solid #ead49b;border-radius:12px;padding:12px;color:#705a25;font-size:12px;line-height:1.8;margin-top:16px}
+    .site-footer{background:#0b2030;color:#d7e6ec;padding:25px;text-align:center;line-height:2}
+    .lesson-msg{background:#eaf5f7;padding:10px;border-radius:8px}
+    @media(max-width:800px){
+      .app{display:flex;flex-direction:column}
+      .sidebar{order:1;width:100%;max-height:none}
+      #map{order:2;min-height:65vh;height:65vh}
+      .map-title{top:auto;bottom:calc(65vh - 52px);left:10px;max-width:calc(100% - 20px)}
+      .quick-nav{grid-template-columns:repeat(3,1fr)}
+      .content-section{padding:34px 15px}
+      .content-section h2{font-size:22px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <main style="position:relative;min-width:0;grid-column:1;grid-row:1">
+      <div id="map" aria-label="الخريطة التفاعلية لولاية بركاء"></div>
+      <div class="map-title">
+        🌍 الجغرافيا من حولنا: استكشف العالم بالتقنيات الحديثة
+        <small>منصة الجغرافيا الذكية | ولاية بركاء — المدارس والمعالم والبيئة</small>
+      </div>
+    </main>
 
-<header>
- <div class="container nav">
-  <a class="brand" href="#home">
-   <span class="brand-icon">🌍</span>
-   <span>الجغرافيا الذكية
-    <small>نحو تعليم جغرافي رقمي مبتكر</small>
-   </span>
-  </a>
-  <nav>
-   <a href="#home">الرئيسية</a>
-   <a href="#about">عن المنصة</a>
-   <a href="#gis">المستكشف الجغرافي</a>
-   <a href="#lab">المختبر</a>
-   <a href="#library">المكتبة</a>
-   <a href="#quiz">التحدي</a>
-   <a href="#projects">المشروعات</a>
-  </nav>
- </div>
-</header>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">🗺️</div>
+        <div>
+          <h1>منصة الجغرافيا الذكية</h1>
+          <div class="school">التقنيات الحديثة ونظم المعلومات الجغرافية</div>
+          <div class="school">مدرسة ثابت بن قيس للتعليم الأساسي</div>
+          <div class="school">إعداد وتصميم: د. قناوي حسين</div>
+        </div>
+      </div>
+      <div class="flag"><span></span><span></span><span></span></div>
+      <p class="intro">منصة تعليمية تفاعلية للتعرّف إلى التوزيع المكاني للمدارس والمدن والمواقع التاريخية والبيئات الطبيعية في سلطنة عُمان.</p>
 
-<main>
+      <div class="section-title">🚀 التنقل السريع</div>
+      <div class="quick-nav">
+        <a href="#map">🗺️ الخريطة</a>
+        <a href="#tours">🏰 الجولات</a>
+        <a href="#lab">🛰️ المختبر</a>
+        <a href="#academy">🎓 الأكاديمية</a>
+        <a href="#games">🎮 الألعاب</a>
+        <a href="#platforms">🌐 المنصات</a>
+      </div>
 
-<section class="hero" id="home">
- <div class="container hero-grid">
-  <div>
-   <div class="eyebrow">منصة تعليمية رقمية • سلطنة عُمان</div>
-   <h1>اكتشف العالم<br><span>بعين جغرافية ذكية</span></h1>
-   <p>
-    مساحة تعليمية تفاعلية توظف نظم المعلومات الجغرافية،
-    والاستشعار عن بُعد، والخرائط الرقمية؛ لتنمية مهارات
-    الاستكشاف والتحليل المكاني لدى المتعلمين.
-   </p>
-   <div class="hero-actions">
-    <a class="btn btn-primary" href="#gis">🗺️ استكشف الخريطة</a>
-    <a class="btn btn-secondary" href="#quiz">🎯 اختبر معلوماتك</a>
-   </div>
-  </div>
-  <div class="globe"><div class="globe-icon">🌐</div></div>
- </div>
-</section>
+      <div class="section-title">🔎 البحث عن معلم جغرافي</div>
+      <div class="search-wrap">
+        <input id="searchInput" class="search" type="search" placeholder="اكتب اسم مدرسة أو مدينة أو معلم..." aria-label="البحث عن معلم جغرافي">
+      </div>
 
-<div class="container stats">
- <div class="stat"><strong>GIS</strong><span>نظم المعلومات الجغرافية</span></div>
- <div class="stat"><strong>RS</strong><span>الاستشعار عن بُعد</span></div>
- <div class="stat"><strong>3D</strong><span>التصور المكاني</span></div>
- <div class="stat"><strong>AI</strong><span>التقنيات الذكية</span></div>
-</div>
+      <div class="section-title">🧭 طبقات المعلومات الجغرافية</div>
+      <div class="layer">
+        <input type="checkbox" id="layer-schools" checked>
+        <label for="layer-schools"><span class="dot" style="background:#18a9d0"></span>مدارس ولاية بركاء</label>
+        <span class="count" id="count-schools">0</span>
+      </div>
+      <div class="layer">
+        <input type="checkbox" id="layer-cities" checked>
+        <label for="layer-cities"><span class="dot" style="background:#e8a72e"></span>المدن والمراكز الرئيسية</label>
+        <span class="count" id="count-cities">0</span>
+      </div>
+      <div class="layer">
+        <input type="checkbox" id="layer-history" checked>
+        <label for="layer-history"><span class="dot" style="background:#e45b5b"></span>المواقع التاريخية والتراثية</label>
+        <span class="count" id="count-history">0</span>
+      </div>
+      <div class="layer">
+        <input type="checkbox" id="layer-nature" checked>
+        <label for="layer-nature"><span class="dot" style="background:#20a477"></span>البيئة والتضاريس</label>
+        <span class="count" id="count-nature">0</span>
+      </div>
 
-<section id="about">
- <div class="container">
-  <div class="section-head">
-   <div class="section-label">عن المنصة</div>
-   <h2>الجغرافيا من المعرفة إلى الاستكشاف</h2>
-   <p>نتعلم الجغرافيا من خلال أدوات رقمية وتجارب تفاعلية.</p>
-  </div>
-  <div class="cards">
-   <article class="card">
-    <div class="card-icon">🛰️</div>
-    <h3>الاستشعار عن بُعد</h3>
-    <p>التعرف إلى سطح الأرض من خلال صور الأقمار الصناعية ومتابعة التغيرات البيئية والعمرانية.</p>
-    <span class="tag">رصد وتحليل</span>
-   </article>
-   <article class="card">
-    <div class="card-icon">📍</div>
-    <h3>نظم المعلومات الجغرافية</h3>
-    <p>جمع البيانات المكانية وتنظيمها وتحليلها وعرضها في صورة خرائط تساعد على فهم المكان.</p>
-    <span class="tag">بيانات مكانية</span>
-   </article>
-   <article class="card">
-    <div class="card-icon">🧠</div>
-    <h3>الذكاء الاصطناعي</h3>
-    <p>استكشاف دور التقنيات الذكية في قراءة البيانات الجغرافية ودعم اتخاذ القرار.</p>
-    <span class="tag">ابتكار مستقبلي</span>
-   </article>
-  </div>
- </div>
-</section>
+      <div class="section-title">🗺️ نمط الخريطة</div>
+      <div class="btn-grid">
+        <button class="btn-secondary" id="darkBtn">النمط الداكن</button>
+        <button class="btn-secondary" id="lightBtn">النمط الفاتح</button>
+        <button class="btn-secondary" id="streetBtn">الشوارع</button>
+        <button class="btn-secondary" id="resetBtn">العودة إلى بركاء</button>
+      </div>
 
-<!-- المستكشف الجغرافي -->
-<section class="map-section" id="gis">
- <div class="container">
-  <div class="section-head">
-   <div class="section-label">المستكشف الجغرافي الذكي</div>
-   <h2>مدرستنا ومحيطها الجغرافي والتراثي</h2>
-   <p>استكشف مدرسة ثابت بن قيس والمدارس المحيطة بها والمعالم التاريخية والطبيعية في ولاية بركاء.</p>
+      <div class="section-title">📌 أدوات الخريطة</div>
+      <button class="btn-primary full" id="showAllBtn">إظهار جميع المعالم</button>
+      <button class="btn-gold full" id="clearSearchBtn">مسح البحث</button>
+
+      <div class="stats">
+        <span style="font-size:12px;color:#d7e6ec">إجمالي المعالم الظاهرة</span>
+        <strong id="total-count">0</strong>
+      </div>
+      <div class="legend">اضغط على أي نقطة في الخريطة لعرض اسم المعلم ووصفه وصورة توضيحية. استخدم مربعات الاختيار لإظهار الطبقات أو إخفائها.</div>
+      <div class="notice">
+        تنبيه: إحداثيات بعض المدارس والمعالم تقريبية ومخصصة للاستكشاف التعليمي، وليست مرجعًا مساحيًا رسميًا. يُرجى مراجعتها ميدانيًا قبل استخدامها رسميًا. الصور توضيحية وليست بالضرورة صورًا للموقع نفسه.
+        <br>الخرائط: OpenStreetMap وCARTO.
+      </div>
+    </aside>
   </div>
 
-  <div class="map-layout">
-   <aside class="map-tools">
-    <h3>طبقات المستكشف</h3>
-    <div class="field">
-     <label for="mapSearch">البحث عن مدرسة أو معلم</label>
-     <input id="mapSearch" type="search" placeholder="اكتب اسم الموقع">
+  <section class="content-section" id="tours">
+    <h2>🏰 جولات استكشافية في عُمان</h2>
+    <p class="section-lead">استكشف مواقع عُمانية تاريخية وافتح مواقعها وموادها المرئية المتاحة. الروابط الخارجية تعرض نتائج البحث والخرائط، ولا تعني توافر جولة بانورامية رسمية لكل موقع.</p>
+    <div class="cards-grid">
+      <article class="portal-card tour-card"><div class="tour-head">🏰 حصن بركاء</div><div class="tour-body"><p>معلم تاريخي بارز في ولاية بركاء.</p><a class="portal-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=حصن+بركاء+عمان">افتح الموقع على الخريطة ↗</a> <a class="portal-btn dark" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=حصن+بركاء+عمان">فيديوهات الموقع ↗</a></div></article>
+      <article class="portal-card tour-card"><div class="tour-head">🏛️ بيت النعمان</div><div class="tour-body"><p>معلم تراثي في بركاء يعكس العمارة العُمانية.</p><a class="portal-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=بيت+النعمان+بركاء+عمان">افتح الموقع على الخريطة ↗</a> <a class="portal-btn dark" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=بيت+النعمان+بركاء">فيديوهات الموقع ↗</a></div></article>
+      <article class="portal-card tour-card"><div class="tour-head">🕌 قلعة نزوى</div><div class="tour-body"><p>من أشهر المعالم التاريخية في سلطنة عُمان.</p><a class="portal-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=قلعة+نزوى+عمان">افتح الموقع على الخريطة ↗</a> <a class="portal-btn dark" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=قلعة+نزوى+جولة">فيديوهات الموقع ↗</a></div></article>
+      <article class="portal-card tour-card"><div class="tour-head">🏯 قلعة بهلاء</div><div class="tour-body"><p>موقع عُماني مدرج على قائمة التراث العالمي.</p><a class="portal-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=قلعة+بهلاء+عمان">افتح الموقع على الخريطة ↗</a> <a class="portal-btn dark" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=قلعة+بهلاء+جولة">فيديوهات الموقع ↗</a></div></article>
     </div>
-    <div class="field">
-     <label for="baseMap">نمط الخريطة</label>
-     <select id="baseMap">
-      <option value="street">خريطة الشوارع</option>
-      <option value="light">خريطة فاتحة</option>
-      <option value="dark">خريطة داكنة</option>
-     </select>
+  </section>
+  <section class="content-section" id="lab">
+    <h2>🛰️ مختبر الجغرافيا الحديثة</h2>
+    <p class="section-lead">أدوات خارجية للاستكشاف الجغرافي والصور الفضائية والخرائط الرقمية.</p>
+    <div class="cards-grid">
+      <article class="portal-card"><span class="portal-icon">🛰️</span><h3>NASA Worldview</h3><p>استكشاف صور الأقمار الصناعية والظواهر على سطح الأرض.</p><a class="portal-btn" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">افتح المختبر ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">🌍</span><h3>Copernicus Browser</h3><p>استعراض صور الأقمار الصناعية وبيانات برنامج كوبرنيكوس.</p><a class="portal-btn" href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">افتح المستكشف ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">🗺️</span><h3>Google Earth</h3><p>استكشاف سطح الأرض والمواقع من منظور ثلاثي الأبعاد.</p><a class="portal-btn" href="https://earth.google.com/web/" target="_blank" rel="noopener">ابدأ الاستكشاف ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">📡</span><h3>ArcGIS</h3><p>خرائط تفاعلية وموارد تعليمية في نظم المعلومات الجغرافية.</p><a class="portal-btn" href="https://www.arcgis.com/" target="_blank" rel="noopener">افتح ArcGIS ↗</a></article>
     </div>
+  </section>
 
-    <h3>الطبقات الجغرافية</h3>
-    <div class="filter-list">
-     <label><input type="checkbox" class="layerFilter" value="school" checked> 🏫 المدارس</label>
-     <label><input type="checkbox" class="layerFilter" value="heritage" checked> 🏛️ المعالم التاريخية</label>
-     <label><input type="checkbox" class="layerFilter" value="city" checked> 📍 المدن والمناطق</label>
-     <label><input type="checkbox" class="layerFilter" value="nature" checked> 🌿 المواقع الطبيعية</label>
+  <section class="content-section" id="academy">
+    <h2>🎓 أكاديمية ثابت بن قيس التعليمية</h2>
+    <p class="section-lead">بوابة للمناهج العُمانية من الصف الأول إلى الثاني عشر. اختر الصف والمادة للوصول إلى المكتبة الرسمية، مع عينات دروس تفاعلية قابلة للتوسّع.</p>
+    <div class="portal-controls">
+      <div><label for="gradeSelect">الصف الدراسي</label><select id="gradeSelect"></select></div>
+      <div><label for="subjectSelect">المادة</label><select id="subjectSelect"></select></div>
+      <div><label for="termSelect">الفصل الدراسي</label><select id="termSelect"><option>الفصل الأول</option><option>الفصل الثاني</option></select></div>
     </div>
+    <div class="cards-grid" id="curriculumCards"></div>
+    <div class="resource-note">ملاحظة: الروابط تقود إلى مكتبة المناهج الرسمية أو موقع وزارة التعليم. لا تدّعي المنصة أن جميع الكتب أو الدروس مخزنة داخلها؛ ويجب اعتماد النسخة المنشورة رسميًا لكل عام دراسي.</div>
+  </section>
 
-    <div class="map-actions">
-     <button class="small-btn" id="showAll">إظهار جميع المواقع</button>
-     <button class="small-btn" id="hideAll">إخفاء جميع الطبقات</button>
-     <button class="small-btn" id="resetMap">العودة إلى بركاء</button>
+  <section class="content-section" id="games">
+    <h2>🎮 مدينة الألعاب التعليمية</h2>
+    <p class="section-lead">أنشطة قصيرة تعمل داخل الموقع وتمنح المتعلم تغذية راجعة فورية.</p>
+    <div class="cards-grid">
+      <article class="game-box">
+        <h3>🏆 تحدي المستكشف الجغرافي</h3>
+        <p>أجب عن الأسئلة لتحصل على نتيجتك.</p>
+        <div id="gameQuestion">اضغط ابدأ لبدء التحدي.</div>
+        <div class="game-options" id="gameOptions"></div>
+        <div class="game-feedback" id="gameFeedback"></div>
+        <button class="btn-gold full" id="startGame">ابدأ اللعبة</button>
+        <button class="btn-secondary full" id="nextGame" hidden>السؤال التالي</button>
+      </article>
+      <article class="game-box">
+        <h3>🧭 رتّب مراحل إنتاج الخريطة</h3>
+        <p>اختر المراحل بالترتيب الصحيح.</p>
+        <div class="portal-controls" style="display:block">
+          <select id="order1"></select>
+          <select id="order2"></select>
+          <select id="order3"></select>
+          <select id="order4"></select>
+        </div>
+        <button class="btn-gold full" id="checkOrder">تحقق من الإجابة</button>
+        <div class="game-feedback" id="orderFeedback"></div>
+      </article>
+      <article class="game-box">
+        <h3>📍 خمن الموقع</h3>
+        <p>أنا ولاية ساحلية في محافظة جنوب الباطنة، فمن أكون؟</p>
+        <button class="btn-gold full" id="guessBarka">بركاء</button>
+        <button class="btn-secondary full" id="guessOther">نزوى</button>
+        <div class="game-feedback" id="guessFeedback"></div>
+      </article>
     </div>
+  </section>
 
-    <div class="result" id="mapStatus">جارٍ تجهيز المستكشف الجغرافي...</div>
-    <p class="map-note">يمكنك إخفاء أي طبقة أو إظهارها من جديد، وستتغير العلامات على الخريطة مباشرة.</p>
-   </aside>
-
-   <div>
-    <div id="map"></div>
-    <p class="map-note">
-     يتم تحديد المواقع بالبحث الجغرافي عبر OpenStreetMap.
-     قد لا تتوفر إحداثيات دقيقة لبعض المواقع.
-    </p>
-   </div>
-  </div>
- </div>
-</section>
-
-<section id="lab">
- <div class="container">
-  <div class="section-head">
-   <div class="section-label">مختبر الجغرافيا</div>
-   <h2>أدوات التحليل المكاني</h2>
-   <p>جرّب حساب المسافة بين موقعين باستخدام الإحداثيات الجغرافية.</p>
-  </div>
-  <div class="lab-grid">
-   <div class="card">
-    <div class="card-icon">📐</div>
-    <h3>حاسبة المسافة الجغرافية</h3>
-    <p>أدخل خط العرض وخط الطول لكل موقع، ثم احسب المسافة التقريبية بينهما.</p>
-    <div class="field"><label>خط عرض الموقع الأول</label><input type="number" id="lat1" step="any" placeholder="مثال: 23.68"></div>
-    <div class="field"><label>خط طول الموقع الأول</label><input type="number" id="lon1" step="any" placeholder="مثال: 57.89"></div>
-    <div class="field"><label>خط عرض الموقع الثاني</label><input type="number" id="lat2" step="any" placeholder="مثال: 23.61"></div>
-    <div class="field"><label>خط طول الموقع الثاني</label><input type="number" id="lon2" step="any" placeholder="مثال: 58.54"></div>
-    <button class="btn btn-primary" id="calculateDistance">احسب المسافة</button>
-    <div class="result" id="distanceResult">ستظهر نتيجة الحساب هنا.</div>
-   </div>
-
-   <div class="card">
-    <div class="card-icon">🛰️</div>
-    <h3>مختبر الاستشعار عن بُعد</h3>
-    <p>انتقل إلى منصات عالمية لاستكشاف صور الأقمار الصناعية ومتابعة التغيرات على سطح الأرض.</p>
-    <div style="display:grid;gap:12px;margin-top:20px">
-     <a class="resource" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">
-      <span class="resource-icon">🌎</span><span>NASA Worldview<small>مشاهدة صور الأرض</small></span>
-     </a>
-     <a class="resource" href="https://browser.dataspace.copernicus.eu/" target="_blank" rel="noopener">
-      <span class="resource-icon">🛰️</span><span>Copernicus Browser<small>استكشاف صور الأقمار الصناعية</small></span>
-     </a>
-     <a class="resource" href="https://earth.google.com/web/" target="_blank" rel="noopener">
-      <span class="resource-icon">🌐</span><span>Google Earth<small>استكشاف سطح الأرض ثلاثي الأبعاد</small></span>
-     </a>
+  <section class="content-section" id="platforms">
+    <h2>🌐 بوابة المنصات التعليمية</h2>
+    <p class="section-lead">روابط إلى بوابات عُمانية ومصادر عالمية مساندة للطالب والمعلم.</p>
+    <div class="cards-grid">
+      <article class="portal-card"><span class="portal-icon">🇴🇲</span><h3>وزارة التعليم العُمانية</h3><p>الموقع الرسمي للخدمات والأخبار والموارد التعليمية.</p><a class="portal-btn" href="https://home.moe.gov.om/" target="_blank" rel="noopener">دخول الموقع الرسمي ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">📚</span><h3>مكتبة المناهج العُمانية</h3><p>الوصول إلى الكتب المدرسية والمناهج المنشورة رسميًا.</p><a class="portal-btn" href="https://home.moe.gov.om/ar/manaheg/index.moe" target="_blank" rel="noopener">استعرض المناهج ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">🧑‍🏫</span><h3>Google Classroom</h3><p>إدارة الصفوف والواجبات والمواد التعليمية.</p><a class="portal-btn" href="https://classroom.google.com/" target="_blank" rel="noopener">افتح المنصة ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">💻</span><h3>Microsoft Teams</h3><p>التواصل والاجتماعات والتعاون داخل الصف.</p><a class="portal-btn" href="https://teams.microsoft.com/" target="_blank" rel="noopener">افتح المنصة ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">🧩</span><h3>Kahoot!</h3><p>إنشاء مسابقات واختبارات صفية تفاعلية.</p><a class="portal-btn" href="https://kahoot.com/" target="_blank" rel="noopener">افتح Kahoot ↗</a></article>
+      <article class="portal-card"><span class="portal-icon">🎨</span><h3>Canva للتعليم</h3><p>تصميم العروض والملصقات والأنشطة التعليمية.</p><a class="portal-btn" href="https://www.canva.com/education/" target="_blank" rel="noopener">افتح Canva ↗</a></article>
     </div>
-   </div>
-  </div>
- </div>
-</section>
-
-<section id="library" style="background:#0a2234">
- <div class="container">
-  <div class="section-head">
-   <div class="section-label">مصادر المعرفة</div>
-   <h2>المكتبة الجغرافية الرقمية</h2>
-   <p>مجموعة من المنصات والمراجع المفتوحة للتعلم والاستكشاف.</p>
-  </div>
-  <div class="resource-grid">
-   <a class="resource" href="https://www.esri.com/" target="_blank" rel="noopener"><span class="resource-icon">🗺️</span><span>Esri<small>تقنيات نظم المعلومات الجغرافية</small></span></a>
-   <a class="resource" href="https://www.openstreetmap.org/" target="_blank" rel="noopener"><span class="resource-icon">📍</span><span>OpenStreetMap<small>خرائط مفتوحة</small></span></a>
-   <a class="resource" href="https://earthobservatory.nasa.gov/" target="_blank" rel="noopener"><span class="resource-icon">🌍</span><span>NASA Earth Observatory<small>علوم الأرض والبيئة</small></span></a>
-   <a class="resource" href="https://www.un.org/geospatial/" target="_blank" rel="noopener"><span class="resource-icon">🌐</span><span>UN Geospatial<small>المعلومات الجغرافية للأمم المتحدة</small></span></a>
-   <a class="resource" href="https://www.data.gov.om/" target="_blank" rel="noopener"><span class="resource-icon">📊</span><span>المركز الوطني للإحصاء والمعلومات<small>بيانات ومؤشرات سلطنة عُمان</small></span></a>
-   <a class="resource" href="https://www.ncei.noaa.gov/" target="_blank" rel="noopener"><span class="resource-icon">🌦️</span><span>NOAA<small>بيانات المناخ والطقس</small></span></a>
-  </div>
- </div>
-</section>
-
-<section id="quiz">
- <div class="container">
-  <div class="section-head" style="text-align:center">
-   <div class="section-label">اختبر نفسك</div>
-   <h2>تحدي الجغرافيا الذكية</h2>
-   <p>أجب عن الأسئلة الستة واكتشف نتيجتك.</p>
-  </div>
-  <div class="quiz-box">
-   <div style="display:flex;justify-content:space-between;gap:10px">
-    <strong id="questionCounter">السؤال 1 من 6</strong>
-    <span style="color:var(--gold)" id="scoreDisplay">النقاط: 0</span>
-   </div>
-   <div class="quiz-progress"><div id="progressBar"></div></div>
-   <h3 id="questionText"></h3>
-   <div id="answers"></div>
-   <div id="quizFeedback"></div>
-   <button class="btn btn-primary" id="nextQuestion" disabled>السؤال التالي</button>
-   <div id="quizFinal" style="display:none;text-align:center;margin-top:20px">
-    <h2 style="color:var(--gold)">انتهى التحدي!</h2>
-    <p id="finalScore"></p>
-    <button class="btn btn-secondary" id="restartQuiz">إعادة المحاولة</button>
-    <button class="btn btn-primary" onclick="window.print()">طباعة النتيجة</button>
-   </div>
-  </div>
- </div>
-</section>
-
-<section id="projects">
- <div class="container">
-  <div class="section-head">
-   <div class="section-label">التعلم بالمشروعات</div>
-   <h2>مشروعات مدرسة ثابت بن قيس</h2>
-   <p>أفكار تطبيقية لتحويل المعرفة الجغرافية إلى إنجازات تعليمية.</p>
-  </div>
-  <div class="project-grid">
-   <article class="project">
-    <h3>🏫 مدرستي على الخريطة</h3>
-    <p>إنشاء خريطة رقمية للمدرسة ومرافقها، وإضافة بيانات المواقع والخدمات والأنشطة.</p>
-    <span class="tag">مشروع مدرسي</span>
-   </article>
-   <article class="project">
-    <h3>🌱 رصد التغير البيئي</h3>
-    <p>مقارنة صور الأقمار الصناعية لفترات زمنية مختلفة للتعرف إلى التغيرات في الغطاء الأرضي.</p>
-    <span class="tag">استشعار عن بُعد</span>
-   </article>
-   <article class="project">
-    <h3>🏛️ عُمان عبر الخريطة</h3>
-    <p>توثيق المعالم التاريخية والطبيعية في سلطنة عُمان وربطها بالمعلومات والصور.</p>
-    <span class="tag">هوية وطنية</span>
-   </article>
-   <article class="project">
-    <h3>🌍 أطلس طلابي تفاعلي</h3>
-    <p>إنتاج خرائط موضوعية من إعداد الطلاب حول السكان والمناخ والموارد والأنشطة الاقتصادية.</p>
-    <span class="tag">إبداع طلابي</span>
-   </article>
-  </div>
-  <div class="notice">
-   هذه المنصة مشروع تعليمي قابل للتطوير بمشاركة الطلاب والمعلمين.
-   يمكن إضافة صور المدرسة وبياناتها الموثقة ومشروعات الطلاب لاحقاً.
-  </div>
- </div>
-</section>
-
-</main>
-
-<footer>
- <div class="container footer-content">
-  <div>
-   <strong>الجغرافيا الذكية العالمية</strong>
-   <p>مدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عُمان</p>
-  </div>
-  <div>
-   <p>إعداد وتصميم: <strong>د. قناوي حسين</strong></p>
-   <p>منصة تعليمية للتقنيات الجغرافية الحديثة</p>
-  </div>
- </div>
-</footer>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-// ========================================
-// 1 - المستكشف الجغرافي لولاية بركاء
-// ========================================
-
-const map = L.map('map').setView([23.68,57.89],11);
-
-const baseLayers = {
- street:L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {maxZoom:19,attribution:'© OpenStreetMap'}
- ),
- light:L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  {attribution:'© OpenStreetMap © CARTO'}
- ),
- dark:L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  {attribution:'© OpenStreetMap © CARTO'}
- )
-};
-
-baseLayers.street.addTo(map);
-
-const groups = {
- school:L.layerGroup().addTo(map),
- heritage:L.layerGroup().addTo(map),
- city:L.layerGroup().addTo(map),
- nature:L.layerGroup().addTo(map)
-};
-
-const locations = [
- {name:'مدرسة ثابت بن قيس',type:'school',query:'مدرسة ثابت بن قيس، بركاء، سلطنة عمان',info:'المدرسة المحورية للمستكشف الجغرافي.'},
- {name:'مدرسة أسماء بنت النعمان',type:'school',query:'مدرسة أسماء بنت النعمان، بركاء، سلطنة عمان',info:'مدرسة تعليم أساسي في ولاية بركاء.'},
- {name:'مدرسة دار الفكر',type:'school',query:'مدرسة دار الفكر، النعمان، بركاء، سلطنة عمان',info:'مؤسسة تعليمية في نطاق بركاء.'},
- {name:'مدارس التكوين الخاصة',type:'school',query:'مدارس التكوين الخاصة، بركاء، سلطنة عمان',info:'مؤسسة تعليمية خاصة في ولاية بركاء.'},
- {name:'مدرسة بركات الثانوية',type:'school',query:'مدرسة بركات الثانوية للبنين، بركاء، سلطنة عمان',info:'مدرسة تعليمية في ولاية بركاء.'},
- {name:'مدرسة زهور عمان',type:'school',query:'مدرسة زهور عمان، بركاء، سلطنة عمان',info:'مؤسسة تعليمية في ولاية بركاء.'},
-
- {name:'حصن بركاء',type:'heritage',query:'حصن بركاء، سلطنة عمان',info:'من المعالم التاريخية البارزة في ولاية بركاء.'},
- {name:'بيت النعمان',type:'heritage',query:'بيت النعمان، بركاء، سلطنة عمان',info:'معلم تاريخي في ولاية بركاء.'},
- {name:'برج الجنينة',type:'heritage',query:'برج الجنينة، بركاء، سلطنة عمان',info:'معلم تراثي محلي في ولاية بركاء.'},
- {name:'سور حي عاصم',type:'heritage',query:'سور حي عاصم، بركاء، سلطنة عمان',info:'معلم تراثي في ولاية بركاء.'},
- {name:'سور الثرامد',type:'heritage',query:'سور الثرامد، بركاء، سلطنة عمان',info:'معلم تراثي في ولاية بركاء.'},
- {name:'سور الموالك',type:'heritage',query:'سور الموالك، بركاء، سلطنة عمان',info:'معلم تراثي محلي في ولاية بركاء.'},
-
- {name:'ولاية بركاء',type:'city',query:'Barka, South Al Batinah, Oman',info:'ولاية ساحلية في محافظة جنوب الباطنة.'},
- {name:'مسقط',type:'city',query:'Muscat, Oman',info:'عاصمة سلطنة عُمان.'},
- {name:'الرستاق',type:'city',query:'Rustaq, Oman',info:'ولاية تاريخية في محافظة جنوب الباطنة.'}
-];
-
-const symbols = {
- school:'🏫',heritage:'🏛️',city:'📍',nature:'🌿'
-};
-
-const foundMarkers = [];
-const statusBox = document.getElementById('mapStatus');
-
-function updateStatus(message){
- statusBox.textContent=message;
-}
-
-function addLocation(location,lat,lon){
- const marker=L.marker([lat,lon]);
-
- marker.bindPopup(`
-  <div dir="rtl" style="font-family:Tahoma;min-width:180px">
-   <h3 style="margin:4px 0;color:#a8792e">
-    ${symbols[location.type]} ${location.name}
-   </h3>
-   <p>${location.info}</p>
-   <small>الإحداثيات: ${lat.toFixed(5)}, ${lon.toFixed(5)}</small>
-   <br><br>
-   <a target="_blank" rel="noopener"
-    href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}">
-    فتح الموقع على الخريطة
-   </a>
-  </div>
- `);
-
- marker.addTo(groups[location.type]);
-
- foundMarkers.push({marker,location,lat,lon});
-}
-
-async function geocodeLocation(location){
- const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q='+
- encodeURIComponent(location.query);
-
- try{
-  const response=await fetch(url);
-  if(!response.ok)return false;
-
-  const results=await response.json();
-  if(!results.length)return false;
-
-  const lat=Number(results[0].lat);
-  const lon=Number(results[0].lon);
-
-  if(!Number.isFinite(lat)||!Number.isFinite(lon))return false;
-
-  addLocation(location,lat,lon);
-  return true;
- }catch(error){
-  return false;
- }
-}
-
-async function loadGeographicData(){
- let success=0;
- let failed=0;
-
- for(let i=0;i<locations.length;i++){
-  const location=locations[i];
-
-  updateStatus(
-   `جارٍ تحديد المواقع: ${i+1} من ${locations.length} — ${location.name}`
-  );
-
-  const result=await geocodeLocation(location);
-
-  if(result)success++;
-  else failed++;
-
-  // تأخير لتقليل الضغط على خدمة البحث
-  await new Promise(resolve=>setTimeout(resolve,1200));
- }
-
- updateStatus(
-  `اكتمل التحميل: ${success} موقعاً تم تحديده، وتعذر العثور على ${failed} مواقع.`
- );
-
- if(foundMarkers.length){
-  const bounds=L.latLngBounds(
-   foundMarkers.map(item=>[item.lat,item.lon])
-  );
-  map.fitBounds(bounds.pad(0.12));
- }
-}
-
-loadGeographicData();
-
-// التحكم في الطبقات
-document.querySelectorAll('.layerFilter').forEach(input=>{
- input.addEventListener('change',()=>{
-  const group=groups[input.value];
-  if(input.checked)map.addLayer(group);
-  else map.removeLayer(group);
- });
-});
-
-document.getElementById('showAll').addEventListener('click',()=>{
- document.querySelectorAll('.layerFilter').forEach(input=>{
-  input.checked=true;
-  map.addLayer(groups[input.value]);
- });
-});
-
-document.getElementById('hideAll').addEventListener('click',()=>{
- document.querySelectorAll('.layerFilter').forEach(input=>{
-  input.checked=false;
-  map.removeLayer(groups[input.value]);
- });
-});
-
-document.getElementById('resetMap').addEventListener('click',()=>{
- map.setView([23.68,57.89],11);
- document.getElementById('mapSearch').value='';
-});
-
-document.getElementById('baseMap').addEventListener('change',e=>{
- Object.values(baseLayers).forEach(layer=>map.removeLayer(layer));
- baseLayers[e.target.value].addTo(map);
-});
-
-document.getElementById('mapSearch').addEventListener('keydown',e=>{
- if(e.key!=='Enter')return;
-
- const query=e.target.value.trim().toLowerCase();
- const found=foundMarkers.find(item=>
-  item.location.name.toLowerCase().includes(query)
- );
-
- if(found){
-  map.setView([found.lat,found.lon],16);
-  found.marker.openPopup();
- }else{
-  updateStatus('لم يتم العثور على الموقع ضمن المواقع المحملة.');
- }
-});
-
-window.addEventListener('load',()=>{
- setTimeout(()=>map.invalidateSize(),500);
-});
-
-// ========================================
-// 2 - حاسبة المسافة الجغرافية
-// ========================================
-
-document.getElementById('calculateDistance').addEventListener('click',()=>{
- const ids=['lat1','lon1','lat2','lon2'];
- const fields=ids.map(id=>document.getElementById(id));
- const values=fields.map(field=>Number(field.value));
- const result=document.getElementById('distanceResult');
-
- if(fields.some(field=>field.value.trim()==='')){
-  result.textContent='يرجى إدخال الإحداثيات الأربعة.';
-  return;
- }
-
- const [lat1,lon1,lat2,lon2]=values;
-
- if(Math.abs(lat1)>90||Math.abs(lat2)>90||
-    Math.abs(lon1)>180||Math.abs(lon2)>180){
-  result.textContent='تحقق من صحة الإحداثيات المدخلة.';
-  return;
- }
-
- const rad=x=>x*Math.PI/180;
- const dLat=rad(lat2-lat1);
- const dLon=rad(lon2-lon1);
-
- const a=Math.sin(dLat/2)**2+
-  Math.cos(rad(lat1))*Math.cos(rad(lat2))*Math.sin(dLon/2)**2;
-
- const c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
- const distance=6371*c;
-
- result.innerHTML=
-  `المسافة التقريبية بين الموقعين:<br><strong style="color:#48d8d0;font-size:22px">${distance.toFixed(2)} كم</strong>`;
-});
-
-// ========================================
-// 3 - التحدي الجغرافي
-// ========================================
-
-const questions=[
- {
-  q:'ما المقصود بنظم المعلومات الجغرافية؟',
-  a:['نظام لتحليل البيانات المكانية وعرضها','جهاز لقياس درجة الحرارة','وسيلة للاتصال الهاتفي','برنامج لمعالجة النصوص'],
-  correct:0,
-  explain:'تُستخدم نظم المعلومات الجغرافية لجمع البيانات المكانية وإدارتها وتحليلها وعرضها.'
- },
- {
-  q:'ما الأداة التي تساعد على دراسة سطح الأرض من الفضاء؟',
-  a:['البوصلة التقليدية','الاستشعار عن بُعد','المسطرة','مقياس الحرارة'],
-  correct:1,
-  explain:'يعتمد الاستشعار عن بُعد على جمع معلومات عن الأرض من مسافة.'
- },
- {
-  q:'ماذا يحدد خط العرض؟',
-  a:['الموقع شرق أو غرب خط جرينتش','الموقع شمال أو جنوب خط الاستواء','ارتفاع المباني','اتجاه الرياح فقط'],
-  correct:1,
-  explain:'خطوط العرض تحدد الموقع شمال أو جنوب خط الاستواء.'
- },
- {
-  q:'ما فائدة الطبقات في نظم المعلومات الجغرافية؟',
-  a:['تنظيم أنواع البيانات المكانية','زيادة سرعة الإنترنت','تغيير لغة الحاسوب','حذف المعلومات'],
-  correct:0,
-  explain:'تتيح الطبقات تنظيم البيانات مثل الطرق والمدن والغطاء النباتي.'
- },
- {
-  q:'أي منصة تساعد على مشاهدة صور الأرض من الأقمار الصناعية؟',
-  a:['NASA Worldview','برنامج الآلة الحاسبة','محرر النصوص','مشغل الصوت'],
-  correct:0,
-  explain:'تتيح منصة NASA Worldview استكشاف مشاهدات وصور الأرض.'
- },
- {
-  q:'ما الاستخدام المناسب للخريطة الرقمية في المدرسة؟',
-  a:['تحديد المواقع وتحليل توزيع الظواهر','تشغيل الأجهزة الكهربائية','قياس كتلة الأجسام','تسجيل الأصوات فقط'],
-  correct:0,
-  explain:'تساعد الخريطة الرقمية على تحديد المواقع وفهم التوزيع المكاني.'
- }
-];
-
-let currentQuestion=0;
-let score=0;
-let answered=false;
-
-const questionText=document.getElementById('questionText');
-const answersBox=document.getElementById('answers');
-const feedback=document.getElementById('quizFeedback');
-const nextButton=document.getElementById('nextQuestion');
-
-function renderQuestion(){
- answered=false;
- const q=questions[currentQuestion];
-
- document.getElementById('questionCounter').textContent=
-  `السؤال ${currentQuestion+1} من ${questions.length}`;
-
- document.getElementById('scoreDisplay').textContent=`النقاط: ${score}`;
-
- document.getElementById('progressBar').style.width=
-  `${(currentQuestion/questions.length)*100}%`;
-
- questionText.textContent=q.q;
- feedback.textContent='';
- nextButton.disabled=true;
- nextButton.textContent='السؤال التالي';
- answersBox.innerHTML='';
-
- q.a.forEach((answer,index)=>{
-  const button=document.createElement('button');
-  button.className='quiz-option';
-  button.textContent=answer;
-  button.addEventListener('click',()=>chooseAnswer(index,button));
-  answersBox.appendChild(button);
- });
-}
-
-function chooseAnswer(index,button){
- if(answered)return;
- answered=true;
-
- const q=questions[currentQuestion];
- const allButtons=answersBox.querySelectorAll('button');
-
- allButtons.forEach((b,i)=>{
-  b.disabled=true;
-  if(i===q.correct)b.classList.add('correct');
- });
-
- if(index===q.correct){
-  score++;
-  feedback.textContent='إجابة صحيحة! '+q.explain;
- }else{
-  button.classList.add('wrong');
-  feedback.textContent='ليست الإجابة الصحيحة. '+q.explain;
- }
-
- document.getElementById('scoreDisplay').textContent=`النقاط: ${score}`;
- nextButton.disabled=false;
-
- if(currentQuestion===questions.length-1){
-  nextButton.textContent='عرض النتيجة';
- }
-}
-
-nextButton.addEventListener('click',()=>{
- if(!answered)return;
-
- currentQuestion++;
-
- if(currentQuestion<questions.length){
-  renderQuestion();
- }else{
-  document.getElementById('progressBar').style.width='100%';
-  questionText.textContent='أحسنت! لقد أكملت التحدي.';
-  answersBox.innerHTML='';
-  feedback.textContent='';
-  nextButton.style.display='none';
-  document.getElementById('quizFinal').style.display='block';
-  document.getElementById('finalScore').textContent=
-   `حصلت على ${score} من ${questions.length} درجات.`;
- }
-});
-
-document.getElementById('restartQuiz').addEventListener('click',()=>{
- currentQuestion=0;
- score=0;
- nextButton.style.display='inline-flex';
- document.getElementById('quizFinal').style.display='none';
- renderQuestion();
-});
-
-renderQuestion();
-
+  </section>
+
+  <footer class="site-footer">
+    منصة الجغرافيا الذكية | مدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عُمان<br>
+    إعداد وتصميم: د. قناوي حسين | © 2026
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // مركز الخريطة الافتراضي: ولاية بركاء
+    const map = L.map('map', { zoomControl:true }).setView([23.7042,57.8860],11);
+
+    const baseLayers = {
+      light:L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+        attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
+      }),
+      dark:L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+        attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
+      }),
+      streets:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution:'&copy; OpenStreetMap contributors',maxZoom:19
+      })
+    };
+    let activeBase=baseLayers.light.addTo(map);
+
+    const colors={
+      schools:'#18a9d0',cities:'#e8a72e',
+      history:'#e45b5b',nature:'#20a477'
+    };
+
+    const pictures={
+      schools:'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700',
+      cities:'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=700',
+      history:'https://images.unsplash.com/photo-1590736969955-71cc94901144?w=700',
+      nature:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=700'
+    };
+
+    const categoryNames={
+      schools:'مدرسة',cities:'مدينة أو مركز سكاني',
+      history:'موقع تاريخي أو تراثي',nature:'معلم طبيعي'
+    };
+
+    const geoData={
+      schools:[
+        {coords:[23.7050,57.8820],name:'مدرسة ثابت بن قيس للتعليم الأساسي',desc:'صرح تعليمي في ولاية بركاء، ويمكن توظيف الموقع في الأنشطة التعليمية الرقمية والجغرافية.'},
+        {coords:[23.6980,57.8750],name:'مدرسة بركاء للتعليم الأساسي',desc:'مؤسسة تعليمية في ولاية بركاء.'},
+        {coords:[23.7120,57.8950],name:'مدرسة العلاء بن الحضرمي',desc:'مدرسة تخدم قطاع التعليم الأساسي في الولاية.'},
+        {coords:[23.6850,57.8600],name:'مدرسة أم عمارة للبنات',desc:'مؤسسة تعليمية للبنات في ولاية بركاء.'},
+        {coords:[23.6720,57.9100],name:'مدرسة الرميس للتعليم الأساسي',desc:'مدرسة تخدم المناطق الشرقية من ولاية بركاء.'},
+        {coords:[23.6900,57.8700],name:'مدرسة أسماء بنت النعمان',desc:'مدرسة ضمن نطاق بركاء؛ الموقع المعروض تقريبي ويحتاج مراجعة ميدانية.'},
+        {coords:[23.7150,57.9000],name:'مدرسة دار الفكر',desc:'مؤسسة تعليمية أُدرجت ضمن نطاق الاستكشاف؛ يرجى التحقق من موضعها الدقيق.'},
+        {coords:[23.6800,57.8950],name:'مدارس التكوين الخاصة',desc:'مؤسسة تعليمية أُدرجت ضمن نطاق بركاء؛ الإحداثيات تقريبية.'},
+        {coords:[23.7000,57.9150],name:'مدرسة بركات الثانوية',desc:'مؤسسة تعليمية أُدرجت ضمن نطاق الاستكشاف؛ يرجى التحقق من موضعها الدقيق.'},
+        {coords:[23.6650,57.8850],name:'مدرسة زهور عُمان',desc:'مؤسسة تعليمية أُدرجت ضمن نطاق بركاء؛ الإحداثيات تقريبية.'}
+      ],
+      cities:[
+        {coords:[23.7072,57.8861],name:'مركز ولاية بركاء',desc:'مركز عمراني في محافظة جنوب الباطنة، وتشتهر الولاية بالأنشطة الساحلية والزراعية والتجارية.'},
+        {coords:[23.5880,58.3829],name:'مسقط — العاصمة',desc:'عاصمة سلطنة عُمان ومركزها الإداري والاقتصادي.'},
+        {coords:[23.3959,57.4244],name:'الرستاق',desc:'مدينة تاريخية ومركز محافظة جنوب الباطنة.'},
+        {coords:[24.3474,56.7094],name:'صحار',desc:'مدينة رئيسية في محافظة شمال الباطنة ومركز صناعي وتجاري مهم.'}
+      ],
+      history:[
+        {coords:[23.7114,57.8878],name:'حصن بركاء',desc:'معلم تاريخي بارز في ولاية بركاء، يرتبط بتاريخ الولاية ودورها الساحلي.'},
+        {coords:[23.6961,57.9044],name:'بيت النعمان',desc:'معلم تراثي في ولاية بركاء يعكس جانبًا من العمارة العُمانية التقليدية.'},
+        {coords:[22.9333,57.5333],name:'قلعة نزوى',desc:'من أشهر القلاع التاريخية في سلطنة عُمان، وتتميز ببرجها الدائري.'},
+        {coords:[23.7100,57.8900],name:'برج الجنينة',desc:'معلم تراثي في نطاق بركاء؛ موضع العلامة تقريبي ويحتاج إلى توثيق ميداني.'},
+        {coords:[23.7000,57.8800],name:'سور حي عاصم',desc:'موقع تراثي محلي مدرج للاستكشاف؛ الإحداثيات تقريبية.'},
+        {coords:[23.6900,57.9050],name:'سور الثرامد',desc:'موقع تراثي محلي مدرج للاستكشاف؛ الإحداثيات تقريبية.'},
+        {coords:[23.6800,57.8750],name:'سور الموالك',desc:'موقع تراثي محلي مدرج للاستكشاف؛ الإحداثيات تقريبية.'}
+      ],
+      nature:[
+        {coords:[23.7810,57.7720],name:'جزر الديمانيات الطبيعية',desc:'محمية بحرية تضم جزرًا ذات قيمة بيئية، وتشتهر بالشعاب المرجانية والحياة البحرية.'},
+        {coords:[23.5500,57.8500],name:'منطقة الأودية والمزارع جنوب بركاء',desc:'منطقة تتنوع فيها المظاهر الطبيعية والأنشطة الزراعية.'},
+        {coords:[23.1450,57.2650],name:'الجبل الأخضر',desc:'منطقة جبلية ضمن جبال الحجر، تشتهر بتنوعها الطبيعي ومدرجاتها الزراعية.'}
+      ]
+    };
 </script>
+const layers={
+      schools:L.layerGroup().addTo(map),
+      cities:L.layerGroup().addTo(map),
+      history:L.layerGroup().addTo(map),
+      nature:L.layerGroup().addTo(map)
+    };
+
+    function escapeHtml(value){
+      return String(value).replace(/[&<>"']/g,ch=>({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[ch]));
+    }
+
+    function popupContent(item,category){
+      return `
+        <div class="popup">
+          <img src="${pictures[category]}" alt="صورة توضيحية"
+               onerror="this.style.display='none'">
+          <div class="popup-body">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.desc)}</p>
+            <span class="type">${categoryNames[category]}</span>
+          </div>
+        </div>`;
+    }
+
+    function renderFeatures(){
+      const query=document.getElementById('searchInput').value.trim().toLowerCase();
+      let totalVisible=0;
+
+      Object.keys(geoData).forEach(category=>{
+        layers[category].clearLayers();
+        let count=0;
+
+        geoData[category].forEach(item=>{
+          const matches=!query||
+            item.name.toLowerCase().includes(query)||
+            item.desc.toLowerCase().includes(query);
+
+          if(!matches)return;
+
+          const marker=L.circleMarker(item.coords,{
+            radius:9,fillColor:colors[category],color:'#ffffff',
+            weight:2,opacity:1,fillOpacity:.95
+          });
+
+          marker.bindPopup(popupContent(item,category));
+          marker.addTo(layers[category]);
+          count++;
+        });
+
+        document.getElementById('count-'+category).textContent=count;
+
+        const checkbox=document.getElementById('layer-'+category);
+        if(checkbox.checked){
+          if(!map.hasLayer(layers[category]))layers[category].addTo(map);
+          totalVisible+=count;
+        }else if(map.hasLayer(layers[category])){
+          map.removeLayer(layers[category]);
+        }
+      });
+
+      document.getElementById('total-count').textContent=totalVisible;
+    }
+
+    function toggleLayer(category){
+      const checkbox=document.getElementById('layer-'+category);
+      if(checkbox.checked)layers[category].addTo(map);
+      else map.removeLayer(layers[category]);
+      updateTotalCount();
+    }
+
+    function updateTotalCount(){
+      let total=0;
+      Object.keys(layers).forEach(category=>{
+        if(document.getElementById('layer-'+category).checked){
+          total+=Number(document.getElementById('count-'+category).textContent)||0;
+        }
+      });
+      document.getElementById('total-count').textContent=total;
+    }
+
+    function changeBasemap(type){
+      if(map.hasLayer(activeBase))map.removeLayer(activeBase);
+      activeBase=baseLayers[type];
+      activeBase.addTo(map);
+    }
+
+    function resetMapView(){
+      map.setView([23.7042,57.8860],11);
+    }
+
+    document.getElementById('searchInput').addEventListener('input',renderFeatures);
+
+    Object.keys(layers).forEach(category=>{
+      document.getElementById('layer-'+category)
+        .addEventListener('change',()=>toggleLayer(category));
+    });
+
+    document.getElementById('darkBtn').addEventListener('click',()=>changeBasemap('dark'));
+    document.getElementById('lightBtn').addEventListener('click',()=>changeBasemap('light'));
+    document.getElementById('streetBtn').addEventListener('click',()=>changeBasemap('streets'));
+    document.getElementById('resetBtn').addEventListener('click',resetMapView);
+
+    document.getElementById('showAllBtn').addEventListener('click',()=>{
+      document.getElementById('searchInput').value='';
+      Object.keys(layers).forEach(category=>{
+        document.getElementById('layer-'+category).checked=true;
+      });
+      renderFeatures();
+    });
+
+    document.getElementById('clearSearchBtn').addEventListener('click',()=>{
+      document.getElementById('searchInput').value='';
+      renderFeatures();
+    });
+
+    renderFeatures();
+  </script>
+
+  <script>
+  // تفعيل أدوات الأكاديمية والألعاب
+  (()=>{
+
+    const grades=Array.from({length:12},(_,i)=>i+1);
+
+    const subjects=[
+      'اللغة العربية','التربية الإسلامية','الرياضيات',
+      'العلوم','الدراسات الاجتماعية','اللغة الإنجليزية',
+      'تقنية المعلومات','الفنون','الرياضة'
+    ];
+
+    const gradeSelect=document.getElementById('gradeSelect');
+    const subjectSelect=document.getElementById('subjectSelect');
+
+    grades.forEach(g=>gradeSelect.add(new Option('الصف '+g,g)));
+    subjects.forEach(s=>subjectSelect.add(new Option(s,s)));
+
+    const officialBooks='https://home.moe.gov.om/ar/manaheg/index.moe';
+
+    const sampleLessons={
+      '7|الدراسات الاجتماعية':[
+        'الخريطة وأهمية الخريطة',
+        'مراحل إنتاج الخريطة'
+      ],
+      '8|الدراسات الاجتماعية':[
+        'الطقس والمناخ',
+        'عُمان والعصر العباسي',
+        'قيام الدولة العباسية واتساعها',
+        'المنجزات الحضارية في المجال الثقافي',
+        'عُمان ومقاومة الاحتلال البرتغالي',
+        'المنجزات الحضارية العُمانية'
+      ]
+    };
+
+    function renderCurriculum(){
+      const g=gradeSelect.value;
+      const s=subjectSelect.value;
+      const t=document.getElementById('termSelect').value;
+      const items=sampleLessons[g+'|'+s]||[];
+      const cards=document.getElementById('curriculumCards');
+
+      cards.innerHTML='';
+
+      const main=document.createElement('article');
+      main.className='portal-card';
+      main.innerHTML=`
+        <span class="portal-icon">📘</span>
+        <h3>الصف ${g} – ${s}</h3>
+        <p>${t}. انتقل إلى المكتبة الرسمية لاختيار الكتاب المعتمد.</p>
+        <a class="portal-btn" href="${officialBooks}" target="_blank" rel="noopener">فتح كتب الصفوف ↗</a>
+      `;
+      cards.appendChild(main);
+
+      if(items.length){
+        items.forEach((lesson,i)=>{
+          const card=document.createElement('article');
+          card.className='portal-card';
+          card.innerHTML=`
+            <span class="portal-icon">📝</span>
+            <h3>${lesson}</h3>
+            <p>نموذج عنوان درس من موضوعات الدراسات الاجتماعية.</p>
+            <button class="portal-btn dark" type="button">عرض فكرة الدرس</button>
+            <p class="lesson-msg" hidden>
+              يمكن إضافة شرح الدرس والأنشطة وأسئلة التقويم بعد مطابقة المحتوى مع الكتاب الرسمي.
+            </p>
+          `;
+
+          card.querySelector('button').addEventListener('click',()=>{
+            const message=card.querySelector('.lesson-msg');
+            message.hidden=!message.hidden;
+          });
+
+          cards.appendChild(card);
+        });
+      }else{
+        const card=document.createElement('article');
+        card.className='portal-card';
+        card.innerHTML=`
+          <span class="portal-icon">📚</span>
+          <h3>محتوى الصف قيد الإثراء</h3>
+          <p>اختر الكتاب من مكتبة وزارة التعليم. ستضاف الدروس التفاعلية بعد توثيق محتواها.</p>
+        `;
+        cards.appendChild(card);
+      }
+    }
+
+    [gradeSelect,subjectSelect,document.getElementById('termSelect')]
+      .forEach(el=>el.addEventListener('change',renderCurriculum));
+
+    renderCurriculum();
+
+    // بنك أسئلة التحدي
+    const questions=[
+      {q:'في أي محافظة تقع ولاية بركاء؟',a:['جنوب الباطنة','ظفار','مسندم','الداخلية'],c:0},
+      {q:'ما الأداة التي تمثل سطح الأرض أو جزءًا منه؟',a:['الخريطة','الساعة','المجهر','المسطرة'],c:0},
+      {q:'ما التقنية التي تدرس الأرض من مسافة؟',a:['الاستشعار عن بُعد','الكتابة','الطباعة','النسخ'],c:0},
+      {q:'أي موقع من الآتي يقع في بركاء؟',a:['حصن بركاء','قلعة نزوى','قلعة بهلاء','حصن جبرين'],c:0},
+      {q:'ما فائدة نظم المعلومات الجغرافية؟',a:['تحليل البيانات المكانية','تشغيل الموسيقى','تحرير النصوص فقط','قياس الزمن'],c:0},
+      {q:'ما العنصر الذي يوضح مدلولات الرموز على الخريطة؟',a:['مفتاح الخريطة','الإطار','العنوان فقط','مقياس الحرارة'],c:0}
+    ];
+
+    let qi=0,score=0,locked=false;
+
+    const qBox=document.getElementById('gameQuestion');
+    const opts=document.getElementById('gameOptions');
+    const feedback=document.getElementById('gameFeedback');
+    const next=document.getElementById('nextGame');
+    const start=document.getElementById('startGame');
+
+    function showQuestion(){
+      locked=false;
+      const q=questions[qi];
+
+      qBox.textContent=`السؤال ${qi+1} من ${questions.length}: ${q.q}`;
+      feedback.textContent='';
+      opts.innerHTML='';
+      next.hidden=true;
+
+      q.a.forEach((answer,i)=>{
+        const button=document.createElement('button');
+        button.textContent=answer;
+
+        button.addEventListener('click',()=>{
+          if(locked)return;
+          locked=true;
+
+          [...opts.children].forEach(x=>x.disabled=true);
+
+          if(i===q.c){
+            score++;
+            feedback.textContent='إجابة صحيحة!';
+          }else{
+            feedback.textContent='الإجابة الصحيحة: '+q.a[q.c];
+          }
+
+          next.hidden=false;
+        });
+
+        opts.appendChild(button);
+      });
+    }
+
+    start.addEventListener('click',()=>{
+      qi=0;
+      score=0;
+      start.hidden=true;
+      showQuestion();
+    });
+
+    next.addEventListener('click',()=>{
+      qi++;
+
+      if(qi<questions.length){
+        showQuestion();
+      }else{
+        qBox.textContent=`انتهى التحدي. نتيجتك ${score} من ${questions.length}.`;
+        opts.innerHTML='';
+        feedback.textContent=score===questions.length
+          ?'أداء ممتاز!'
+          :'أحسنت، حاول مرة أخرى لتحسين نتيجتك.';
+        next.hidden=true;
+        start.hidden=false;
+        start.textContent='أعد اللعب';
+      }
+    });
+
+    // لعبة ترتيب مراحل إنتاج الخريطة
+    const stages=[
+      'تحديد الهدف وجمع البيانات',
+      'إدخال البيانات ومعالجتها',
+      'إخراج الخريطة وتصميمها',
+      'مراجعة الخريطة وإنتاجها النهائي'
+    ];
+
+    const shuffled=[...stages].sort(()=>Math.random()-.5);
+
+    [1,2,3,4].forEach(n=>{
+      const element=document.getElementById('order'+n);
+      element.add(new Option('اختر المرحلة',''));
+      shuffled.forEach(stage=>element.add(new Option(stage,stage)));
+    });
+
+    document.getElementById('checkOrder').addEventListener('click',()=>{
+      const values=[1,2,3,4].map(n=>document.getElementById('order'+n).value);
+      const output=document.getElementById('orderFeedback');
+
+      if(values.some(v=>!v)||new Set(values).size!==4){
+        output.textContent='اختر المراحل الأربع دون تكرار.';
+        return;
+      }
+
+      output.textContent=values.every((v,i)=>v===stages[i])
+        ?'ممتاز! الترتيب صحيح.'
+        :'ليس الترتيب الصحيح بعد. حاول مجددًا.';
+    });
+
+    // لعبة تخمين الموقع
+    document.getElementById('guessBarka').addEventListener('click',()=>{
+      document.getElementById('guessFeedback').textContent=
+        'إجابة صحيحة! بركاء ولاية في محافظة جنوب الباطنة.';
+    });
+
+    document.getElementById('guessOther').addEventListener('click',()=>{
+      document.getElementById('guessFeedback').textContent=
+        'ليست الإجابة الصحيحة. الإجابة هي بركاء.';
+    });
+
+  })();
+  </script>
 </body>
 </html>
