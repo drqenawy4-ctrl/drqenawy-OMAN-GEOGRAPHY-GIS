@@ -33,6 +33,7 @@ h3{color:#173d55}
 p{line-height:1.9}
 button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--blue);color:white;border:0;border-radius:8px;padding:11px 15px;margin:4px;cursor:pointer;text-decoration:none;font:bold 13px Tahoma}
 button:hover,.btn:hover{filter:brightness(1.12)}
+button:disabled{opacity:.5;cursor:not-allowed}
 .gold{background:var(--gold);color:#173042}
 .dark{background:var(--navy)}
 .green{background:var(--green)}
@@ -53,11 +54,68 @@ label{display:block;font-size:13px;font-weight:bold;margin:10px 0}
 .globe{width:190px;height:190px;margin:20px auto;border-radius:50%;background:radial-gradient(ellipse at 30% 35%,#8bd4a0 0 13%,transparent 14%),radial-gradient(ellipse at 65% 55%,#76b979 0 17%,transparent 18%),radial-gradient(circle at 30% 25%,#9be8f3,#167eaa 48%,#032b49 80%);box-shadow:inset -20px -15px 30px #00132299,0 0 35px #39c6d680;animation:spin 18s linear infinite}
 .globe.paused{animation-play-state:paused}
 @keyframes spin{to{transform:rotateY(360deg)}}
-.tour{background:linear-gradient(135deg,var(--navy),#17617b);color:white;padding:22px;border-radius:12px;text-align:center}
-.tour h3{color:#7ce7ef}
-.tour-icon{font-size:48px;color:#7ce7ef}
-.tour-controls{display:flex;flex-wrap:wrap;justify-content:center}
-.tour-controls button{background:#ffffff20;border:1px solid #ffffff40}
+
+/* الجولة الافتراضية المطورة */
+.tour-intro{text-align:center;color:#526b78;margin-bottom:18px}
+.tour-shell{background:linear-gradient(145deg,#071c2b,#123e56);border-radius:18px;padding:15px;color:white;overflow:hidden}
+.tour-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:5px 8px 14px}
+.tour-top strong{color:#8beaf0}
+.tour-counter{font-size:13px;color:#d4e9ef}
+.tour-progress{height:7px;background:#ffffff25;border-radius:20px;overflow:hidden;margin:0 8px 15px}
+.tour-progress-bar{height:100%;width:20%;background:linear-gradient(90deg,#39c6d6,#e9b949);transition:width .35s}
+.tour-scene{
+position:relative;height:310px;border-radius:14px;overflow:hidden;
+background:linear-gradient(#75c7e7 0%,#c4e9ed 58%,#7ba66e 58%,#315d46 100%);
+isolation:isolate;transition:background .5s
+}
+.tour-scene:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#ffffff12,transparent 65%);z-index:1;pointer-events:none}
+.scene-sun{position:absolute;width:55px;height:55px;border-radius:50%;background:#ffe7a0;top:28px;left:11%;box-shadow:0 0 35px #fff2a8}
+.scene-cloud{position:absolute;width:90px;height:25px;border-radius:30px;background:#ffffffb8;top:65px;right:13%;filter:blur(.5px)}
+.scene-cloud:before,.scene-cloud:after{content:"";position:absolute;background:inherit;border-radius:50%}
+.scene-cloud:before{width:35px;height:35px;top:-16px;left:15px}
+.scene-cloud:after{width:42px;height:42px;top:-20px;right:14px}
+.scene-ground{position:absolute;bottom:0;left:0;right:0;height:31%;background:linear-gradient(#598d5d,#244b3a)}
+.scene-building{position:absolute;bottom:28%;left:50%;transform:translateX(-50%);width:52%;height:42%;background:#f2e6ce;border:5px solid #d4c3a4;border-bottom:0;box-shadow:0 8px 18px #17304255}
+.scene-building:before{content:"";position:absolute;top:-30px;left:-7px;right:-7px;height:31px;background:#b9824e;clip-path:polygon(8% 100%,50% 0,92% 100%)}
+.scene-door{position:absolute;bottom:0;left:44%;width:12%;height:38%;background:#79543c;border:3px solid #e9d4a8;border-radius:7px 7px 0 0}
+.scene-window{position:absolute;bottom:34%;width:13%;height:24%;background:#7dc5d6;border:4px solid #b28b5e;border-radius:3px}
+.scene-window.one{left:12%}.scene-window.two{right:12%}
+.scene-sign{position:absolute;bottom:67%;left:50%;transform:translateX(-50%);background:#123e56;color:#fff;padding:7px 12px;border-radius:5px;font-size:12px;white-space:nowrap;border:1px solid #e9b949;z-index:3}
+.scene-path{position:absolute;bottom:0;left:37%;width:26%;height:30%;background:#cbb99a;clip-path:polygon(35% 0,65% 0,100% 100%,0 100%)}
+.scene-tree{position:absolute;bottom:23%;width:30px;height:70px;background:#79543c}
+.scene-tree:before{content:"";position:absolute;left:-23px;top:-42px;width:76px;height:72px;background:#317b52;border-radius:48% 52% 45% 55%;box-shadow:inset -8px -8px #1c5c40}
+.scene-tree.left{left:13%}.scene-tree.right{right:13%;transform:scale(.8)}
+.scene-flag{position:absolute;top:12%;left:50%;height:42px;width:3px;background:#344b59;z-index:3}
+.scene-flag:after{content:"";position:absolute;top:0;left:3px;width:35px;height:21px;background:linear-gradient(to bottom,#e43d45 0 33%,white 33% 66%,#21834d 66%);clip-path:polygon(0 0,100% 0,82% 100%,0 100%)}
+.scene-person{position:absolute;bottom:24%;left:25%;font-size:35px;z-index:4;filter:drop-shadow(0 3px 2px #183b)}
+.tour-scene[data-scene="1"]{background:linear-gradient(#6ec4e4 0%,#c6e8e9 58%,#79a66d 58%,#315d46 100%)}
+.tour-scene[data-scene="2"]{background:linear-gradient(#77c9e8 0%,#d7eff0 65%,#a9b88c 65%,#53764c 100%)}
+.tour-scene[data-scene="3"]{background:linear-gradient(#506e84,#9ab9c6 58%,#647d75 58%,#344c46)}
+.tour-scene[data-scene="4"]{background:linear-gradient(#244b63,#6e9ba6 60%,#527d62 60%,#264a3b)}
+.tour-scene[data-scene="5"]{background:linear-gradient(#0b2941,#246b84 60%,#5a936c 60%,#244d3b)}
+.tour-scene[data-scene="2"] .scene-building{width:68%;height:48%;background:#e8e0cb}
+.tour-scene[data-scene="3"] .scene-building{width:65%;height:56%;background:#d8e3e5;border-color:#a8c2c9}
+.tour-scene[data-scene="4"] .scene-building{width:72%;height:54%;background:#d9e5e7;border-color:#b1c6ca}
+.tour-scene[data-scene="5"] .scene-building{width:75%;height:52%;background:#183f58;border-color:#e9b949}
+.tour-scene[data-scene="3"] .scene-window,.tour-scene[data-scene="4"] .scene-window,.tour-scene[data-scene="5"] .scene-window{background:#244c66}
+.tour-scene[data-scene="4"] .scene-sign,.tour-scene[data-scene="5"] .scene-sign{background:#087e9e}
+.tour-scene[data-scene="2"] .scene-person{left:18%}
+.tour-scene[data-scene="3"] .scene-person{left:75%}
+.tour-scene[data-scene="4"] .scene-person{left:15%}
+.tour-scene[data-scene="5"] .scene-person{left:78%}
+.tour-caption{position:absolute;bottom:12px;right:12px;left:12px;text-align:center;color:white;background:#071c2bd9;padding:9px;border-radius:8px;font-size:12px;z-index:5}
+.tour-info{padding:15px 8px 5px;text-align:center}
+.tour-info h3{color:#8beaf0;margin:5px}
+.tour-info p{color:#e0edf1;margin:8px auto;max-width:750px}
+.tour-stations{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:14px 0}
+.tour-station{background:#ffffff12;border:1px solid #ffffff35;border-radius:9px;padding:9px 4px;color:white;font-size:11px;cursor:pointer;min-height:65px}
+.tour-station span{display:block;font-size:21px;margin-bottom:5px}
+.tour-station.active{background:#087e9e;border-color:#7ce7ef;box-shadow:0 0 0 2px #39c6d644}
+.tour-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:10px}
+.tour-controls button{background:#ffffff20;border:1px solid #ffffff50;min-width:125px}
+.tour-controls .tour-next{background:#e9b949;color:#173042;border:0}
+.tour-note{font-size:11px;color:#bed6df;text-align:center;margin:10px 0 2px}
+
 .question{background:var(--bg);padding:16px;border-radius:10px;border-right:4px solid var(--blue);font-weight:bold}
 .answer{display:block;width:100%;text-align:right;background:white;color:var(--ink);border:1px solid #ccd9df;margin:7px 0}
 .answer.correct{background:#d8f5e8;color:#126b4e}
@@ -75,6 +133,10 @@ header h1{font-size:23px}
 section{padding:15px}
 #map{height:390px}
 main{padding:8px}
+.tour-scene{height:245px}
+.tour-stations{grid-template-columns:repeat(3,1fr)}
+.tour-station{font-size:10px}
+.scene-building{width:65%}
 }
 @media print{nav,button,footer{display:none}section{box-shadow:none}}
 </style>
@@ -144,18 +206,59 @@ main{padding:8px}
 <a class="btn dark" href="https://worldview.earthdata.nasa.gov/" target="_self">استكشاف صور الأقمار الصناعية</a>
 </section>
 
+<!-- الجولة الافتراضية المطورة -->
 <section id="school-tour">
-<h2>🏫 الجولة الافتراضية لمدرسة ثابت بن قيس</h2>
-<p>جولة تعريفية بمحطات المدرسة، ويمكن استبدال الرموز بصور حقيقية عند توفرها.</p>
-<div class="tour">
-<div class="tour-icon" id="tourIcon">🏫</div>
-<h3 id="tourTitle">مدخل المدرسة</h3>
-<p id="tourDesc">مرحبًا بكم في مدرسة ثابت بن قيس للتعليم الأساسي.</p>
-<div class="tour-controls">
-<button onclick="changeTour(-1)">السابق</button>
-<button onclick="changeTour(1)">المحطة التالية</button>
+<h2>🏫 الجولة الافتراضية التفاعلية لمدرسة ثابت بن قيس</h2>
+<p class="tour-intro">اكتشف مرافق المدرسة من خلال خمس محطات تفاعلية، وانتقل بينها للتعرف على البيئة المدرسية ومرافق التعلم.</p>
+
+<div class="tour-shell">
+<div class="tour-top">
+<strong><i class="fa-solid fa-vr-cardboard"></i> رحلة استكشاف مدرستنا</strong>
+<span class="tour-counter" id="tourCount">المحطة 1 من 5</span>
 </div>
-<p id="tourCount" class="small" style="color:#d3e7ed"></p>
+
+<div class="tour-progress">
+<div class="tour-progress-bar" id="tourProgress"></div>
+</div>
+
+<div class="tour-scene" id="tourScene" data-scene="1" aria-label="مشهد توضيحي للجولة المدرسية">
+<div class="scene-sun"></div>
+<div class="scene-cloud"></div>
+<div class="scene-ground"></div>
+<div class="scene-path"></div>
+<div class="scene-tree left"></div>
+<div class="scene-tree right"></div>
+<div class="scene-building">
+<div class="scene-sign" id="sceneSign">مدرسة ثابت بن قيس</div>
+<div class="scene-window one"></div>
+<div class="scene-window two"></div>
+<div class="scene-door"></div>
+</div>
+<div class="scene-flag"></div>
+<div class="scene-person" id="scenePerson">🧑🏻‍🎓</div>
+<div class="tour-caption" id="tourCaption">مرحبًا بكم في مدرستنا</div>
+</div>
+
+<div class="tour-info">
+<h3 id="tourTitle">بوابة المدرسة</h3>
+<p id="tourDesc">مرحبًا بكم في مدرسة ثابت بن قيس للتعليم الأساسي. تبدأ رحلتنا من بوابة المدرسة، حيث تنطلق رحلة العلم والمعرفة.</p>
+</div>
+
+<div class="tour-stations" id="tourStations">
+<button class="tour-station active" onclick="goTour(0)"><span>🏫</span>بوابة المدرسة</button>
+<button class="tour-station" onclick="goTour(1)"><span>🌳</span>الساحة المدرسية</button>
+<button class="tour-station" onclick="goTour(2)"><span>📚</span>الفصول الدراسية</button>
+<button class="tour-station" onclick="goTour(3)"><span>📖</span>مصادر التعلم</button>
+<button class="tour-station" onclick="goTour(4)"><span>🛰️</span>مختبر الجغرافيا</button>
+</div>
+
+<div class="tour-controls">
+<button onclick="changeTour(-1)"><i class="fa-solid fa-arrow-right"></i> المحطة السابقة</button>
+<button class="tour-next" onclick="changeTour(1)">المحطة التالية <i class="fa-solid fa-arrow-left"></i></button>
+<button class="dark" onclick="goTour(0)"><i class="fa-solid fa-rotate-right"></i> بداية الجولة</button>
+</div>
+
+<p class="tour-note">ملاحظة: المشاهد المعروضة تصورات تصميمية توضيحية وليست صورًا فوتوغرافية فعلية لمباني المدرسة.</p>
 </div>
 </section>
 
@@ -279,6 +382,12 @@ clearTimeout(window.toastTimer);
 window.toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
 }
 
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
 /* روابط OpenStreetMap */
 function osmSearch(name){
 return "https://www.openstreetmap.org/search?query="+encodeURIComponent(name);
@@ -326,7 +435,7 @@ const heritage=[
 $("schoolCards").innerHTML=nearbySchools.map(name=>
 `<div class="card">
 <i class="fa-solid fa-school"></i>
-<h3>${name}</h3>
+<h3>${escapeHTML(name)}</h3>
 <p>افتح البحث عن موقع المدرسة على الخريطة.</p>
 <a class="btn" href="${osmSearch(name+" Oman")}" target="_self">عرض الموقع على الخريطة</a>
 </div>`).join("");
@@ -335,8 +444,8 @@ $("schoolCards").innerHTML=nearbySchools.map(name=>
 $("heritageCards").innerHTML=heritage.map(item=>
 `<div class="card">
 <i class="fa-solid ${item.icon}"></i>
-<h3>${item.name}</h3>
-<p>${item.desc}</p>
+<h3>${escapeHTML(item.name)}</h3>
+<p>${escapeHTML(item.desc)}</p>
 <a class="btn" href="${osmSearch(item.search)}" target="_self">استكشف الموقع</a>
 </div>`).join("");
 
@@ -372,7 +481,7 @@ mapLayers[k]=L.layerGroup().addTo(map);
 
 places.forEach(p=>{
 const marker=L.marker([p.lat,p.lon]).bindPopup(
-"<b>"+p.name+"</b><br><a href='"+osmPoint(p.lat,p.lon)+"'>فتح الموقع على OpenStreetMap</a>"
+"<b>"+escapeHTML(p.name)+"</b><br><a href='"+osmPoint(p.lat,p.lon)+"'>فتح الموقع على OpenStreetMap</a>"
 );
 marker._place=p;
 marker.addTo(mapLayers[p.type]);
@@ -430,7 +539,6 @@ if(!map)return;
 setMap("street");
 ["showSchools","showHistory","showCities"].forEach(id=>$(id).checked=true);
 updateMap();
-map.setView([23.69,23.89],12);
 map.setView([23.69,57.89],12);
 }
 
@@ -448,12 +556,11 @@ return;
 }
 
 const results=places.filter(p=>p.name.toLowerCase().includes(q));
-
 box.classList.remove("hidden");
 
 if(results.length){
 box.innerHTML=results.map(p=>
-`<p><b>${p.name}</b>
+`<p><b>${escapeHTML(p.name)}</b>
 <button onclick="goToPlace(${p.lat},${p.lon})">عرض على الخريطة</button>
 <a class="btn" href="${osmPoint(p.lat,p.lon)}" target="_self">فتح الموقع</a></p>`
 ).join("");
@@ -467,29 +574,80 @@ box.innerHTML=
 
 initMap();
 
-/* الجولة المدرسية */
+/* الجولة الافتراضية المطورة */
 const stations=[
-["🏫","مدخل المدرسة","مرحبًا بكم في مدرسة ثابت بن قيس للتعليم الأساسي. هذه المحطة التعريفية الأولى بالجولة."],
-["📚","مركز مصادر التعلم","مساحة للتعلم والقراءة والبحث واكتساب المعرفة."],
-["💻","مختبر الحاسوب","بيئة للتعلم الرقمي واستخدام التطبيقات والتقنيات الحديثة."],
-["🗺️","مختبر الخرائط الرقمية","محطة للتعرف على الخرائط ونظم المعلومات الجغرافية والاستشعار عن بُعد."],
-["🌳","الساحة المدرسية","مساحة للأنشطة المدرسية والفعاليات والمبادرات."]
+{
+icon:"🏫",
+title:"بوابة المدرسة",
+desc:"مرحبًا بكم في مدرسة ثابت بن قيس للتعليم الأساسي. تبدأ رحلتنا من بوابة المدرسة، حيث تنطلق رحلة العلم والمعرفة في بيئة تعليمية تسعى إلى التميز والإبداع.",
+caption:"أهلًا بكم في مدرسة ثابت بن قيس",
+sign:"مدرسة ثابت بن قيس",
+person:"🧑🏻‍🎓"
+},
+{
+icon:"🌳",
+title:"الساحة المدرسية",
+desc:"الساحة المدرسية مساحة للأنشطة والفعاليات والمبادرات الطلابية، وفيها يلتقي الطلاب للمشاركة والتعاون وتنمية روح الفريق والانتماء.",
+caption:"مساحة النشاط والتعاون والتميز",
+sign:"الساحة المدرسية",
+person:"👨🏻‍🎓"
+},
+{
+icon:"📚",
+title:"الفصول الدراسية",
+desc:"داخل الفصول الدراسية يكتسب الطلاب المعارف والمهارات من خلال التعلم النشط والحوار والمناقشة والأنشطة التعليمية المتنوعة.",
+caption:"هنا تبدأ رحلة المعرفة",
+sign:"الفصول الدراسية",
+person:"👩🏻‍🎓"
+},
+{
+icon:"📖",
+title:"مركز مصادر التعلم",
+desc:"مركز مصادر التعلم بيئة للقراءة والبحث والوصول إلى المعرفة، ويساعد الطلاب على تنمية مهارات التعلم الذاتي واستخدام المصادر الرقمية.",
+caption:"المعرفة والقراءة والبحث",
+sign:"مركز مصادر التعلم",
+person:"📖"
+},
+{
+icon:"🛰️",
+title:"مختبر الخرائط الرقمية والجغرافيا الذكية",
+desc:"محطة متخصصة لاستكشاف الخرائط الرقمية ونظم المعلومات الجغرافية والاستشعار عن بُعد، وتوظيف التقنيات الحديثة في فهم المكان وتحليل الظواهر الجغرافية.",
+caption:"نستكشف العالم بالتقنيات الجغرافية",
+sign:"مختبر الجغرافيا الذكية",
+person:"🧑🏻‍💻"
+}
 ];
 
 let tourIndex=0;
 
 function renderTour(){
 const s=stations[tourIndex];
-$("tourIcon").textContent=s[0];
-$("tourTitle").textContent=s[1];
-$("tourDesc").textContent=s[2];
+
+$("tourScene").dataset.scene=String(tourIndex+1);
+$("tourTitle").textContent=s.title;
+$("tourDesc").textContent=s.desc;
+$("tourCaption").textContent=s.caption;
+$("sceneSign").textContent=s.sign;
+$("scenePerson").textContent=s.person;
 $("tourCount").textContent="المحطة "+(tourIndex+1)+" من "+stations.length;
+$("tourProgress").style.width=((tourIndex+1)/stations.length*100)+"%";
+
+document.querySelectorAll(".tour-station").forEach((button,index)=>{
+button.classList.toggle("active",index===tourIndex);
+});
 }
 
 function changeTour(step){
 tourIndex=(tourIndex+step+stations.length)%stations.length;
 renderTour();
 }
+
+function goTour(index){
+if(index<0||index>=stations.length)return;
+tourIndex=index;
+renderTour();
+}
+
 renderTour();
 
 /* حاسبة المسافة */
@@ -516,12 +674,6 @@ $("distanceResult").innerHTML=
 }
 
 /* تحضير الدرس */
-function escapeHTML(s){
-return String(s).replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[c]));
-}
-
 function prepareLesson(){
 const title=$("lessonTitle").value.trim();
 const goals=$("lessonGoals").value.trim();
