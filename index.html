@@ -7,7 +7,10 @@
 <meta name="description" content="منصة الجغرافيا الذكية - مدرسة ثابت بن قيس للتعليم الأساسي - سلطنة عمان">
 <title>الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
 
+<!-- مكتبة الخرائط Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<!-- مكتبة الأيقونات الاحترافية Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root{
@@ -27,21 +30,22 @@ header{
 header h1{color:#7ce7ef;margin:10px 0;font-size:32px}
 header p{line-height:1.9;margin:6px;font-size:14px}
 .flag{height:7px;width:120px;margin:14px auto;background:linear-gradient(to left,#16834b 33%,white 33% 66%,#df2935 66%);border-radius:5px}
-.hero-icon{font-size:48px}
+.hero-icon{font-size:48px;color:#7ce7ef}
 nav{
  position:sticky;top:0;z-index:1000;background:#173d55;
  padding:10px;display:flex;gap:8px;overflow-x:auto;
  box-shadow:0 4px 15px #0003
 }
-nav a{color:white;text-decoration:none;white-space:nowrap;background:#ffffff18;padding:10px 14px;border-radius:9px;font-size:13px;transition:.2s}
+nav a{color:white;text-decoration:none;white-space:nowrap;background:#ffffff18;padding:10px 14px;border-radius:9px;font-size:13px;transition:.2s;display:flex;align-items:center;gap:6px}
 nav a:hover{background:var(--blue)}
 main{max-width:1300px;margin:auto;padding:16px}
 section{background:white;border-radius:16px;padding:26px;margin:24px 0;box-shadow:var(--shadow);scroll-margin-top:80px;border:1px solid #e4edf1}
-h2{color:var(--blue);margin-top:0;font-size:22px;border-bottom:2px solid var(--bg);padding-bottom:12px}
-h3{color:#173d55}
+h2{color:var(--blue);margin-top:0;font-size:22px;border-bottom:2px solid var(--bg);padding-bottom:12px;display:flex;align-items:center;gap:10px}
+h3{color:#173d55;display:flex;align-items:center;gap:8px}
 p{line-height:1.9}
 button,.btn{
- display:inline-block;border:0;border-radius:9px;background:var(--blue);
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ border:0;border-radius:9px;background:var(--blue);
  color:white;padding:11px 18px;cursor:pointer;font:bold 13px Tahoma;
  text-decoration:none;margin:4px;transition:.2s
 }
@@ -88,18 +92,18 @@ label{font-weight:bold;font-size:13px;display:block;margin:12px 0 6px;color:#173
 .small{font-size:12px;color:#617783;line-height:1.9}
 .tour-viewer{background:linear-gradient(135deg,#102b3f,#173d55);color:white;border-radius:16px;padding:25px;margin-top:16px}
 .tour-screen{background:#0d2231;border:2px solid #39c6d655;border-radius:12px;padding:24px;min-height:210px;margin-bottom:16px;text-align:center}
-.tour-screen h3{color:#7ce7ef;font-size:21px}
+.tour-screen h3{color:#7ce7ef;font-size:21px;justify-content:center}
 .tour-screen p{color:#d3e7ed}
-.station-image{font-size:60px;margin-bottom:10px}
+.station-image{font-size:50px;margin-bottom:10px;color:#7ce7ef}
 .tour-pills{display:flex;gap:6px;overflow-x:auto;padding:8px 0}
 .tour-pill{background:#ffffff15;border:1px solid #39c6d655;color:white;padding:7px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;font-size:12px}
 .tour-pill.active{background:var(--blue);border-color:#7ce7ef}
 .radio-box{background:linear-gradient(135deg,#102b3f,#17617b);color:white;border-radius:16px;padding:26px;text-align:center}
-.radio-box h3{color:#7ce7ef}
-.radio-icon{font-size:50px}
+.radio-box h3{color:#7ce7ef;justify-content:center}
+.radio-icon{font-size:45px;color:#7ce7ef}
 .radio-status{color:#a9e9dc;font-size:13px;font-weight:bold}
 .quiz-question{background:#f1f6f8;padding:18px;border-radius:12px;font-size:17px;font-weight:bold;margin:14px 0;border-right:4px solid var(--blue)}
-.answer-btn{width:100%;text-align:right;margin:6px 0;background:white;color:#173042;border:1px solid #cbd9df;padding:12px 16px;font-size:14px}
+.answer-btn{width:100%;text-align:right;margin:6px 0;background:white;color:#173042;border:1px solid #cbd9df;padding:12px 16px;font-size:14px;justify-content:flex-start}
 .answer-btn.correct{background:#d8f5e8!important;border-color:var(--green)!important;color:#126b4e!important}
 .answer-btn.wrong{background:#ffe5e5!important;border-color:var(--red)!important;color:#a52d2d!important}
 .game-stat{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
@@ -107,7 +111,7 @@ label{font-weight:bold;font-size:13px;display:block;margin:12px 0 6px;color:#173
 .progress{height:10px;background:#dce7eb;border-radius:20px;overflow:hidden;margin:10px 0}
 .progress-bar{height:100%;width:0;background:var(--green);transition:.4s}
 .memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
-.memory-card{min-height:85px;font-size:26px;background:#173d55;border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;border:1px solid #ffffff20}
+.memory-card{min-height:85px;font-size:24px;background:#173d55;border-radius:12px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;border:1px solid #ffffff20}
 .memory-card.open,.memory-card.matched{background:#d9f3ef;color:#173042;border-color:var(--blue)}
 #toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(100px);background:#102b3f;color:white;padding:12px 25px;border-radius:30px;z-index:9999;transition:.3s;opacity:0;pointer-events:none}
 #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
@@ -128,7 +132,7 @@ footer strong{color:#7ce7ef}
 
 <header>
  <div class="flag"></div>
- <div class="hero-icon">🌍 🇴🇲</div>
+ <div class="hero-icon"><i class="fa-solid fa-earth-americas"></i> 🇴🇲</div>
  <h1>منصة الجغرافيا الذكية</h1>
  <p>التقنيات الحديثة ونظم المعلومات الجغرافية والاستشعار عن بُعد</p>
  <p><b>مدرسة ثابت بن قيس للتعليم الأساسي</b></p>
@@ -137,37 +141,37 @@ footer strong{color:#7ce7ef}
 </header>
 
 <nav>
- <a href="#map-section">🗺️ الخريطة</a>
- <a href="#earth">🌐 الكرة الأرضية</a>
- <a href="#tour-section">🏫 الجولة المدرسية</a>
- <a href="#tours">🏛️ التراث العُماني</a>
- <a href="#lab">🛰️ المختبر الجغرافي</a>
- <a href="#radio">📻 إذاعة القرآن</a>
- <a href="#academy">🎓 المدرسة</a>
- <a href="#teacher">🧑‍🏫 مركز المعلم</a>
- <a href="#games">🎮 الألعاب</a>
- <a href="#platforms">🌐 المنصات</a>
+ <a href="#map-section"><i class="fa-solid fa-map"></i> الخريطة</a>
+ <a href="#earth"><i class="fa-solid fa-globe"></i> الكرة الأرضية</a>
+ <a href="#tour-section"><i class="fa-solid fa-school"></i> الجولة المدرسية</a>
+ <a href="#tours"><i class="fa-solid fa-monument"></i> التراث العُماني</a>
+ <a href="#lab"><i class="fa-solid fa-satellite"></i> المختبر الجغرافي</a>
+ <a href="#radio"><i class="fa-solid fa-radio"></i> إذاعة القرآن</a>
+ <a href="#academy"><i class="fa-solid fa-graduation-cap"></i> المدرسة</a>
+ <a href="#teacher"><i class="fa-solid fa-chalkboard-user"></i> مركز المعلم</a>
+ <a href="#games"><i class="fa-solid fa-gamepad"></i> الألعاب</a>
+ <a href="#platforms"><i class="fa-solid fa-network-wired"></i> المنصات</a>
 </nav>
 
 <main>
 
 <section id="map-section">
- <h2>🗺️ الخريطة الجغرافية التفاعلية لولاية بركاء</h2>
+ <h2><i class="fa-solid fa-map-location-dot"></i> الخريطة الجغرافية التفاعلية لولاية بركاء</h2>
  <p>استكشف المواقع المدرسية والمدن والمعالم التاريخية والبيئات الطبيعية في سلطنة عُمان.</p>
  <input id="search" placeholder="ابحث عن مدرسة أو معلم تاريخي أو مدينة...">
  <div class="layers">
-  <label><input type="checkbox" id="schools" checked> 🏫 المدارس</label>
-  <label><input type="checkbox" id="cities" checked> 🏙️ المدن والولايات</label>
-  <label><input type="checkbox" id="history" checked> 🏰 المواقع التاريخية</label>
-  <label><input type="checkbox" id="nature" checked> 🌿 الطبيعة والبيئة</label>
+  <label><input type="checkbox" id="schools" checked> <i class="fa-solid fa-school" style="color:var(--blue)"></i> المدارس</label>
+  <label><input type="checkbox" id="cities" checked> <i class="fa-solid fa-city" style="color:var(--blue)"></i> المدن والولايات</label>
+  <label><input type="checkbox" id="history" checked> <i class="fa-solid fa-landmark" style="color:var(--blue)"></i> المواقع التاريخية</label>
+  <label><input type="checkbox" id="nature" checked> <i class="fa-solid fa-tree" style="color:var(--green)"></i> الطبيعة والبيئة</label>
  </div>
  <div class="maptools">
-  <button onclick="showAll()">إظهار جميع المواقع</button>
-  <button onclick="focusSchool()">مدرسة ثابت بن قيس</button>
-  <button onclick="changeMap('street')">خريطة الشوارع</button>
-  <button onclick="changeMap('satellite')">صور الأقمار الصناعية</button>
-  <button onclick="changeMap('dark')">النمط الداكن</button>
-  <button class="gold" onclick="resetMap()">إعادة ضبط الخريطة</button>
+  <button onclick="showAll()"><i class="fa-solid fa-layer-group"></i> إظهار جميع المواقع</button>
+  <button onclick="focusSchool()"><i class="fa-solid fa-school-flag"></i> مدرسة ثابت بن قيس</button>
+  <button onclick="changeMap('street')"><i class="fa-solid fa-road"></i> خريطة الشوارع</button>
+  <button onclick="changeMap('satellite')"><i class="fa-solid fa-satellite"></i> صور الأقمار الصناعية</button>
+  <button onclick="changeMap('moon')"><i class="fa-solid fa-moon"></i> النمط الداكن</button>
+  <button class="gold" onclick="resetMap()"><i class="fa-solid fa-rotate-right"></i> إعادة ضبط الخريطة</button>
  </div>
  <div id="map"></div>
  <div class="stats"><span>عدد المواقع الظاهرة</span><strong id="total">0</strong></div>
@@ -175,7 +179,7 @@ footer strong{color:#7ce7ef}
 </section>
 
 <section class="globe-area" id="earth">
- <h2>🌐 الكرة الأرضية والاستكشاف العالمي</h2>
+ <h2><i class="fa-solid fa-globe"></i> الكرة الأرضية والاستكشاف العالمي</h2>
  <div class="globe-container" onclick="toggleGlobeSpin()" title="إيقاف أو تشغيل الحركة">
   <div class="globe" id="globeElement"></div>
  </div>
@@ -183,85 +187,17 @@ footer strong{color:#7ce7ef}
  <label for="earthSearch" style="color:#7ce7ef">اسم الموقع</label>
  <input id="earthSearch" value="مدرسة ثابت بن قيس، بركاء، سلطنة عمان">
  <br><br>
- <a class="btn gold" id="earthLink" target="_blank" rel="noopener">فتح Google Earth ↗</a>
- <a class="btn" id="googleMapLink" target="_blank" rel="noopener">فتح خرائط Google ↗</a>
- <a class="btn dark" href="https://earth.google.com/web/" target="_blank" rel="noopener">استكشاف الكرة الأرضية ثلاثية الأبعاد</a>
+ <a class="btn gold" id="earthLink" target="_blank" rel="noopener"><i class="fa-solid fa-earth-americas"></i> فتح Google Earth ↗</a>
+ <a class="btn" id="googleMapLink" target="_blank" rel="noopener"><i class="fa-solid fa-map-pin"></i> فتح خرائط Google ↗</a>
+ <a class="btn dark" href="https://earth.google.com/web/" target="_blank" rel="noopener"><i class="fa-solid fa-cube"></i> استكشاف الكرة الأرضية ثلاثية الأبعاد</a>
  <p class="small" style="color:#d3e7ed">الكرة المتحركة هنا عنصر بصري توضيحي، أما العرض الجغرافي ثلاثي الأبعاد الحقيقي فيتم عبر Google Earth.</p>
 </section>
 
 <section id="tour-section">
- <h2>🏫 الجولة الافتراضية التفاعلية لمدرسة ثابت بن قيس</h2>
+ <h2><i class="fa-solid fa-school-flag"></i> الجولة الافتراضية التفاعلية لمدرسة ثابت بن قيس</h2>
  <p>جولة تعريفية بمحطات المدرسة، قابلة للتطوير وإضافة صور حقيقية لكل مرفق.</p>
  <div class="tour-viewer">
   <div class="tour-screen">
-   <div class="station-image" id="stationIcon">🏫</div>
+   <div class="station-image" id="stationIcon"><i class="fa-solid fa-school"></i></div>
    <h3 id="tourTitle">مدخل المدرسة والبوابة الرئيسية</h3>
-   <p id="tourDesc">التعرف على مدخل المدرسة ومرافقها والتعريف برسالتها التعليمية.</p>
-   <div id="hotspotBadge" style="display:inline-block;margin-top:12px;background:#39c6d633;border:1px solid #39c6d6;color:#7ce7ef;padding:5px 12px;border-radius:20px;font-size:12px">📍 نقطة استكشاف</div>
-   <div style="margin-top:12px"><span id="tourCounter" style="color:#e9b949;font-weight:bold">المحطة 1 من 11</span></div>
-  </div>
-  <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-   <button onclick="prevStation()">⬅️ المحطة السابقة</button>
-   <button class="gold" onclick="nextStation()">المحطة التالية ➡️</button>
-  </div>
-  <div class="tour-pills" id="tourPills"></div>
- </div>
- <p class="small">هذه جولة وصفية تفاعلية وليست تصويرًا بانوراميًا حقيقيًا. يمكن إضافة صور المدرسة الفعلية لاحقًا لتحويلها إلى تجربة بصرية أكثر واقعية.</p>
-</section>
-
-<section id="tours">
- <h2>🏛️ الجولات الاستكشافية في التراث العُماني</h2>
- <p>اكتشف المعالم التاريخية العُمانية ومواقعها الجغرافية.</p>
- <div class="grid">
-  <div class="card"><h3>🏰 حصن بركاء</h3><p>معلم تاريخي بارز في ولاية بركاء.</p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=حصن+بركاء+عمان">الموقع الجغرافي</a><button class="gold" onclick="findPlace('حصن بركاء')">حدده على الخريطة</button></div>
-  <div class="card"><h3>🏛️ بيت النعمان</h3><p>معلم تراثي يعكس جانبًا من العمارة العُمانية.</p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=بيت+النعمان+بركاء">الموقع الجغرافي</a><button class="gold" onclick="findPlace('بيت النعمان')">حدده على الخريطة</button></div>
-  <div class="card"><h3>🏯 قلعة نزوى</h3><p>من أشهر القلاع التاريخية في سلطنة عُمان.</p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=قلعة+نزوى">الموقع الجغرافي</a><button class="gold" onclick="findPlace('قلعة نزوى')">حدده على الخريطة</button></div>
-  <div class="card"><h3>🏯 قلعة بهلاء</h3><p>موقع تراث عالمي مسجل لدى اليونسكو.</p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=قلعة+بهلاء">الموقع الجغرافي</a><button class="gold" onclick="findPlace('قلعة بهلاء')">حدده على الخريطة</button></div>
- </div>
-</section>
-
-<section id="lab">
- <h2>🛰️ المختبر الجغرافي والاستشعار عن بُعد</h2>
- <div class="grid">
-  <div class="card"><h3>🛰️ NASA Worldview</h3><p>استكشاف صور الأقمار الصناعية ومتابعة الظواهر البيئية.</p><a class="btn" target="_blank" rel="noopener" href="https://worldview.earthdata.nasa.gov/">فتح المختبر ↗</a></div>
-  <div class="card"><h3>🌍 Copernicus Browser</h3><p>استكشاف صور الأقمار الصناعية والبيانات البيئية.</p><a class="btn" target="_blank" rel="noopener" href="https://browser.dataspace.copernicus.eu/">فتح المستكشف ↗</a></div>
-  <div class="card"><h3>🗺️ ArcGIS Online</h3><p>إنشاء الخرائط الرقمية وتحليل البيانات المكانية.</p><a class="btn" target="_blank" rel="noopener" href="https://www.arcgis.com/">فتح ArcGIS ↗</a></div>
-  <div class="card"><h3>🌐 Google Earth</h3><p>استكشاف سطح الأرض والمدن والمعالم.</p><a class="btn" target="_blank" rel="noopener" href="https://earth.google.com/web/">فتح Google Earth ↗</a></div>
- </div>
-</section>
-
-<section id="radio">
- <h2>📻 إذاعة القرآن الكريم – سلطنة عُمان</h2>
- <div class="radio-box">
-  <div class="radio-icon">📖 🇴🇲</div>
-  <h3>إذاعة القرآن الكريم العُمانية</h3>
-  <p style="color:white">نافذة للاستماع إلى التلاوات والبرامج القرآنية عبر المصادر الرسمية.</p>
-  <div class="radio-status">● الوصول إلى البث عبر المنصات الرسمية</div>
-  <div style="margin-top:15px">
-   <a class="btn gold" target="_blank" rel="noopener" href="https://www.omaninfo.om/ar/omanrd/11">إذاعة وزارة الإعلام</a>
-   <a class="btn" target="_blank" rel="noopener" href="https://ayn.om/">منصة عين</a>
-   <a class="btn dark" target="_blank" rel="noopener" href="https://www.youtube.com/@QuranRadioOman">قناة اليوتيوب</a>
-  </div>
- </div>
-</section>
-
-<section id="academy">
- <h2>🎓 مدرسة ثابت بن قيس للتعليم الأساسي</h2>
- <p>بوابة للوصول إلى المناهج والموارد التعليمية العُمانية.</p>
- <div class="formgrid">
-  <div><label>الصف الدراسي</label><select id="grade"></select></div>
-  <div><label>المادة الدراسية</label><select id="subject"><option>الدراسات الاجتماعية</option><option>اللغة العربية</option><option>التربية الإسلامية</option><option>الرياضيات</option><option>العلوم</option><option>اللغة الإنجليزية</option><option>تقنية المعلومات</option></select></div>
-  <div><label>الفصل الدراسي</label><select id="term"><option>الفصل الأول</option><option>الفصل الثاني</option></select></div>
- </div>
- <div class="card" id="curriculumResult"></div>
- <a class="btn" href="https://home.moe.gov.om/" target="_blank" rel="noopener">وزارة التعليم ↗</a>
- <a class="btn dark" href="https://home.moe.gov.om/ar/manaheg/index.moe" target="_blank" rel="noopener">مكتبة المناهج الرقمية ↗</a>
-</section>
-
-<section id="teacher">
- <h2>🧑‍🏫 مركز المعلم الذكي – إعداد مسودة التحضير</h2>
- <p>أنشئ مسودة تحضير منظمة قابلة للتعديل والنسخ والطباعة. راجعها وفق المنهج والخطة المعتمدة قبل استخدامها.</p>
- <div class="formgrid">
-  <div><label>الصف</label><select id="tGrade"></select></div>
-  <div><label>الفصل الدراسي</label><select id="tTerm"><option>الفصل الأول</option><option>الفصل الثاني</option></select></div>
-  <div><label>المادة</label><select id="tSubject"><option>الدراسات الاجتماعية</option><option>اللغة العربية</option><option>التربية الإسلامية</option><option>الرياضيات</option><option>العلوم</option><option>اللغة الإنجليزية</
+   <p id="tourDesc">التع
