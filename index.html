@@ -1,84 +1,177 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102b3f">
-<meta name="description" content="منصة الجغرافيا الذكية - مدرسة ثابت بن قيس للتعليم الأساسي - سلطنة عمان">
-<title>الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#102b3f">
+    <title>الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        :root{--navy:#102b3f;--blue:#087e9e;--cyan:#39c6d6;--gold:#e9b949;--bg:#f1f6f8;--ink:#173042}
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+        header{background:linear-gradient(120deg,#102b3f,#087e9e);color:white;padding:25px 18px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.15)}
+        header h1{color:#7ce7ef;margin:8px 0;font-size:28px}
+        header p{line-height:1.8;margin:5px;font-size:14px}
+        .flag{height:7px;width:120px;margin:12px auto;background:linear-gradient(to left,#16834b 33%,white 33% 66%,#df2935 66%);border-radius:5px}
+        nav{position:sticky;top:0;z-index:1000;background:#173d55;padding:10px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+        nav a{color:white;text-decoration:none;padding:8px 16px;background:#0b4b6b;border-radius:20px;font-size:14px;transition:0.3s;cursor:pointer}
+        nav a:hover{background:#39c6d6;transform:scale(1.05)}
+        section{margin:15px auto;padding:20px;background:white;border-radius:18px;box-shadow:0 3px 14px rgba(0,0,0,0.08);max-width:1000px;width:94%}
+        section h2{color:#087e9e;border-bottom:2px solid #39c6d6;padding-bottom:6px;scroll-margin-top:70px}
+        .btn{background:#087e9e;color:white;border:none;padding:12px 24px;border-radius:30px;font-size:15px;cursor:pointer;transition:0.3s;margin:8px 4px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+        .btn:hover{background:#39c6d6;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,0.15)}
+        .btn.gold{background:#e9b949;color:#102b3f}
+        .btn.gold:hover{background:#f9d87a}
+        .btn.outline{background:transparent;border:2px solid #087e9e;color:#087e9e}
+        .plan-box{background:#f5faff;padding:18px;border-radius:16px;border-right:5px solid #087e9e;margin:12px 0;white-space:pre-wrap;direction:ltr;text-align:left}
+        .plan-box[dir="rtl"]{direction:rtl;text-align:right}
+        .q-card{background:#f9fcff;padding:15px;border-radius:14px;margin:10px 0;border:1px solid #b3d9f0}
+        .q-card p{margin:0 0 8px}
+        .q-card button{background:#e1eff8;border:1px solid #7ab3d9;padding:6px 14px;border-radius:20px;margin:3px;cursor:pointer;font-size:13px;transition:0.2s}
+        .q-card button.correct{background:#4caf50;color:white;border-color:#2e7d32}
+        .q-card button.wrong{background:#f44336;color:white;border-color:#c62828}
+        #map{height:420px;border-radius:16px;border:2px solid #087e9e;margin-top:10px}
+        #quiz{max-height:500px;overflow-y:auto}
+        footer{background:#102b3f;color:white;text-align:center;padding:15px;margin-top:20px;direction:ltr}
+        @media print{nav{display:none}#map{height:300px}section{box-shadow:none;margin:5px auto}}
+        .loading-spinner{display:inline-block;width:20px;height:20px;border:3px solid #b3d9f0;border-top-color:#087e9e;border-radius:50%;animation:spin 0.7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌍 الجغرافيا الذكية</h1>
+        <p>مدرسة ثابت بن قيس المتوسطة | بنين — محافظة حولي 🇰🇼</p>
+        <div class="flag"></div>
+        <p style="margin:0;font-size:13px">معلم المادة: أ. عبدالهادي الدوسري — 2025</p>
+    </header>
+    <nav>
+        <a onclick="showSection('planner')">🗓️ الخطة الأسبوعية</a>
+        <a onclick="showSection('map')">🗺️ الخريطة التفاعلية</a>
+        <a onclick="showSection('quiz')">🧠 المسابقة الذكية</a>
+        <a onclick="showSection('about')">ℹ️ عن المنصة</a>
+    </nav>
 
-<!-- مكتبة الخرائط Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<!-- مكتبة الأيقونات الاحترافية Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <section id="planner">
+        <h2>🗓️ الخطة الدراسية الأسبوعية</h2>
+        <p><strong>الصف:</strong> التاسع (9) — <strong>المادة:</strong> جغرافيا — <strong>الأسبوع:</strong> 13</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0">
+            <button class="btn" onclick="generatePlan('تاسع','ضبط','عادي')">🗂️ خطة عادية</button>
+            <button class="btn gold" onclick="generatePlan('تاسع','ضبط','مكثف')">⚡ خطة مكثفة</button>
+            <button class="btn outline" onclick="generatePlan('تاسع','ضبط','مختصر')">📄 خطة مختصرة</button>
+        </div>
+        <div id="plan" class="plan-box" dir="ltr">[ اضغط على زر الخطة أعلاه لعرضها ]</div>
+        <div style="text-align:left;margin-top:8px">
+            <button class="btn" onclick="printPlan()">🖨️ طباعة</button>
+            <button class="btn gold" onclick="copyPlan()">📋 نسخ</button>
+            <button class="btn outline" onclick="downloadWordPlan()">📥 تحميل (Word)</button>
+        </div>
+    </section>
 
-<style>
-:root{
- --navy:#102b3f;--blue:#087e9e;--cyan:#39c6d6;
- --gold:#e9b949;--bg:#f1f6f8;--ink:#173042;
- --green:#20a477;--red:#df5555;--white:#fff;
- --shadow:0 10px 30px rgba(23,48,66,.08);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{
- background:linear-gradient(135deg,#102b3f,#087e9e);
- color:white;padding:35px 15px;text-align:center;
- box-shadow:0 4px 20px #0002
-}
-header h1{color:#7ce7ef;margin:10px 0;font-size:32px}
-header p{line-height:1.9;margin:6px;font-size:14px}
-.flag{height:7px;width:120px;margin:14px auto;background:linear-gradient(to left,#16834b 33%,white 33% 66%,#df2935 66%);border-radius:5px}
-.hero-icon{font-size:48px;color:#7ce7ef}
-nav{
- position:sticky;top:0;z-index:1000;background:#173d55;
- padding:10px;display:flex;gap:8px;overflow-x:auto;
- box-shadow:0 4px 15px #0003
-}
-nav a{color:white;text-decoration:none;white-space:nowrap;background:#ffffff18;padding:10px 14px;border-radius:9px;font-size:13px;transition:.2s;display:flex;align-items:center;gap:6px}
-nav a:hover{background:var(--blue)}
-main{max-width:1300px;margin:auto;padding:16px}
-section{background:white;border-radius:16px;padding:26px;margin:24px 0;box-shadow:var(--shadow);scroll-margin-top:80px;border:1px solid #e4edf1}
-h2{color:var(--blue);margin-top:0;font-size:22px;border-bottom:2px solid var(--bg);padding-bottom:12px;display:flex;align-items:center;gap:10px}
-h3{color:#173d55;display:flex;align-items:center;gap:8px}
-p{line-height:1.9}
-button,.btn{
- display:inline-flex;align-items:center;justify-content:center;gap:8px;
- border:0;border-radius:9px;background:var(--blue);
- color:white;padding:11px 18px;cursor:pointer;font:bold 13px Tahoma;
- text-decoration:none;margin:4px;transition:.2s
-}
-button:hover,.btn:hover{filter:brightness(1.12);transform:translateY(-2px)}
-button:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.gold{background:var(--gold);color:#172e3d}
-.dark{background:#173d55}
-.green{background:var(--green)}
-.red{background:var(--red)}
-input,select,textarea{
- width:100%;padding:12px;border:1px solid #cbd9df;border-radius:9px;
- font:14px Tahoma;background:white;margin-top:4px;color:var(--ink)
-}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px #087e9e22}
-label{font-weight:bold;font-size:13px;display:block;margin:12px 0 6px;color:#173d55}
-#map{height:520px;width:100%;border-radius:12px;margin-top:12px;background:#e4edf1;border:1px solid #cbd9df}
-.maptools,.grid,.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:14px 0}
-.card{background:#f7fafb;border:1px solid #dce7eb;border-radius:12px;padding:18px;transition:.2s}
-.card:hover{box-shadow:0 6px 20px #087e9e20;transform:translateY(-2px)}
-.card p{font-size:13px;color:#536b78}
-.layers{display:flex;flex-wrap:wrap;gap:15px;padding:14px;background:#f1f6f8;border-radius:10px;margin:10px 0}
-.layers label{display:flex;gap:8px;align-items:center;margin:0;cursor:pointer}
-.layers input{width:auto}
-.stats{background:var(--navy);color:white;padding:14px 20px;border-radius:10px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
-.stats strong{color:#7ce7ef;font-size:22px}
-.globe-area{background:radial-gradient(circle,#164b68,#071c2b);color:white;text-align:center}
-.globe-area h2{color:white;border-color:#ffffff22}
-.globe-container{width:220px;height:220px;margin:20px auto;cursor:pointer}
-.globe{
- width:100%;height:100%;border-radius:50%;
- background:
- radial-gradient(ellipse at 30% 35%,#8bd4a0 0 12%,transparent 13%),
- radial-gradient(ellipse at 65% 55%,#76b979 0 16%,transparent 17%),
- radial-gradient(ellipse at 40% 75%,#78ae71 0 9%,transparent 10%),
- radial-gradient(circle at 30% 25%,#9be8f3,#167eaa 48%,#032b49 80%);
- box-shadow:inset -25px -15px 35px #00132299,inset 10px 8px 22px #b6
+    <section id="map" style="display:none">
+        <h2>🗺️ الخريطة التفاعلية</h2>
+        <p>استعرض مواقع المدارس القريبة والمرافق الجغرافية.</p>
+        <div id="mapContainer" style="height:420px;border-radius:16px;border:2px solid #087e9e;margin-top:10px"></div>
+        <div style="margin-top:8px;text-align:center">
+            <button class="btn" onclick="focusSchool('ثابت بن قيس')">📍 مدرسة ثابت بن قيس</button>
+            <button class="btn gold" onclick="showAllMarkers()">👁️ عرض كل المدارس</button>
+            <button class="btn outline" onclick="changeMapStyle()">🌐 تغيير نمط الخريطة</button>
+        </div>
+    </section>
+
+    <section id="quiz" style="display:none">
+        <h2>🧠 المسابقة الذكية</h2>
+        <p>اختبر معلوماتك الجغرافية. لكل سؤال إجابة واحدة صحيحة.</p>
+        <button class="btn" onclick="generateQuiz()">🎲 توليد أسئلة جديدة</button>
+        <div id="quizContainer" style="margin-top:14px"></div>
+    </section>
+
+    <section id="about" style="display:none">
+        <h2>ℹ️ عن المنصة</h2>
+        <p>منصة <strong>الجغرافيا الذكية</strong> مخصصة لطلاب مدرسة ثابت بن قيس المتوسطة (بنين) في محافظة حولي، الكويت. تهدف إلى تقديم الخطط الدراسية الأسبوعية، خرائط تفاعلية للمدارس والمرافق، ومسابقات ذكية لتنمية المهارات الجغرافية.</p>
+        <p>تم التطوير بواسطة الأستاذ عبدالهادي الدوسري © 2025.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 الجغرافيا الذكية — مدرسة ثابت بن قيس المتوسطة ، حولي ، الكويت 🇰🇼</p>
+        <p style="font-size:12px;margin-bottom:0">جميع الحقوق محفوظة | البوابة التعليمية للجغرافيا</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ========== سكربت التصفح (إظهار/إخفاء الأقسام) ==========
+        function showSection(id) {
+            const sections = ['planner','map','quiz','about'];
+            sections.forEach(s => {
+                document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
+            });
+            // تحريك الشريط
+            const el = document.getElementById(id);
+            if(el) setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'start'}), 100);
+        }
+
+        // ========== الخطة الدراسية ==========
+        let currentPlan = '';
+
+        function generatePlan(grade, group, level) {
+            const texts = {
+                'عادي': `خطة أسبوعية عادية (مستوى ${level})
+        الأحد: مراجعة مفهوم الإقليم — قراءة الكتاب ص 45-48.
+        الإثنين: مناقشة الأقاليم الاستوائية — عرض فيديو قصير.
+        الثلاثاء: تحليل خريطة الأقاليم المناخية — نشاط جماعي.
+        الأربعاء: تطبيق على الخريطة الصماء (توزيع الأقاليم).
+        الخميس: اختبار قصير + تقييم الأسبوع.`,
+                'مكثف': `خطة أسبوعية مكثفة (مستوى ${level})
+        الأحد: إقليم البحر المتوسط — خصائصه النباتية والمناخية.
+        الإثنين: الأقاليم الصحراوية — مقارنة مع الإقليم المداري.
+        الثلاثاء: الأقاليم القطبية — تأثير التيارات البحرية.
+        الأربعاء: مشروع خريطة الأقاليم (بحث + رسم).
+        الخميس: اختبار + مراجعة عامة.`,
+                'مختصر': `خطة أسبوعية مختصرة (مستوى ${level})
+        الأحد: تصنيف الأقاليم المناخية.
+        الإثنين: خريطة الأقاليم الرئيسية.
+        الثلاثاء: نشاط تطبيقي على الخريطة.
+        الأربعاء: مراجعة سريعة.
+        الخميس: تقييم قصير.`
+            };
+            currentPlan = texts[level] || texts['عادي'];
+            document.getElementById('plan').textContent = currentPlan;
+            document.getElementById('plan').setAttribute('dir','ltr');
+        }
+
+        function printPlan() {
+            const content = document.getElementById('plan').textContent;
+            if(!content || content.includes('[ اضغط')) return alert('الرجاء توليد خطة أولاً.');
+            const win = window.open('','_blank');
+            win.document.write(`<html><head><meta charset="UTF-8"><title>طباعة الخطة</title><style>body{font-family:Tahoma;padding:20px;direction:ltr}pre{background:#f4f8ff;padding:15px;border-radius:8px;border-right:3px solid #087e9e}</style></head><body><h2>الخطة الأسبوعية</h2><pre>${content}</pre><script>window.print()<\/script></body></html>`);
+            win.document.close();
+        }
+
+        function copyPlan() {
+            const content = document.getElementById('plan').textContent;
+            if(!content || content.includes('[ اضغط')) return alert('الرجاء توليد خطة أولاً.');
+            navigator.clipboard.writeText(content).then(() => alert('تم نسخ الخطة إلى الحافظة.')).catch(() => alert('فشل النسخ، يمكنك تحديد النص ونسخه يدوياً.'));
+        }
+
+        function downloadWordPlan() {
+            const content = document.getElementById('plan').textContent;
+            if(!content || content.includes('[ اضغط')) return alert('الرجاء توليد خطة أولاً.');
+            const blob = new Blob(['<html><body><h2>الخطة الأسبوعية</h2><pre>'+content+'</pre></body></html>'], {type:'application/msword'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'الخطة_الأسبوعية.doc';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
+
+        // ========== الخريطة التفاعلية (Leaflet) ==========
+        let map, markerLayer, currentStyle = 'OpenStreetMap.Mapnik';
+
+        function initMap() {
+            if(typeof L === 'undefined') {
