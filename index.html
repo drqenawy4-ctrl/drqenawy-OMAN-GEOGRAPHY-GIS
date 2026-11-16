@@ -3,2368 +3,958 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102b3f">
-<meta name="description" content="منصة الجغرافيا الذكية بمدرسة ثابت بن قيس للتعليم الأساسي - سلطنة عمان">
+<meta name="theme-color" content="#071b2b">
+<meta name="description" content="منصة الجغرافيا الذكية بمدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عمان">
 <title>الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
 
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://unpkg.com" crossorigin>
-<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
-<link id="leafletCSS" rel="stylesheet"
- href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<!-- الخرائط -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<!-- أيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- خط عربي -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
- --navy:#102b3f;
- --blue:#176b87;
- --gold:#d5a84d;
- --light:#f3f7fa;
- --white:#fff;
- --text:#203342;
- --green:#287a63;
- --border:#dce5eb;
- --red:#a83d3d;
- --muted:#667985;
+  --bg:#071b2b;
+  --bg2:#0b2639;
+  --panel:#102f43;
+  --panel2:#153b50;
+  --gold:#d8b46a;
+  --gold2:#f0d89d;
+  --cyan:#55d6d2;
+  --white:#f5f8fa;
+  --muted:#a9bdc9;
+  --line:rgba(255,255,255,.1);
+  --shadow:0 20px 55px rgba(0,0,0,.25);
+  --radius:22px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:85px}
+html{scroll-behavior:smooth;scroll-padding-top:95px}
 body{
- margin:0;
- font-family:Tahoma,Arial,sans-serif;
- background:var(--light);
- color:var(--text);
- line-height:1.8;
+  margin:0;background:var(--bg);color:var(--white);
+  font-family:"Cairo",Tahoma,sans-serif;line-height:1.8;
+  overflow-x:hidden
 }
 button,input,select{font:inherit}
-header{
- background:linear-gradient(120deg,#102b3f,#176b87);
- color:white;
- padding:30px 16px;
- text-align:center;
- border-bottom:5px solid var(--gold);
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+.container{width:min(1200px,92%);margin:auto}
+.section{padding:78px 0;position:relative}
+.section-head{margin-bottom:30px}
+.eyebrow{
+  color:var(--gold);font-size:.85rem;font-weight:800;
+  letter-spacing:.5px;display:flex;align-items:center;gap:9px
 }
-header h1{margin:0;font-size:32px}
-header p{margin:5px 0}
-header small{color:#f4d995}
-nav{
- background:#0c2334;
- display:flex;
- gap:7px;
- padding:10px;
- overflow-x:auto;
- position:sticky;
- top:0;
- z-index:1000;
- scrollbar-width:thin;
+.section-title{font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.35;margin:8px 0;font-weight:900}
+.section-desc{color:var(--muted);max-width:720px;margin:8px 0 0}
+.gold{color:var(--gold2)}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.btn{
+  border:1px solid transparent;border-radius:13px;padding:11px 18px;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-weight:800;transition:.25s;cursor:pointer
 }
-nav a{
- color:white;
- text-decoration:none;
- white-space:nowrap;
- padding:8px 13px;
- border-radius:7px;
- background:#1c4058;
- font-size:13px;
+.btn:hover{transform:translateY(-3px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#172b36;box-shadow:0 8px 25px #d8b46a30}
+.btn-outline{border-color:#ffffff35;background:#ffffff09;color:var(--white)}
+.btn-cyan{background:linear-gradient(135deg,#69e4db,#37aaa9);color:#062b35}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.topbar{
+  position:sticky;top:0;z-index:1000;
+  background:rgba(5,22,35,.88);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line)
 }
-nav a:hover,nav a:focus{background:var(--gold);color:var(--navy)}
-.container{max-width:1250px;margin:auto;padding:18px}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;min-width:210px}
+.brand-mark{
+  width:45px;height:45px;border-radius:14px;
+  display:grid;place-items:center;color:#142b36;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  font-size:1.25rem;box-shadow:0 8px 25px #d8b46a25
+}
+.brand-name{font-weight:900;line-height:1.35}
+.brand-name small{display:block;color:var(--muted);font-size:.68rem;font-weight:600}
+.nav-links{display:flex;align-items:center;gap:19px}
+.nav-links a{font-size:.84rem;color:#d0dce3;font-weight:700;transition:.2s}
+.nav-links a:hover{color:var(--gold2)}
+.menu-btn{display:none;background:none;color:white;border:0;font-size:1.4rem}
 .hero{
- background:linear-gradient(120deg,#fff,#e7f1f6);
- border:1px solid var(--border);
- border-radius:15px;
- padding:24px;
- margin-bottom:20px;
+  min-height:640px;display:flex;align-items:center;position:relative;
+  overflow:hidden;padding:75px 0 85px;
+  background:
+  radial-gradient(ellipse at 78% 35%,#1a667055,transparent 40%),
+  radial-gradient(ellipse at 15% 80%,#c79d4a20,transparent 36%),
+  linear-gradient(135deg,#071b2b 0%,#0b2b40 55%,#102d40 100%)
 }
-.hero h2{color:var(--navy);margin-top:0}
-.section{
- background:white;
- border:1px solid var(--border);
- border-radius:14px;
- padding:20px;
- margin:20px 0;
- box-shadow:0 3px 12px #102b3f0b;
+.hero:before{
+  content:"";position:absolute;inset:0;opacity:.14;pointer-events:none;
+  background-image:linear-gradient(#ffffff12 1px,transparent 1px),linear-gradient(90deg,#ffffff12 1px,transparent 1px);
+  background-size:48px 48px;mask-image:linear-gradient(to left,black,transparent 90%)
 }
-.section h2{color:var(--blue);margin-top:0}
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:14px;
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:35px;align-items:center;position:relative}
+.hero-label{
+  display:inline-flex;align-items:center;gap:9px;padding:7px 14px;
+  border:1px solid #d8b46a55;border-radius:30px;color:var(--gold2);
+  background:#d8b46a12;font-size:.83rem;font-weight:800
 }
-.card{
- background:#f7fafc;
- border:1px solid var(--border);
- padding:15px;
- border-radius:12px;
- min-width:0;
+.hero h1{font-size:clamp(2.5rem,6vw,4.8rem);line-height:1.2;margin:22px 0 12px;font-weight:900}
+.hero h1 span{
+  background:linear-gradient(90deg,#fff1c8,var(--gold),#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent
 }
-.card h3{margin-top:0;color:var(--navy)}
-button,.btn{
- display:inline-block;
- border:0;
- border-radius:8px;
- background:var(--blue);
- color:white;
- padding:10px 14px;
- cursor:pointer;
- text-decoration:none;
- margin:4px;
- font-size:14px;
+.hero p{color:#c1d1da;font-size:1.05rem;max-width:650px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-visual{min-height:380px;position:relative;display:grid;place-items:center}
+.globe{
+  width:min(340px,75vw);aspect-ratio:1;border-radius:50%;position:relative;
+  background:
+  radial-gradient(circle at 35% 30%,#6acbc3 0%,#287b83 22%,#12445e 48%,#071b2b 75%);
+  box-shadow:inset -28px -25px 55px #00101c,0 0 80px #54d6d233,0 0 0 1px #ffffff22;
+  animation:float 7s ease-in-out infinite
 }
-button:hover,.btn:hover{background:var(--navy)}
-button:disabled{opacity:.55;cursor:not-allowed}
-button:focus-visible,.btn:focus-visible,
-a:focus-visible,input:focus-visible{
- outline:3px solid var(--gold);
- outline-offset:2px;
+.globe:before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:repeating-linear-gradient(0deg,transparent 0 38px,#ffffff22 39px 40px),
+  repeating-linear-gradient(90deg,transparent 0 38px,#ffffff20 39px 40px);
+  mask-image:radial-gradient(circle,black 50%,transparent 70%)
 }
-.gold{background:#a77a25}
-.green{background:var(--green)}
-.light{background:#e7eff4;color:var(--navy)}
-.red{background:var(--red)}
-input,select{
- width:100%;
- padding:11px;
- border:1px solid #cbd7df;
- border-radius:8px;
- margin:7px 0;
- font-size:15px;
+.globe:after{
+  content:"";position:absolute;inset:-17px;border:1px solid #d8b46a66;
+  border-radius:50%;transform:rotate(-25deg) scaleY(.35)
 }
-label{font-weight:bold}
-#map{
- height:450px;
- border-radius:12px;
- z-index:1;
- background:#e7eff4;
+.orbit{
+  position:absolute;width:410px;height:410px;border:1px solid #d8b46a40;
+  border-radius:50%;transform:rotate(-25deg) scaleY(.36)
 }
-.result{
- background:#edf5f8;
- padding:12px;
- border-radius:8px;
- margin-top:10px;
- overflow-wrap:anywhere;
+.orbit:after{content:"";position:absolute;top:50%;right:8%;width:13px;height:13px;background:var(--gold2);border-radius:50%;box-shadow:0 0 22px var(--gold)}
+.hero-chip{
+  position:absolute;padding:12px 15px;border:1px solid #ffffff20;
+  border-radius:15px;background:#0b2639dd;backdrop-filter:blur(12px);
+  box-shadow:var(--shadow);font-size:.82rem;font-weight:800
 }
-.station{
- border-right:4px solid var(--gold);
- padding:14px;
- background:#f7fafc;
- margin:12px 0;
- border-radius:8px;
+.hero-chip i{color:var(--gold);margin-left:7px}
+.chip-one{top:12%;right:0}
+.chip-two{bottom:13%;left:0}
+.chip-three{bottom:0;right:15%}
+@keyframes float{50%{transform:translateY(-12px)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:38px;max-width:600px}
+.stat{border-right:2px solid var(--gold);padding:3px 13px}
+.stat strong{display:block;font-size:1.45rem;color:var(--gold2)}
+.stat span{font-size:.78rem;color:var(--muted)}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature-card,.heritage-card,.station-card{
+  border:1px solid var(--line);background:linear-gradient(145deg,#123449,#0d293c);
+  border-radius:var(--radius);padding:23px;box-shadow:var(--shadow);
+  transition:.28s;position:relative;overflow:hidden
 }
-.station img,.station video{
- display:block;
- width:100%;
- max-height:420px;
- object-fit:contain;
- border-radius:10px;
- margin-top:10px;
- background:#e7eff4;
+.feature-card:hover,.heritage-card:hover,.station-card:hover{transform:translateY(-6px);border-color:#d8b46a70}
+.feature-icon{
+  width:54px;height:54px;border-radius:17px;display:grid;place-items:center;
+  background:#d8b46a18;color:var(--gold2);font-size:1.35rem;margin-bottom:15px
 }
-.station input{background:white}
-footer{
- background:var(--navy);
- color:white;
- text-align:center;
- padding:22px;
- margin-top:30px;
+.feature-card h3,.heritage-card h3{margin:4px 0 8px;font-size:1.12rem}
+.feature-card p,.heritage-card p{color:var(--muted);font-size:.9rem;margin:0}
+.card-link{display:inline-flex;gap:8px;align-items:center;color:var(--gold2);font-weight:800;margin-top:17px;font-size:.87rem}
+/* heritage */
+.heritage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.heritage-card{padding:0}
+.heritage-art{
+  height:155px;display:grid;place-items:center;font-size:3.2rem;color:var(--gold2);
+  background:
+  radial-gradient(circle at 50% 50%,#d8b46a35,transparent 45%),
+  linear-gradient(135deg,#17465a,#0a2639)
 }
-footer strong{color:#f0cd7b}
-.muted{color:var(--muted);font-size:13px}
-.status-error{color:var(--red)}
-.status-success{color:var(--green)}
-.badge{
- display:inline-block;
- background:#e8f1f5;
- color:#176b87;
- border-radius:20px;
- padding:3px 10px;
- font-size:12px;
- margin:3px;
+.heritage-body{padding:18px}
+.tag{display:inline-block;color:var(--cyan);background:#55d6d214;border:1px solid #55d6d233;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:800}
+/* map */
+.map-panel{
+  background:#102f43;border:1px solid var(--line);padding:12px;border-radius:var(--radius);
+  box-shadow:var(--shadow)
 }
-#answers button{display:block;width:100%;text-align:right}
-#searchResults .card,#schoolResults .card{
- display:flex;
- flex-direction:column;
+.map-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.map-toolbar input,.map-toolbar select,.field{
+  min-width:0;background:#071f30;border:1px solid #ffffff22;color:white;
+  border-radius:11px;padding:11px 13px;outline:none
 }
-#searchResults .card button,#schoolResults .card button{
- margin-top:auto;
+.map-toolbar input{flex:1}
+.map-toolbar input::placeholder{color:#8da4b2}
+.map{height:440px;border-radius:15px;overflow:hidden;background:#d9e3e7}
+.map-note{font-size:.8rem;color:var(--muted);padding:10px 4px 0}
+.leaflet-popup-content{font-family:"Cairo",sans-serif;text-align:right}
+/* 3d */
+.globe-section{
+  background:linear-gradient(135deg,#0b2b40,#071b2b);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)
 }
+.cesium-wrap{height:480px;border-radius:20px;overflow:hidden;border:1px solid #ffffff22;background:#071b2b}
+#cesiumContainer{height:100%;width:100%}
+.cesium-credit{font-size:.78rem;color:var(--muted);margin-top:9px}
+/* tour */
+.tour-shell{background:#0b2639;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)}
+.tour-stage{
+  min-height:390px;border-radius:18px;overflow:hidden;position:relative;
+  background:
+  radial-gradient(circle at 50% 45%,#24536a,#0a2031 70%);
+  display:grid;place-items:center
+}
+.tour-stage img{width:100%;height:440px;object-fit:contain;background:#061724}
+.tour-placeholder{text-align:center;padding:50px 20px;color:#d9e5ea}
+.tour-placeholder i{font-size:4rem;color:var(--gold);display:block;margin-bottom:15px}
+.tour-overlay{
+  position:absolute;bottom:0;right:0;left:0;padding:24px 20px 15px;
+  background:linear-gradient(transparent,#061724ed);pointer-events:none
+}
+.tour-overlay h3{margin:0;font-size:1.3rem}
+.tour-overlay p{margin:4px 0 0;color:#d0dce3;font-size:.86rem}
+.tour-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 0;flex-wrap:wrap}
+.tour-count{color:var(--gold2);font-weight:900}
+.station-strip{display:flex;gap:9px;overflow-x:auto;padding:7px 2px 13px;scrollbar-width:thin}
+.station-btn{
+  min-width:150px;text-align:right;background:#12364b;border:1px solid #ffffff18;
+  color:#dce7ec;border-radius:13px;padding:10px 12px;font-size:.8rem;font-weight:700
+}
+.station-btn.active{border-color:var(--gold);background:#d8b46a1b;color:var(--gold2)}
+.station-btn small{display:block;color:#8fa9b8;font-size:.7rem}
+.tour-hint{color:var(--muted);font-size:.8rem;margin:8px 2px}
+/* upload manager */
+.manager{
+  margin-top:18px;border:1px dashed #d8b46a88;border-radius:18px;
+  padding:20px;background:#d8b46a08
+}
+.manager-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.upload-zone{
+  display:block;text-align:center;padding:25px;border-radius:14px;
+  background:#071f30;border:1px dashed #ffffff35;margin:15px 0;cursor:pointer
+}
+.upload-zone i{font-size:2rem;color:var(--gold);display:block;margin-bottom:7px}
+.upload-zone input{display:none}
+.upload-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.upload-item{background:#0a2335;border:1px solid var(--line);border-radius:13px;padding:10px;min-width:0}
+.upload-item img{width:100%;height:125px;object-fit:cover;border-radius:9px;background:#061724}
+.upload-item .filename{font-size:.73rem;color:#b8c8d1;overflow-wrap:anywhere;margin:5px 0}
+.upload-item select{width:100%;background:#12364b;color:white;border:1px solid #ffffff22;border-radius:9px;padding:8px}
+.upload-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.notice{
+  border-right:3px solid var(--gold);padding:10px 13px;
+  background:#d8b46a10;color:#d9e4e9;border-radius:9px;font-size:.82rem;margin-top:12px
+}
+/* footer */
+footer{background:#04131f;border-top:1px solid var(--line);padding:35px 0}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.footer-brand{font-weight:900}
+.footer-brand small{display:block;color:var(--muted);font-weight:500}
+.footer-copy{color:#8fa4b1;font-size:.8rem}
+.backtop{
+  position:fixed;bottom:20px;left:18px;width:45px;height:45px;border-radius:14px;
+  background:var(--gold);color:#102638;border:0;z-index:900;box-shadow:var(--shadow)
+}
+.toast{
+  position:fixed;bottom:22px;right:50%;transform:translate(50%,100px);
+  opacity:0;z-index:2000;background:#e8f5ef;color:#12352d;padding:12px 20px;
+  border-radius:12px;font-weight:800;box-shadow:var(--shadow);transition:.3s;
+  max-width:90%;text-align:center
+}
+.toast.show{transform:translate(50%,0);opacity:1}
 .hidden{display:none!important}
-.tour-viewer{
- background:#102b3f;
- color:white;
- padding:18px;
- border-radius:12px;
- margin:12px 0;
- text-align:center;
+@media(max-width:900px){
+ .nav-links{display:none;position:absolute;top:76px;right:0;left:0;background:#071b2b;padding:18px 5%;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}
+ .nav-links.open{display:flex}
+ .menu-btn{display:block}
+ .hero-grid{grid-template-columns:1fr}
+ .hero-visual{min-height:310px;grid-row:1}
+ .globe{width:250px}
+ .orbit{width:310px;height:310px}
+ .cards,.heritage-grid{grid-template-columns:repeat(2,1fr)}
 }
-.tour-viewer img,.tour-viewer video{
- max-width:100%;
- max-height:520px;
- border-radius:10px;
-}
-.heritage-card{
- overflow:hidden;
- background:#f7fafc;
- border:1px solid var(--border);
- border-radius:13px;
- display:flex;
- flex-direction:column;
-}
-.heritage-card img{
- width:100%;
- height:190px;
- object-fit:cover;
- background:#e7eff4;
- cursor:zoom-in;
-}
-.heritage-card-content{
- padding:14px;
- display:flex;
- flex-direction:column;
- flex:1;
-}
-.heritage-card-content p{flex:1}
-.heritage-image-status{
- padding:10px;
- color:var(--muted);
- font-size:12px;
-}
-.heritage-modal{
- position:fixed;
- inset:0;
- z-index:99999;
- background:rgba(5,17,28,.96);
- display:none;
- overflow:auto;
- padding:12px;
-}
-.heritage-modal.active{
- display:flex;
- align-items:center;
- justify-content:center;
-}
-.heritage-panel{
- width:min(1050px,100%);
- background:#fff;
- border-radius:15px;
- overflow:hidden;
- color:#203342;
- max-height:96vh;
- overflow-y:auto;
-}
-.heritage-header{
- background:#102b3f;
- color:white;
- padding:13px 18px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- flex-wrap:wrap;
-}
-.heritage-header h3{margin:0}
-.heritage-stage{
- position:relative;
- height:min(65vh,600px);
- min-height:280px;
- background:#071522;
- overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
- touch-action:pan-y;
-}
-.heritage-stage img{
- max-width:100%;
- max-height:100%;
- object-fit:contain;
- transform:translate(var(--pan-x,0px),var(--pan-y,0px)) scale(var(--zoom,1));
- transform-origin:center;
- transition:transform .12s ease;
- user-select:none;
- -webkit-user-drag:none;
- cursor:grab;
-}
-.heritage-stage img.dragging{cursor:grabbing;transition:none}
-.heritage-controls{
- padding:12px;
- display:flex;
- justify-content:center;
- flex-wrap:wrap;
- gap:5px;
-}
-.heritage-info{
- padding:12px 18px;
- background:#f3f7fa;
- border-top:1px solid var(--border);
-}
-.heritage-info input{max-width:100%}
-#heritageTourStage .pnlm-container{width:100%;height:100%}
-#heritageTourStage .pnlm-load-box{font-family:Tahoma,Arial,sans-serif}
 @media(max-width:600px){
- header h1{font-size:24px}
- .container{padding:10px}
- .section{padding:14px}
- #map{height:360px}
- button,.btn{font-size:13px;padding:9px 11px}
- .heritage-card img{height:160px}
- .heritage-modal{padding:5px}
- .heritage-stage{height:55vh}
-}
-@media(prefers-reduced-motion:reduce){
- html{scroll-behavior:auto}
- *,*::before,*::after{transition:none!important;animation:none!important}
+ .section{padding:55px 0}
+ .hero{padding:45px 0}
+ .hero-visual{min-height:260px}
+ .globe{width:205px}
+ .orbit{width:255px;height:255px}
+ .hero-chip{font-size:.7rem;padding:8px 10px}
+ .chip-one{right:-3px}
+ .chip-two{left:-3px}
+ .stats{gap:5px}
+ .stat strong{font-size:1.1rem}
+ .stat span{font-size:.68rem}
+ .cards,.heritage-grid{grid-template-columns:1fr}
+ .map{height:350px}
+ .cesium-wrap{height:360px}
+ .tour-stage{min-height:280px}
+ .tour-stage img{height:320px}
+ .upload-list{grid-template-columns:repeat(2,1fr)}
+ .brand{min-width:0}
+ .brand-name{font-size:.85rem}
+ .brand-name small{font-size:.6rem}
+ .tour-shell{padding:10px}
 }
 </style>
 </head>
 
 <body>
-<header>
- <h1>🌍 الجغرافيا الذكية</h1>
- <p>مدرسة ثابت بن قيس للتعليم الأساسي</p>
- <small>نحو تعليم جغرافي رقمي يوظف نظم المعلومات الجغرافية والاستشعار عن بُعد</small>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="#home" aria-label="العودة إلى الرئيسية">
+      <div class="brand-mark"><i class="fa-solid fa-earth-asia"></i></div>
+      <div class="brand-name">الجغرافيا الذكية
+        <small>مدرسة ثابت بن قيس · سلطنة عُمان</small>
+      </div>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#heritage">أطلس التراث</a>
+      <a href="#schools">دليل المدارس</a>
+      <a href="#explore">الاستكشافات</a>
+      <a href="#globe3d">الكرة ثلاثية الأبعاد</a>
+      <a href="#tour">جولة المدرسة</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة"><i class="fa-solid fa-bars"></i></button>
+  </div>
 </header>
 
-<nav aria-label="القائمة الرئيسية">
- <a href="#home">الرئيسية</a>
- <a href="#gis">الخريطة التفاعلية</a>
- <a href="#heritage">أطلس التراث</a>
- <a href="#schools">المدارس</a>
- <a href="#distance">حاسبة المسافة</a>
- <a href="#tour">الجولة الافتراضية</a>
- <a href="#lab">مختبر الجغرافيا</a>
- <a href="#academy">أكاديمية الجغرافيا</a>
- <a href="#teacher">مركز المعلم</a>
- <a href="#challenge">التحدي الجغرافي</a>
- <a href="#sources">المصادر</a>
-</nav>
-
-<main class="container">
-
+<main>
 <section class="hero" id="home">
- <h2>مرحبًا بكم في عالم الجغرافيا الذكية</h2>
- <p>
-  منصة تعليمية تفاعلية تربط المعرفة الجغرافية بالتقنيات الحديثة،
-  وتتيح استكشاف المواقع العُمانية وتحليل الخرائط والتعرف على التراث
-  والمجال المكاني لولاية بركاء.
- </p>
- <div class="grid">
-  <div class="card">
-   <h3>🗺️ الخرائط الرقمية</h3>
-   <p>استكشف المواقع والظواهر الجغرافية من خلال الخرائط التفاعلية.</p>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-label"><i class="fa-solid fa-satellite"></i> منصة تعليمية جغرافية رقمية</div>
+      <h1>اكتشف العالم<br><span>بعين الجغرافيا الذكية</span></h1>
+      <p>
+        تجربة رقمية تجمع الخرائط التفاعلية، والتراث العُماني، والاستكشاف الجغرافي،
+        والتقنيات ثلاثية الأبعاد في منصة تعليمية واحدة.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#tour"><i class="fa-solid fa-vr-cardboard"></i> ابدأ جولة المدرسة</a>
+        <a class="btn btn-outline" href="#explore"><i class="fa-solid fa-map-location-dot"></i> استكشف الخرائط</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>13</strong><span>محطة في الجولة المدرسية</span></div>
+        <div class="stat"><strong>GIS</strong><span>نظم المعلومات الجغرافية</span></div>
+        <div class="stat"><strong>3D</strong><span>استكشاف الكرة الأرضية</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="orbit"></div><div class="globe"></div>
+      <div class="hero-chip chip-one"><i class="fa-solid fa-satellite-dish"></i> الاستشعار عن بُعد</div>
+      <div class="hero-chip chip-two"><i class="fa-solid fa-map"></i> الخرائط الرقمية</div>
+      <div class="hero-chip chip-three"><i class="fa-solid fa-location-dot"></i> اكتشف موقعك</div>
+    </div>
   </div>
-  <div class="card">
-   <h3>🛰️ الاستشعار عن بُعد</h3>
-   <p>تعرف على صور الأقمار الصناعية واستخداماتها في دراسة الأرض.</p>
+</section>
+
+<section class="section" id="overview">
+ <div class="container">
+  <div class="section-head">
+    <div class="eyebrow"><i class="fa-solid fa-compass"></i> بوابتك إلى المعرفة المكانية</div>
+    <h2 class="section-title">الجغرافيا <span class="gold">تجربة تُكتشف</span></h2>
+    <p class="section-desc">منصة تربط المعرفة الجغرافية بالتطبيق العملي، وتحوّل استكشاف المكان إلى تجربة تفاعلية.</p>
   </div>
-  <div class="card">
-   <h3>📍 نظم المعلومات الجغرافية</h3>
-   <p>اربط البيانات بالمواقع وحلل الأنماط والعلاقات المكانية.</p>
+  <div class="cards">
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-landmark"></i></div>
+    <h3>أطلس التراث العُماني</h3>
+    <p>اكتشف مجموعة من المعالم التاريخية والحضارية في سلطنة عُمان عبر خريطة تفاعلية.</p>
+    <a class="card-link" href="#heritage">استكشف الأطلس <i class="fa-solid fa-arrow-left"></i></a>
+   </article>
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-school"></i></div>
+    <h3>دليل المدارس</h3>
+    <p>ابحث عن موقع مدرسة أو مكان تعليمي واعرضه على الخريطة الرقمية.</p>
+    <a class="card-link" href="#schools">افتح الدليل <i class="fa-solid fa-arrow-left"></i></a>
+   </article>
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-satellite"></i></div>
+    <h3>الاستكشافات الجغرافية</h3>
+    <p>استكشف مواقع جغرافية متنوعة وتعرّف على توزيعها المكاني باستخدام الخرائط.</p>
+    <a class="card-link" href="#explore">ابدأ الاستكشاف <i class="fa-solid fa-arrow-left"></i></a>
+   </article>
   </div>
-  <div class="card">
-   <h3>🏛️ التراث العُماني</h3>
-   <p>جولة معرفية لاستكشاف المعالم التاريخية في سلطنة عُمان.</p>
-  </div>
- </div>
- <div class="result">
-  <strong>وجهتنا التعليمية:</strong>
-  مدرسة ثابت بن قيس – ولاية بركاء – سلطنة عُمان.
  </div>
 </section>
 
-<section class="section" id="gis">
- <h2>🗺️ الخريطة الجغرافية التفاعلية</h2>
- <p>استكشف ولاية بركاء والمواقع الجغرافية المحيطة بها، وبدّل بين الخرائط.</p>
-
- <label for="placeSearch">البحث عن موقع</label>
- <input id="placeSearch" type="search"
-  placeholder="مثال: حصن بركاء، بيت النعمان، مدرسة..."
-  autocomplete="off" maxlength="100">
-
- <button type="button" id="searchButton">🔎 ابحث عن المكان</button>
- <button type="button" class="light" id="barkaButton">📍 الانتقال إلى بركاء</button>
-
- <div style="margin:10px 0">
-  <button type="button" class="light" data-layer="street">خريطة الشوارع</button>
-  <button type="button" class="light" data-layer="satellite">صور الأقمار الصناعية</button>
-  <button type="button" class="light" data-layer="light">الخريطة الهادئة</button>
+<section class="section" id="heritage" style="background:#0a2335">
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-building-columns"></i> ذاكرة المكان</div>
+   <h2 class="section-title">أطلس <span class="gold">التراث العُماني</span></h2>
+   <p class="section-desc">معالم تاريخية مختارة، يمكنك تحديد أي منها لعرض موقعه على الخريطة.</p>
+  </div>
+  <div class="heritage-grid" id="heritageGrid"></div>
+  <div class="map-panel" style="margin-top:22px">
+   <div class="map-toolbar">
+    <strong style="align-self:center">خريطة المعالم التراثية</strong>
+    <button class="btn btn-outline" id="showHeritage"><i class="fa-solid fa-map"></i> عرض جميع المعالم</button>
+   </div>
+   <div id="heritageMap" class="map"></div>
+  </div>
  </div>
-
- <div id="map" role="region" aria-label="الخريطة التفاعلية"></div>
- <div id="mapStatus" class="result" aria-live="polite">جارٍ تجهيز الخريطة...</div>
- <div id="searchResults" class="grid" style="margin-top:12px"></div>
-
- <div class="result">
-  <strong>خدمات الخرائط المفتوحة:</strong><br>
-  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> |
-  <a href="https://www.arcgis.com/apps/mapviewer/" target="_blank" rel="noopener noreferrer">ArcGIS Map Viewer</a> |
-  <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Worldview</a>
- </div>
- <p class="muted">
-  البحث يستخدم بيانات OpenStreetMap عبر Overpass API.
-  قد تختلف النتائج بحسب اكتمال البيانات المتاحة.
- </p>
-</section>
-
-<section class="section" id="heritage">
- <h2>🏛️ أطلس التراث العُماني</h2>
- <p>
-  استكشف صور المعالم العُمانية، وشاهدها مكبرة، وتنقل بين المواقع.
-  ويمكن تشغيل صورة بانورامية 360° عند توفرها.
- </p>
- <div class="grid" id="heritageList"></div>
 </section>
 
 <section class="section" id="schools">
- <h2>🏫 المدارس والمجال التعليمي في بركاء</h2>
- <p>
-  استكشف المدارس المسجلة في بيانات الخرائط المفتوحة ضمن النطاق الجغرافي
-  لبركاء. النتائج ليست حصرًا رسميًا.
- </p>
- <button type="button" id="schoolButton">🔎 استكشاف المدارس القريبة</button>
- <div id="schoolStatus" class="result" aria-live="polite">اضغط الزر لبدء البحث.</div>
- <div id="schoolResults" class="grid" style="margin-top:12px"></div>
-</section>
-
-<section class="section" id="distance">
- <h2>📏 حاسبة المسافة الجغرافية</h2>
- <p>احسب المسافة التقريبية بين نقطتين باستخدام الإحداثيات الجغرافية.</p>
-
- <div class="grid">
-  <div class="card">
-   <h3>الموقع الأول</h3>
-   <label for="lat1">خط العرض</label>
-   <input id="lat1" type="number" step="any" value="23.7050">
-   <label for="lon1">خط الطول</label>
-   <input id="lon1" type="number" step="any" value="57.8820">
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-school-flag"></i> المواقع التعليمية</div>
+   <h2 class="section-title">دليل <span class="gold">المدارس والمواقع</span></h2>
+   <p class="section-desc">اكتب اسم المدرسة أو الموقع للبحث عنه جغرافياً وعرضه على الخريطة.</p>
   </div>
-  <div class="card">
-   <h3>الموقع الثاني</h3>
-   <label for="lat2">خط العرض</label>
-   <input id="lat2" type="number" step="any" value="23.7042">
-   <label for="lon2">خط الطول</label>
-   <input id="lon2" type="number" step="any" value="57.8860">
+  <div class="map-panel">
+   <div class="map-toolbar">
+    <input id="schoolSearch" type="search" placeholder="اكتب اسم المدرسة أو الموقع أو المنطقة...">
+    <button class="btn btn-gold" id="schoolSearchBtn"><i class="fa-solid fa-magnifying-glass"></i> بحث</button>
+    <button class="btn btn-outline" id="schoolLocateBtn"><i class="fa-solid fa-location-crosshairs"></i> موقعي</button>
+   </div>
+   <div id="schoolMap" class="map"></div>
+   <p class="map-note">تعتمد نتائج البحث على خدمة OpenStreetMap. تحقق من اسم المدرسة وموقعها قبل اعتماد البيانات رسمياً.</p>
   </div>
  </div>
+</section>
 
- <button type="button" id="distanceButton">احسب المسافة</button>
- <div id="distanceResult" class="result" aria-live="polite">ستظهر نتيجة الحساب هنا.</div>
- <p class="muted">
-  الحساب تقريبي ويعتمد على المسافة الجغرافية المباشرة، وليس مسافة الطريق.
- </p>
+<section class="section" id="explore" style="background:#0a2335">
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-earth-africa"></i> نافذة على المكان</div>
+   <h2 class="section-title">الاستكشافات <span class="gold">الجغرافية</span></h2>
+   <p class="section-desc">ابحث عن المدن والجبال والسواحل والمعالم، ثم شاهد موقعها على الخريطة.</p>
+  </div>
+  <div class="map-panel">
+   <div class="map-toolbar">
+    <input id="exploreSearch" type="search" placeholder="ابحث عن مكان: مسقط، بركاء، جبل شمس...">
+    <button class="btn btn-cyan" id="exploreSearchBtn"><i class="fa-solid fa-compass"></i> استكشف</button>
+   </div>
+   <div id="exploreMap" class="map"></div>
+   <p class="map-note">الخريطة تفاعلية، ويمكنك التكبير والتصغير وتحريكها واختيار أي موقع.</p>
+  </div>
+ </div>
+</section>
+
+<section class="section globe-section" id="globe3d">
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-globe"></i> رؤية مكانية ثلاثية الأبعاد</div>
+   <h2 class="section-title">الكرة الأرضية <span class="gold">ثلاثية الأبعاد</span></h2>
+   <p class="section-desc">استكشف سطح الأرض، ودوّر الكرة الأرضية، واقترب من المناطق المختلفة.</p>
+  </div>
+  <div class="cesium-wrap"><div id="cesiumContainer"></div></div>
+  <p class="cesium-credit">يتم تحميل المشهد ثلاثي الأبعاد من مكتبة Cesium ومصادر الخرائط المتاحة عبر الإنترنت. هذا عرض للكرة الأرضية وليس نموذجاً ثلاثي الأبعاد لمبنى المدرسة.</p>
+ </div>
 </section>
 
 <section class="section" id="tour">
- <h2>🏫 الجولة الافتراضية في مدرسة ثابت بن قيس</h2>
- <p>
-  جولة تعريفية تتكون من 13 محطة داخل المدرسة.
-  يمكن إضافة الصور أو مقاطع الفيديو الأصلية لكل محطة.
- </p>
- <div class="result">
-  <strong>جولة استكشافية:</strong>
-  اختر المحطة التي ترغب في التعرف عليها، ثم أضف صورتها أو مقطع الفيديو الخاص بها.
- </div>
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-vr-cardboard"></i> عِش تفاصيل المكان</div>
+   <h2 class="section-title">جولة افتراضية في <span class="gold">مدرسة ثابت بن قيس</span></h2>
+   <p class="section-desc">تنقّل بين محطات المدرسة، وشاهد الصور التي تضيفها لكل موقع.</p>
+  </div>
 
- <div id="tourViewer" class="tour-viewer hidden" aria-live="polite">
-  <h3 id="tourViewerTitle">مشاهدة المحطة</h3>
-  <div id="tourMedia"></div>
-  <p class="muted" style="color:#e0eaf0">
-   المعاينة محلية على جهازك، ولا تُرفع الصور إلى الموقع تلقائيًا.
-  </p>
- </div>
+  <div class="tour-shell">
+   <div class="tour-stage" id="tourStage">
+    <div class="tour-placeholder">
+     <i class="fa-solid fa-school"></i>
+     <h3>مرحباً بك في الجولة الافتراضية</h3>
+     <p>أضف صور المدرسة من مدير الصور أدناه، ثم اربط كل صورة بالمحطة المناسبة.</p>
+    </div>
+    <div class="tour-overlay">
+     <h3 id="stationTitle">المحطة الأولى: مدخل المدرسة والبوابة الرئيسية</h3>
+     <p id="stationDescription">ابدأ الجولة من المدخل الرئيسي للمدرسة.</p>
+    </div>
+   </div>
 
- <div id="tourStations"></div>
- <p class="muted">
-  لإظهار تجوال داخلي حقيقي بزاوية 360 درجة، نحتاج إلى صور بانورامية أصلية للممرات والغرف.
- </p>
-</section>
+   <div class="tour-controls">
+    <button class="btn btn-outline" id="prevStation"><i class="fa-solid fa-arrow-right"></i> السابقة</button>
+    <span class="tour-count" id="stationCount">01 / 13</span>
+    <button class="btn btn-gold" id="nextStation">التالية <i class="fa-solid fa-arrow-left"></i></button>
+   </div>
+   <div class="station-strip" id="stationStrip"></div>
+   <p class="tour-hint"><i class="fa-solid fa-circle-info gold"></i> الصور العادية تعرض مشهداً فوتوغرافياً. التجوال البانورامي 360° يحتاج إلى صور بانورامية أصلية.</p>
 
-<section class="section" id="lab">
- <h2>🛰️ مختبر الجغرافيا والتقنيات الحديثة</h2>
- <div class="grid">
-  <div class="card">
-   <h3>🌐 نظم المعلومات الجغرافية GIS</h3>
-   <p>تقنيات جمع البيانات المكانية وإدارتها وتحليلها وعرضها.</p>
-   <a class="btn" href="https://www.arcgis.com/" target="_blank" rel="noopener noreferrer">استكشف ArcGIS</a>
-  </div>
-  <div class="card">
-   <h3>🛰️ الاستشعار عن بُعد</h3>
-   <p>دراسة سطح الأرض من خلال صور الأقمار الصناعية.</p>
-   <a class="btn" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">استكشف صور ناسا</a>
-  </div>
-  <div class="card">
-   <h3>🗺️ الخرائط المفتوحة</h3>
-   <p>التعرف على البيانات الجغرافية المفتوحة ومجتمعات رسم الخرائط.</p>
-   <a class="btn" href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">استكشف الخرائط</a>
-  </div>
-  <div class="card">
-   <h3>🌍 مستكشف الصور الفضائية</h3>
-   <p>مشاهدة صور الأقمار الصناعية وتحليل التغيرات على سطح الأرض.</p>
-   <a class="btn" href="https://apps.sentinel-hub.com/eo-browser/" target="_blank" rel="noopener noreferrer">مستكشف Sentinel</a>
-  </div>
-  <div class="card">
-   <h3>🧭 خرائط ArcGIS التعليمية</h3>
-   <p>إنشاء الخرائط الرقمية والتعرف على أدوات التحليل المكاني.</p>
-   <a class="btn" href="https://www.arcgis.com/apps/mapviewer/" target="_blank" rel="noopener noreferrer">افتح عارض الخرائط</a>
-  </div>
-  <div class="card">
-   <h3>🌎 بيانات الأرض</h3>
-   <p>مصادر علمية لاستكشاف بيانات الأرض والمناخ والبيئة.</p>
-   <a class="btn" href="https://earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">بيانات ناسا</a>
-  </div>
- </div>
-</section>
+   <div class="manager">
+    <div class="manager-head">
+     <div>
+      <h3 style="margin:0"><i class="fa-solid fa-wand-magic-sparkles gold"></i> الموزّع الذكي لصور الجولة</h3>
+      <p class="muted small" style="margin:3px 0">أضف صوراً متعددة، ثم راجع اقتراح المحطة لكل صورة.</p>
+     </div>
+     <span class="tag">إدارة الصور</span>
+    </div>
 
-<section class="section" id="academy">
- <h2>🎓 أكاديمية الجغرافيا</h2>
- <p>مساحة تعليمية للتعرف على المفاهيم الجغرافية والتقنيات الحديثة.</p>
- <div class="grid">
-  <div class="card">
-   <h3>🗺️ تعلم قراءة الخرائط</h3>
-   <p>تعرف على العنوان والمفتاح ومقياس الرسم والاتجاهات والإحداثيات.</p>
-   <span class="badge">مهارات جغرافية</span>
-  </div>
-  <div class="card">
-   <h3>📍 تعلم الإحداثيات</h3>
-   <p>تعرف على خطوط الطول ودوائر العرض وتحديد المواقع.</p>
-   <span class="badge">الموقع الجغرافي</span>
-  </div>
-  <div class="card">
-   <h3>🛰️ تعلم الاستشعار عن بُعد</h3>
-   <p>تعرف على دور الأقمار الصناعية في دراسة الظواهر الأرضية.</p>
-   <span class="badge">تقنيات حديثة</span>
-  </div>
-  <div class="card">
-   <h3>📊 تعلم التحليل المكاني</h3>
-   <p>اكتشف كيف تساعد البيانات والخرائط على فهم العلاقات المكانية.</p>
-   <span class="badge">تحليل جغرافي</span>
+    <label class="upload-zone" for="tourFiles">
+     <i class="fa-solid fa-cloud-arrow-up"></i>
+     <strong>اضغط لاختيار صور المدرسة</strong>
+     <div class="muted small">يمكن اختيار عدة صور دفعة واحدة من الهاتف أو الحاسوب</div>
+     <input id="tourFiles" type="file" accept="image/*" multiple>
+    </label>
+
+    <div class="notice">
+     <strong>كيف يعمل الاقتراح؟</strong>
+     يقترح النظام المحطة اعتماداً على كلمات اسم الملف، ويمكنك تغيير المحطة يدوياً. لا يوجد تحليل بصري فعلي للصور دون ربط خدمة ذكاء اصطناعي خارجية.
+    </div>
+
+    <div id="uploadList" class="upload-list"></div>
+    <div class="upload-actions">
+     <button class="btn btn-gold" id="applyImages"><i class="fa-solid fa-check"></i> اعتماد الصور في الجولة</button>
+     <button class="btn btn-outline" id="exportManifest"><i class="fa-solid fa-file-export"></i> تصدير توزيع الصور</button>
+     <button class="btn btn-outline" id="clearImages"><i class="fa-solid fa-trash"></i> مسح الصور المختارة</button>
+    </div>
+    <p class="small muted" id="imageStatus" aria-live="polite">لم تتم إضافة صور بعد.</p>
+   </div>
   </div>
  </div>
 </section>
 
-<section class="section" id="teacher">
- <h2>👨‍🏫 مركز المعلم</h2>
- <p>مصادر وأدوات مساندة لتوظيف التقنيات الجغرافية في التعليم.</p>
- <div class="grid">
-  <div class="card">
-   <h3>📚 مصادر جغرافية</h3>
-   <p>مواقع علمية ومصادر بيانات تساعد في إعداد الدروس والأنشطة.</p>
-   <a class="btn" href="https://www.usgs.gov/" target="_blank" rel="noopener noreferrer">المصادر الجيولوجية</a>
+<section class="section" id="about">
+ <div class="container">
+  <div class="section-head">
+   <div class="eyebrow"><i class="fa-solid fa-lightbulb"></i> المعرفة والتقنية</div>
+   <h2 class="section-title">نتعلم الجغرافيا <span class="gold">بأدوات المستقبل</span></h2>
   </div>
-  <div class="card">
-   <h3>🧩 أنشطة تفاعلية</h3>
-   <p>استخدم التحدي الجغرافي في هذه المنصة لتقويم تعلم الطلاب.</p>
-   <a class="btn" href="#challenge">انتقل إلى التحدي</a>
-  </div>
-  <div class="card">
-   <h3>🌐 خرائط تعليمية</h3>
-   <p>استفد من أدوات إنشاء الخرائط الرقمية والطبقات الجغرافية.</p>
-   <a class="btn" href="https://www.arcgis.com/" target="_blank" rel="noopener noreferrer">منصة ArcGIS</a>
-  </div>
-  <div class="card">
-   <h3>🛰️ بيانات فضائية</h3>
-   <p>استخدم مصادر صور الأقمار الصناعية في الأنشطة الجغرافية.</p>
-   <a class="btn" href="https://earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">بيانات الأرض</a>
-  </div>
- </div>
-</section>
-
-<section class="section" id="challenge">
- <h2>🧠 التحدي الجغرافي</h2>
- <p>اختبر معلوماتك في الخرائط والتقنيات الجغرافية.</p>
- <div class="card">
-  <div class="badge" id="quizProgress">السؤال 1 من 5</div>
-  <h3 id="question">جارٍ تحميل السؤال...</h3>
-  <div id="answers"></div>
-  <div id="quizResult" class="result" aria-live="polite">اختر إجابة واحدة.</div>
-  <button type="button" id="nextQuestionButton">السؤال التالي</button>
-  <button type="button" class="light" id="restartQuizButton">إعادة التحدي</button>
-  <p>النتيجة: <strong id="score">0</strong> من 5</p>
- </div>
-</section>
-
-<section class="section" id="sources">
- <h2>📚 مصادر تعليمية موثوقة</h2>
- <div class="grid">
-  <div class="card">
-   <h3>وكالة ناسا</h3>
-   <p>مصادر علمية وصور وبيانات عن الأرض والفضاء.</p>
-   <a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
-  </div>
-  <div class="card">
-   <h3>هيئة المساحة الجيولوجية الأمريكية</h3>
-   <p>بيانات علمية وجغرافية عن الأرض.</p>
-   <a href="https://www.usgs.gov/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
-  </div>
-  <div class="card">
-   <h3>منظمة الأمم المتحدة</h3>
-   <p>مصادر ومعلومات دولية.</p>
-   <a href="https://www.un.org/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
-  </div>
-  <div class="card">
-   <h3>Esri للتعليم الجغرافي</h3>
-   <p>أدوات وموارد تعليم نظم المعلومات الجغرافية.</p>
-   <a href="https://www.esri.com/en-us/industries/education/overview" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
+  <div class="cards">
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+    <h3>نظم المعلومات الجغرافية GIS</h3>
+    <p>تقنيات جمع البيانات المكانية وتنظيمها وتحليلها وعرضها على الخرائط.</p>
+   </article>
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-satellite"></i></div>
+    <h3>الاستشعار عن بُعد</h3>
+    <p>التعرّف على سطح الأرض والظواهر الجغرافية من خلال بيانات وصور الأقمار الصناعية.</p>
+   </article>
+   <article class="feature-card">
+    <div class="feature-icon"><i class="fa-solid fa-cube"></i></div>
+    <h3>النمذجة ثلاثية الأبعاد</h3>
+    <p>استكشاف المكان بصرياً وفهم العلاقات المكانية من خلال النماذج الرقمية.</p>
+   </article>
   </div>
  </div>
 </section>
-
 </main>
 
 <footer>
- <strong>🌍 منصة الجغرافيا الذكية</strong>
- <p>مدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عُمان</p>
- <p>تصميم وإعداد: د. قناوي حسين</p>
- <small>الجغرافيا الذكية... معرفة مكانية برؤية رقمية</small>
+ <div class="container footer-inner">
+  <div class="footer-brand">الجغرافيا الذكية
+   <small>مدرسة ثابت بن قيس للتعليم الأساسي · سلطنة عُمان</small>
+  </div>
+  <div class="footer-copy">تصميم وإعداد: د. قناوي حسين<br>منصة تعليمية جغرافية تفاعلية</div>
+ </div>
 </footer>
+
+<button class="backtop" id="backTop" aria-label="العودة للأعلى"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- المكتبات الخارجية -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 
 <script>
 "use strict";
 
-/* الإعدادات العامة */
-const BARKA=[23.7042,57.8860];
+/* =========================
+   أدوات عامة
+========================= */
+const $ = (id) => document.getElementById(id);
 
-const BARKA_BOUNDS={
- south:23.45,
- west:57.55,
- north:23.95,
- east:58.20
-};
-
-const OVERPASS_SERVERS=[
- "https://overpass-api.de/api/interpreter",
- "https://overpass.kumi.systems/api/interpreter",
- "https://overpass.private.coffee/api/interpreter"
-];
-
-const MAX_UPLOAD_SIZE=50*1024*1024;
-
-let map=null;
-let activeLayer=null;
-let mapLayers={};
-let searchMarkers=null;
-let schoolMarkers=null;
-let searchRunning=false;
-let schoolRequestRunning=false;
-let leafletPromise=null;
-
-let heritageImages={};
-let heritageCurrentIndex=0;
-let heritageZoom=1;
-let heritagePanX=0;
-let heritagePanY=0;
-let heritage360Viewer=null;
-let heritageRequestToken=0;
-let pannellumPromise=null;
-let lastHeritageFocus=null;
-
-const temporaryObjectURLs=new Set();
-
-function el(id){
- return document.getElementById(id);
-}
-
-function setStatus(id,message,type="normal"){
- const node=el(id);
- if(!node)return;
-
- node.textContent=message;
- node.classList.remove("status-error","status-success");
-
- if(type==="error")node.classList.add("status-error");
- if(type==="success")node.classList.add("status-success");
+function toast(message){
+  const box=$("toast");
+  box.textContent=message;
+  box.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>box.classList.remove("show"),3000);
 }
 
 function escapeHTML(value){
- return String(value).replace(/[&<>"']/g,char=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#39;"
- })[char]);
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
 }
 
-function setButtonBusy(button,busy,busyLabel,normalLabel){
- if(!button)return;
- button.disabled=busy;
- button.textContent=busy?busyLabel:normalLabel;
-}
-
-function openExternal(url){
- try{
-  const parsed=new URL(url);
-  if(parsed.protocol!=="https:"&&parsed.protocol!=="http:")return;
-
-  const link=document.createElement("a");
-  link.href=parsed.href;
-  link.target="_blank";
-  link.rel="noopener noreferrer";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
- }catch(error){
-  console.warn("رابط غير صالح:",error);
- }
-}
-
-function openOSMSearch(query){
- openExternal(
-  "https://www.openstreetmap.org/search?query="+encodeURIComponent(query)
- );
-}
-
-/* تحميل CSS الخاص بخرائط Leaflet */
-function loadLeafletCSS(){
- const css=el("leafletCSS");
- if(!css)return;
-
- css.onerror=()=>{
-  if(css.dataset.fallback==="used")return;
-
-  css.dataset.fallback="used";
-  css.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
- };
-}
-
-/* تحميل مكتبة الخرائط مع بديل */
-function loadLeafletScript(){
- if(window.L)return Promise.resolve();
- if(leafletPromise)return leafletPromise;
-
- leafletPromise=new Promise((resolve,reject)=>{
-  const sources=[
-   "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js",
-   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  ];
-
-  let index=0;
-
-  function attempt(){
-   if(window.L){
-    resolve();
-    return;
-   }
-
-   if(index>=sources.length){
-    leafletPromise=null;
-    reject(new Error("تعذر تحميل مكتبة الخرائط"));
-    return;
-   }
-
-   const script=document.createElement("script");
-   script.src=sources[index++];
-   script.async=true;
-
-   script.onload=()=>{
-    if(window.L)resolve();
-    else attempt();
-   };
-
-   script.onerror=()=>{
-    script.remove();
-    attempt();
-   };
-
-   document.head.appendChild(script);
-  }
-
-  attempt();
- });
-
- return leafletPromise;
-}
-
-/* إنشاء الخريطة */
-function initializeMap(){
- loadLeafletCSS();
-
- loadLeafletScript().then(()=>{
-  if(map)return;
-
-  map=L.map("map",{
-   zoomControl:true,
-   scrollWheelZoom:true,
-   preferCanvas:true
-  }).setView(BARKA,12);
-
-  mapLayers={
-   street:L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-     maxZoom:19,
-     attribution:"© OpenStreetMap contributors"
-    }
-   ),
-
-   light:L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    {
-     maxZoom:20,
-     attribution:"© OpenStreetMap © CARTO"
-    }
-   ),
-
-   satellite:L.tileLayer(
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    {
-     maxZoom:19,
-     attribution:"Tiles © Esri"
-    }
-   )
-  };
-
-  activeLayer=mapLayers.street;
-  activeLayer.addTo(map);
-
-  searchMarkers=L.layerGroup().addTo(map);
-  schoolMarkers=L.layerGroup().addTo(map);
-
-  L.marker(BARKA)
-   .addTo(map)
-   .bindPopup("<strong>ولاية بركاء</strong><br>سلطنة عُمان");
-
-  setStatus("mapStatus","الخريطة جاهزة للاستكشاف.","success");
-
-  setTimeout(()=>{
-   if(map)map.invalidateSize();
-  },400);
-
- }).catch(error=>{
-  console.error(error);
-  setStatus(
-   "mapStatus",
-   "تعذر تحميل مكتبة الخريطة. بقية أقسام المنصة تعمل بصورة مستقلة.",
-   "error"
-  );
- });
-}
-
-function changeLayer(name){
- if(!map||!mapLayers[name]){
-  setStatus("mapStatus","الخريطة غير متاحة حاليًا.","error");
-  return;
- }
-
- if(activeLayer)map.removeLayer(activeLayer);
-
- activeLayer=mapLayers[name];
- activeLayer.addTo(map);
-
- setStatus("mapStatus","تم تغيير طبقة الخريطة بنجاح.","success");
-}
-
-function goBarka(){
- if(!map){
-  setStatus("mapStatus","الخريطة غير جاهزة بعد.","error");
-  return;
- }
-
- map.setView(BARKA,14);
- setStatus("mapStatus","أنت الآن تستكشف ولاية بركاء.","success");
-}
-
-/* معالجة مدخلات استعلام Overpass */
-function escapeOverpassRegex(value){
- return String(value)
-  .replace(/[\u0000-\u001f\u007f]/g," ")
-  .replace(/\\/g,"\\\\")
-  .replace(/"/g,'\\"')
-  .replace(/[.*+?^${}()|[\]]/g,"\\$&")
-  .trim()
-  .slice(0,100);
-}
-
-/* الاتصال بخوادم البيانات المفتوحة */
-async function overpassRequest(query){
- let lastError=null;
-
- for(const server of OVERPASS_SERVERS){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),12000);
-
-  try{
-   const response=await fetch(server,{
-    method:"POST",
-    headers:{
-     "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"
-    },
-    body:"data="+encodeURIComponent(query),
-    signal:controller.signal
-   });
-
-   if(!response.ok){
-    throw new Error("HTTP "+response.status);
-   }
-
-   const data=await response.json();
-
-   if(!data||!Array.isArray(data.elements)){
-    throw new Error("بيانات غير صالحة");
-   }
-
-   return data;
-
-  }catch(error){
-   lastError=error;
-   console.warn("تعذر الاتصال بالخادم:",server,error);
-
-  }finally{
-   clearTimeout(timer);
-  }
- }
-
- throw lastError||new Error("تعذر الاتصال بخدمة البيانات");
-}
-
-function getElementCoordinates(item){
- if(
-  typeof item.lat==="number"&&
-  typeof item.lon==="number"
- ){
-  return [item.lat,item.lon];
- }
-
- if(
-  item.center&&
-  typeof item.center.lat==="number"&&
-  typeof item.center.lon==="number"
- ){
-  return [item.center.lat,item.center.lon];
- }
-
- return null;
-}
-
-function getElementName(item){
- return item.tags&&item.tags.name
-  ?item.tags.name
-  :"موقع دون اسم";
-}
-
-function buildNameSearchQuery(searchText){
- const safeText=escapeOverpassRegex(searchText);
-
- const box=[
-  BARKA_BOUNDS.south,
-  BARKA_BOUNDS.west,
-  BARKA_BOUNDS.north,
-  BARKA_BOUNDS.east
- ].join(",");
-
- return `
- [out:json][timeout:15];
- (
-  node["name"~"${safeText}",i](${box});
-  way["name"~"${safeText}",i](${box});
-  relation["name"~"${safeText}",i](${box});
- );
- out center tags;
- `;
-}
-
-/* البحث الجغرافي */
-async function searchPlace(){
- const input=el("placeSearch");
- const query=input.value.trim();
- const button=el("searchButton");
- const results=el("searchResults");
-
- if(!query){
-  setStatus("mapStatus","اكتب اسم المكان الذي تريد البحث عنه.","error");
-  input.focus();
-  return;
- }
-
- if(searchRunning)return;
-
- if(!map){
-  setStatus(
-   "mapStatus",
-   "الخريطة لم تجهز بعد. انتظر قليلًا ثم أعد المحاولة.",
-   "error"
-  );
-  return;
- }
-
- searchRunning=true;
- setButtonBusy(button,true,"جارٍ البحث...","🔎 ابحث عن المكان");
- results.replaceChildren();
-
- setStatus("mapStatus","جارٍ البحث في بيانات الخرائط المفتوحة...");
-
- try{
-  const data=await overpassRequest(buildNameSearchQuery(query));
-
-  searchMarkers.clearLayers();
-
-  const unique=new Map();
-
-  data.elements.forEach(item=>{
-   const coords=getElementCoordinates(item);
-   if(!coords||!item.tags)return;
-
-   const key=item.type+"-"+item.id;
-
-   if(!unique.has(key)){
-    unique.set(key,{
-     name:getElementName(item),
-     lat:coords[0],
-     lon:coords[1],
-     type:
-      item.tags.amenity||
-      item.tags.historic||
-      item.tags.building||
-      "موقع جغرافي"
-    });
-   }
-  });
-
-  const found=Array.from(unique.values()).slice(0,30);
-
-  if(!found.length){
-   setStatus(
-    "mapStatus",
-    "لم نعثر على نتائج مطابقة في نطاق بركاء. جرّب اسمًا مختصرًا.",
-    "error"
-   );
-
-   const fallback=document.createElement("button");
-   fallback.className="green";
-   fallback.textContent="فتح البحث في OpenStreetMap";
-   fallback.onclick=()=>openOSMSearch(query);
-   results.appendChild(fallback);
-   return;
-  }
-
-  const bounds=[];
-
-  found.forEach(place=>{
-   const position=[place.lat,place.lon];
-   bounds.push(position);
-
-   const marker=L.marker(position).bindPopup(
-    "<strong>"+escapeHTML(place.name)+"</strong><br>"+
-    escapeHTML(place.type)
-   );
-
-   searchMarkers.addLayer(marker);
-
-   const card=document.createElement("article");
-   card.className="card";
-
-   const title=document.createElement("h3");
-   title.textContent="📍 "+place.name;
-
-   const description=document.createElement("p");
-   description.textContent=place.type;
-
-   const showButton=document.createElement("button");
-   showButton.textContent="عرض على الخريطة";
-   showButton.onclick=()=>{
-    map.setView(position,17);
-    marker.openPopup();
-    el("gis").scrollIntoView({behavior:"smooth"});
-   };
-
-   const osmButton=document.createElement("button");
-   osmButton.className="light";
-   osmButton.textContent="فتح في OpenStreetMap";
-   osmButton.onclick=()=>openOSMSearch(place.name);
-
-   card.append(title,description,showButton,osmButton);
-   results.appendChild(card);
-  });
-
-  if(bounds.length){
-   map.fitBounds(bounds,{
-    padding:[35,35],
-    maxZoom:16
-   });
-  }
-
-  setStatus(
-   "mapStatus",
-   "عدد النتائج التي ظهرت: "+found.length+
-   ". البيانات من OpenStreetMap.",
-   "success"
-  );
-
- }catch(error){
-  console.error(error);
-
-  setStatus(
-   "mapStatus",
-   "تعذر الاتصال بخدمة البحث حاليًا. قد تكون الخدمة مزدحمة.",
-   "error"
-  );
-
-  const fallback=document.createElement("button");
-  fallback.className="green";
-  fallback.textContent="جرّب البحث عبر OpenStreetMap";
-  fallback.onclick=()=>openOSMSearch(query);
-  results.appendChild(fallback);
-
- }finally{
-  searchRunning=false;
-  setButtonBusy(button,false,"جارٍ البحث...","🔎 ابحث عن المكان");
- }
-}
-
-/* أطلس التراث العماني */
-const heritage=[
- {
-  name:"حصن بركاء",
-  query:"حصن بركاء",
-  icon:"🏰",
-  desc:"معلم تاريخي بارز في ولاية بركاء."
- },
- {
-  name:"بيت النعمان",
-  query:"بيت النعمان بركاء",
-  icon:"🏛️",
-  desc:"من المعالم التراثية في ولاية بركاء."
- },
- {
-  name:"قلعة نخل",
-  query:"قلعة نخل",
-  icon:"🏰",
-  desc:"قلعة تاريخية في محافظة جنوب الباطنة."
- },
- {
-  name:"قلعة الرستاق",
-  query:"قلعة الرستاق",
-  icon:"🏯",
-  desc:"من القلاع التاريخية العريقة في عُمان."
- },
- {
-  name:"قلعة نزوى",
-  query:"قلعة نزوى",
-  icon:"🏰",
-  desc:"معلم تاريخي في ولاية نزوى."
- },
- {
-  name:"قلعة بهلاء",
-  query:"قلعة بهلاء",
-  icon:"🏯",
-  desc:"موقع تراث عالمي في سلطنة عُمان."
- },
- {
-  name:"قلعة جبرين",
-  query:"قلعة جبرين",
-  icon:"🏛️",
-  desc:"صرح معماري تاريخي عُماني."
- },
- {
-  name:"حصن جعلان بني بو حسن",
-  query:"حصن جعلان بني بو حسن",
-  icon:"🏰",
-  desc:"معلم تراثي في محافظة جنوب الشرقية."
- },
- {
-  name:"متحف أرض اللبان",
-  query:"متحف أرض اللبان",
-  icon:"🏺",
-  desc:"يعرض جوانب من تاريخ اللبان والتراث العُماني."
- }
+$("menuBtn").addEventListener("click",()=>{
+  $("navLinks").classList.toggle("open");
+});
+document.querySelectorAll(".nav-links a").forEach(link=>{
+  link.addEventListener("click",()=>$("navLinks").classList.remove("open"));
+});
+$("backTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+/* =========================
+   أطلس التراث العماني
+   الإحداثيات تقريبية للمعالم
+========================= */
+const heritagePlaces=[
+ {name:"قلعة نزوى",region:"الداخلية",type:"قلعة تاريخية",lat:22.9333,lng:57.5333,icon:"🏰",desc:"من أبرز المعالم التاريخية في ولاية نزوى."},
+ {name:"قلعة بهلاء",region:"الداخلية",type:"تراث عالمي",lat:22.9647,lng:57.3047,icon:"🧱",desc:"قلعة تاريخية ضمن مواقع التراث العالمي."},
+ {name:"قلعة جبرين",region:"الداخلية",type:"قصر تاريخي",lat:22.9075,lng:57.2435,icon:"🏛️",desc:"قصر تاريخي يتميز بعناصره المعمارية."},
+ {name:"قلعة الرستاق",region:"جنوب الباطنة",type:"قلعة تاريخية",lat:23.3908,lng:57.4244,icon:"🏰",desc:"معلم تاريخي بارز في ولاية الرستاق."},
+ {name:"حصن مطرح",region:"مسقط",type:"حصن تاريخي",lat:23.6175,lng:58.5650,icon:"⚓",desc:"حصن يطل على منطقة مطرح ومينائها."},
+ {name:"دار الأوبرا السلطانية",region:"مسقط",type:"معلم ثقافي",lat:23.6135,lng:58.4710,icon:"🎭",desc:"صرح ثقافي وفني في العاصمة مسقط."}
 ];
 
-const heritageImageSearch=[
- "Barka Fort Oman",
- "Bait Al Numan Oman",
- "Nakhal Fort Oman",
- "Al Rustaq Fort Oman",
- "Nizwa Fort Oman",
- "Bahla Fort Oman",
- "Jabrin Castle Oman",
- "Jalan Bani Bu Hassan Oman fort",
- "Land of Frankincense Museum Oman"
-];
-
-/* إنشاء نافذة عرض التراث */
-function createHeritageModal(){
- if(el("heritageTourModal"))return;
-
- const modal=document.createElement("div");
- modal.id="heritageTourModal";
- modal.className="heritage-modal";
- modal.setAttribute("role","dialog");
- modal.setAttribute("aria-modal","true");
- modal.setAttribute("aria-labelledby","heritageTourTitle");
-
- modal.innerHTML=`
- <div class="heritage-panel">
-  <div class="heritage-header">
-   <h3 id="heritageTourTitle">استكشاف المعلم</h3>
-   <button type="button" id="heritageCloseButton" class="red">✕ إغلاق</button>
-  </div>
-
-  <div class="heritage-stage" id="heritageTourStage">
-   <div class="heritage-image-status">اختر معلمًا لبدء الاستكشاف.</div>
-  </div>
-
-  <div class="heritage-controls">
-   <button type="button" id="heritageZoomIn">تكبير +</button>
-   <button type="button" id="heritageZoomOut">تصغير −</button>
-   <button type="button" id="heritageResetZoom" class="light">إعادة ضبط</button>
-   <button type="button" id="heritagePrevious" class="light">المعلم السابق</button>
-   <button type="button" id="heritageNext" class="light">المعلم التالي</button>
-  </div>
-
-  <div class="heritage-info">
-   <strong>جولة بانورامية 360°</strong>
-   <p class="muted">
-    أدخل رابط صورة بانورامية أصلية بزاوية 360 درجة.
-    الصورة العادية لا تتحول تلقائيًا إلى بانوراما.
-   </p>
-
-   <label for="heritage360URL">رابط الصورة البانورامية</label>
-   <input id="heritage360URL" type="url"
-    placeholder="رابط صورة بانورامية 360°">
-
-   <button type="button" id="heritage360Save" class="green">
-    حفظ وتشغيل الجولة
-   </button>
-
-   <button type="button" id="heritage360Stop" class="light">
-    العودة إلى الصورة
-   </button>
-
-   <p class="muted" id="heritageSource"></p>
-  </div>
- </div>`;
-
- document.body.appendChild(modal);
-
- el("heritageCloseButton").onclick=closeHeritageTour;
- el("heritageZoomIn").onclick=()=>changeHeritageZoom(.25);
- el("heritageZoomOut").onclick=()=>changeHeritageZoom(-.25);
- el("heritageResetZoom").onclick=resetHeritageZoom;
- el("heritagePrevious").onclick=()=>openHeritageTour(heritageCurrentIndex-1);
- el("heritageNext").onclick=()=>openHeritageTour(heritageCurrentIndex+1);
- el("heritage360Save").onclick=loadHeritage360;
- el("heritage360Stop").onclick=showHeritageImage;
-
- modal.addEventListener("click",event=>{
-  if(event.target===modal)closeHeritageTour();
- });
-}
-
-/* استرجاع صورة من Wikimedia Commons */
-async function fetchHeritageImage(index){
- if(heritageImages[index])return heritageImages[index];
-
- const endpoint=
-  "https://commons.wikimedia.org/w/api.php"+
-  "?action=query"+
-  "&generator=search"+
-  "&gsrsearch="+encodeURIComponent(
-   "filetype:bitmap "+heritageImageSearch[index]
-  )+
-  "&gsrnamespace=6"+
-  "&gsrlimit=10"+
-  "&prop=imageinfo"+
-  "&iiprop=url|extmetadata"+
-  "&iiurlwidth=1000"+
-  "&format=json"+
-  "&origin=*";
-
- const response=await fetch(endpoint);
-
- if(!response.ok){
-  throw new Error("تعذر تحميل الصور");
- }
-
- const data=await response.json();
-
- const pages=data.query&&data.query.pages
-  ?Object.values(data.query.pages)
-  :[];
-
- const usable=pages.find(page=>
-  page.imageinfo&&
-  page.imageinfo[0]&&
-  page.imageinfo[0].thumburl
- );
-
- if(!usable){
-  throw new Error("لم يتم العثور على صورة");
- }
-
- const info=usable.imageinfo[0];
-
- const result={
-  url:info.thumburl,
-  source:info.descriptionurl||"",
-  title:usable.title||"",
-  license:info.extmetadata&&info.extmetadata.LicenseShortName
-   ?info.extmetadata.LicenseShortName.value
-   :"راجع صفحة المصدر"
- };
-
- heritageImages[index]=result;
- return result;
-}
-
-/* عرض بطاقات التراث */
-function renderHeritage(){
- createHeritageModal();
-
- const root=el("heritageList");
- root.replaceChildren();
-
- heritage.forEach((place,index)=>{
-  const card=document.createElement("article");
-  card.className="heritage-card";
-
-  const image=document.createElement("img");
-  image.alt="صورة "+place.name;
-  image.loading="lazy";
-
-  const status=document.createElement("div");
-  status.className="heritage-image-status";
-  status.textContent="جارٍ البحث عن صورة مناسبة...";
-
-  const content=document.createElement("div");
-  content.className="heritage-card-content";
-
-  const heading=document.createElement("h3");
-  heading.textContent=place.icon+" "+place.name;
-
-  const description=document.createElement("p");
-  description.textContent=place.desc;
-
-  const tourButton=document.createElement("button");
-  tourButton.className="gold";
-  tourButton.textContent="📸 استكشاف المعلم";
-  tourButton.onclick=()=>openHeritageTour(index);
-
-  const showButton=document.createElement("button");
-  showButton.textContent="عرض على خريطة المنصة";
-  showButton.onclick=()=>{
-   el("placeSearch").value=place.query;
-   el("gis").scrollIntoView({behavior:"smooth"});
-   searchPlace();
-  };
-
-  const osmButton=document.createElement("button");
-  osmButton.className="light";
-  osmButton.textContent="استكشاف OpenStreetMap";
-  osmButton.onclick=()=>openOSMSearch(place.query);
-
-  image.onclick=()=>openHeritageTour(index);
-
-  content.append(
-   heading,
-   description,
-   tourButton,
-   showButton,
-   osmButton
-  );
-
-  card.append(image,status,content);
-  root.appendChild(card);
-
-  fetchHeritageImage(index).then(result=>{
-   image.src=result.url;
-
-   image.onload=()=>{
-    status.textContent=
-     "صورة من Wikimedia Commons. تحقق من مطابقتها للمعلم قبل اعتمادها.";
-   };
-
-   image.onerror=()=>{
-    image.removeAttribute("src");
-    status.textContent="تعذر عرض الصورة.";
-   };
-
-  }).catch(error=>{
-   console.warn("Heritage image:",place.name,error);
-   status.textContent="لم تتوفر صورة تلقائيًا لهذا المعلم.";
-  });
- });
-}
-
-/* تكبير الصور وتحريكها */
-function resetHeritageZoom(){
- heritageZoom=1;
- heritagePanX=0;
- heritagePanY=0;
- updateHeritageTransform();
-}
-
-function changeHeritageZoom(amount){
- heritageZoom=Math.min(
-  4,
-  Math.max(.5,heritageZoom+amount)
- );
- updateHeritageTransform();
-}
-
-function updateHeritageTransform(){
- const stage=el("heritageTourStage");
- if(!stage)return;
-
- const image=stage.querySelector("img");
- if(!image)return;
-
- image.style.setProperty("--zoom",heritageZoom);
- image.style.setProperty("--pan-x",heritagePanX+"px");
- image.style.setProperty("--pan-y",heritagePanY+"px");
-}
-
-function enableHeritageImageDragging(image){
- let dragging=false;
- let startX=0;
- let startY=0;
- let originalX=0;
- let originalY=0;
-
- image.addEventListener("pointerdown",event=>{
-  if(heritageZoom<=1)return;
-
-  dragging=true;
-  startX=event.clientX;
-  startY=event.clientY;
-  originalX=heritagePanX;
-  originalY=heritagePanY;
-
-  image.classList.add("dragging");
-
-  try{
-   image.setPointerCapture(event.pointerId);
-  }catch(error){
-   console.warn(error);
-  }
- });
-
- image.addEventListener("pointermove",event=>{
-  if(!dragging)return;
-
-  heritagePanX=originalX+(event.clientX-startX);
-  heritagePanY=originalY+(event.clientY-startY);
-
-  updateHeritageTransform();
- });
-
- const stop=()=>{
-  dragging=false;
-  image.classList.remove("dragging");
- };
-
- image.addEventListener("pointerup",stop);
- image.addEventListener("pointercancel",stop);
- image.addEventListener("lostpointercapture",stop);
-}
-
-/* عرض الصورة داخل نافذة المعلم */
-async function showHeritageImage(){
- stopHeritage360();
-
- const token=++heritageRequestToken;
- const index=heritageCurrentIndex;
- const stage=el("heritageTourStage");
-
- stage.replaceChildren();
-
- const status=document.createElement("div");
- status.className="heritage-image-status";
- status.textContent="جارٍ تحميل صورة المعلم...";
- stage.appendChild(status);
-
- try{
-  const result=await fetchHeritageImage(index);
-
-  if(
-   token!==heritageRequestToken||
-   index!==heritageCurrentIndex
-  )return;
-
-  const image=document.createElement("img");
-  image.src=result.url;
-  image.alt=heritage[index].name;
-
-  image.onload=()=>{
-   if(token!==heritageRequestToken)return;
-   status.remove();
-   resetHeritageZoom();
-  };
-
-  image.onerror=()=>{
-   if(token!==heritageRequestToken)return;
-   status.textContent="تعذر تحميل الصورة. تحقق من اتصال الإنترنت.";
-  };
-
-  stage.appendChild(image);
-  enableHeritageImageDragging(image);
-
-  const source=el("heritageSource");
-  source.replaceChildren();
-
-  if(result.source){
-   const link=document.createElement("a");
-   link.href=result.source;
-   link.target="_blank";
-   link.rel="noopener noreferrer";
-   link.textContent="مصدر الصورة والترخيص";
-   source.appendChild(link);
-
-   const license=document.createElement("span");
-   license.textContent=" — الترخيص: "+result.license;
-   source.appendChild(license);
-  }
-
- }catch(error){
-  if(token!==heritageRequestToken)return;
-
-  status.textContent="لم نتمكن من تحميل صورة لهذا المعلم حاليًا.";
-  console.error(error);
- }
-}
-
-async function openHeritageTour(index){
- lastHeritageFocus=document.activeElement;
-
- heritageCurrentIndex=
-  (index+heritage.length)%heritage.length;
-
- resetHeritageZoom();
-
- const place=heritage[heritageCurrentIndex];
-
- el("heritageTourTitle").textContent=
-  place.icon+" "+place.name;
-
- el("heritageTourModal").classList.add("active");
-
- el("heritage360URL").value=
-  getHeritagePanorama(heritageCurrentIndex);
-
- el("heritageCloseButton").focus();
-
- await showHeritageImage();
-}
-
-function closeHeritageTour(){
- heritageRequestToken++;
- stopHeritage360();
-
- el("heritageTourModal").classList.remove("active");
-
- if(
-  lastHeritageFocus&&
-  typeof lastHeritageFocus.focus==="function"
- ){
-  lastHeritageFocus.focus();
- }
-}
-
-/* حفظ روابط البانوراما محليًا */
-function getHeritagePanorama(index){
- try{
-  return localStorage.getItem("heritagePanorama_"+index)||"";
- }catch(error){
-  return "";
- }
-}
-
-function validHeritageURL(value){
- try{
-  const url=new URL(value);
-  return url.protocol==="https:";
- }catch(error){
-  return false;
- }
-}
-
-/* تحميل مكتبة Pannellum */
-function loadPannellum(){
- if(window.pannellum)return Promise.resolve();
- if(pannellumPromise)return pannellumPromise;
-
- pannellumPromise=new Promise((resolve,reject)=>{
-  let css=el("pannellumCSS");
-
-  if(!css){
-   css=document.createElement("link");
-   css.id="pannellumCSS";
-   css.rel="stylesheet";
-   css.href=
-    "https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css";
-
-   document.head.appendChild(css);
-  }
-
-  const script=document.createElement("script");
-
-  script.src=
-   "https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js";
-
-  script.async=true;
-
-  script.onload=()=>{
-   if(window.pannellum){
-    resolve();
-   }else{
-    pannellumPromise=null;
-    reject(new Error("مشغل البانوراما غير متاح"));
-   }
-  };
-
-  script.onerror=()=>{
-   script.remove();
-   pannellumPromise=null;
-   reject(new Error("تعذر تحميل مشغل البانوراما"));
-  };
-
-  document.head.appendChild(script);
- });
-
- return pannellumPromise;
-}
-
-/* تشغيل الجولة البانورامية */
-async function loadHeritage360(){
- const url=el("heritage360URL").value.trim();
-
- if(!validHeritageURL(url)){
-  alert("أدخل رابط صورة بانورامية صحيحًا يبدأ بـ https://");
-  return;
- }
-
- try{
-  localStorage.setItem(
-   "heritagePanorama_"+heritageCurrentIndex,
-   url
-  );
- }catch(error){
-  console.warn("تعذر حفظ الرابط محليًا:",error);
- }
-
- const button=el("heritage360Save");
- setButtonBusy(
-  button,
-  true,
-  "جارٍ تحميل مشغل الجولة...",
-  "حفظ وتشغيل الجولة"
- );
-
- try{
-  await loadPannellum();
-  startHeritage360(url);
-
- }catch(error){
-  console.error(error);
-  alert(
-   "تعذر تحميل مشغل الجولة البانورامية. تحقق من الاتصال بالإنترنت."
-  );
-
- }finally{
-  setButtonBusy(
-   button,
-   false,
-   "جارٍ تحميل مشغل الجولة...",
-   "حفظ وتشغيل الجولة"
-  );
- }
-}
-
-function startHeritage360(url){
- stopHeritage360();
-
- const stage=el("heritageTourStage");
- stage.replaceChildren();
-
- try{
-  heritage360Viewer=window.pannellum.viewer(
-   "heritageTourStage",
-   {
-    type:"equirectangular",
-    panorama:url,
-    autoLoad:true,
-    showControls:true,
-    compass:true,
-    hfov:100,
-    pitch:0,
-    yaw:0
-   }
-  );
-
-  heritage360Viewer.on("error",error=>{
-   console.error("Panorama error:",error);
-
-   const message=document.createElement("p");
-   message.className="heritage-image-status";
-   message.textContent=
-    "تعذر عرض الصورة البانورامية. تحقق من الرابط وصيغة الصورة وإمكانية الوصول إليها.";
-
-   stage.appendChild(message);
+let heritageMap;
+let heritageMarkers=[];
+
+function initHeritage(){
+  $("heritageGrid").innerHTML=heritagePlaces.map((p,i)=>`
+   <article class="heritage-card">
+    <div class="heritage-art">${p.icon}</div>
+    <div class="heritage-body">
+     <span class="tag">${escapeHTML(p.region)}</span>
+     <h3>${escapeHTML(p.name)}</h3>
+     <p>${escapeHTML(p.desc)}</p>
+     <a class="card-link" href="#heritage" data-place="${i}">اعرض الموقع <i class="fa-solid fa-location-dot"></i></a>
+    </div>
+   </article>
+  `).join("");
+
+  heritageMap=L.map("heritageMap").setView([22.8,57.5],6);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    maxZoom:19,attribution:'&copy; OpenStreetMap'
+  }).addTo(heritageMap);
+
+  heritagePlaces.forEach(p=>{
+    const marker=L.marker([p.lat,p.lng]).addTo(heritageMap)
+      .bindPopup(`<b>${escapeHTML(p.name)}</b><br>${escapeHTML(p.desc)}`);
+    heritageMarkers.push(marker);
   });
 
-  setTimeout(()=>{
-   if(heritage360Viewer){
-    try{heritage360Viewer.resize()}
-    catch(error){console.warn(error)}
-   }
-  },250);
-
- }catch(error){
-  console.error(error);
-
-  stage.textContent=
-   "تعذر تشغيل الصورة. تأكد من أن الرابط يشير إلى صورة بانورامية أصلية.";
- }
-}
-
-function stopHeritage360(){
- if(heritage360Viewer){
-  try{
-   heritage360Viewer.destroy();
-  }catch(error){
-   console.warn(error);
-  }
-
-  heritage360Viewer=null;
- }
-}
-
-/* المدارس في نطاق بركاء */
-function buildSchoolsQuery(){
- const box=[
-  BARKA_BOUNDS.south,
-  BARKA_BOUNDS.west,
-  BARKA_BOUNDS.north,
-  BARKA_BOUNDS.east
- ].join(",");
-
- return `
- [out:json][timeout:15];
- (
-  node["amenity"="school"](${box});
-  way["amenity"="school"](${box});
-  relation["amenity"="school"](${box});
- );
- out center tags;
- `;
-}
-
-async function loadSchools(){
- if(schoolRequestRunning)return;
-
- if(!map||!schoolMarkers){
-  setStatus(
-   "schoolStatus",
-   "الخريطة غير متاحة حاليًا. انتظر اكتمال تحميلها.",
-   "error"
-  );
-  return;
- }
-
- schoolRequestRunning=true;
-
- const button=el("schoolButton");
- const results=el("schoolResults");
-
- setButtonBusy(
-  button,
-  true,
-  "جارٍ البحث...",
-  "🔎 استكشاف المدارس القريبة"
- );
-
- results.replaceChildren();
-
- setStatus(
-  "schoolStatus",
-  "جارٍ استكشاف المدارس المسجلة في نطاق بركاء..."
- );
-
- try{
-  const data=await overpassRequest(buildSchoolsQuery());
-
-  schoolMarkers.clearLayers();
-
-  const unique=new Map();
-
-  data.elements.forEach(item=>{
-   if(!item.tags)return;
-
-   const coords=getElementCoordinates(item);
-   if(!coords)return;
-
-   const key=item.type+"-"+item.id;
-
-   if(!unique.has(key)){
-    unique.set(key,{
-     name:getElementName(item),
-     lat:coords[0],
-     lon:coords[1]
-    });
-   }
-  });
-
-  const schools=Array.from(unique.values());
-
-  if(!schools.length){
-   setStatus(
-    "schoolStatus",
-    "لم تظهر مدارس مسجلة في نطاق البحث الحالي. قد تكون البيانات غير مكتملة.",
-    "error"
-   );
-   return;
-  }
-
-  const bounds=[];
-
-  schools.slice(0,50).forEach(school=>{
-   const position=[school.lat,school.lon];
-   bounds.push(position);
-
-   const marker=L.marker(position).bindPopup(
-    "<strong>"+escapeHTML(school.name)+"</strong>"
-   );
-
-   schoolMarkers.addLayer(marker);
-
-   const card=document.createElement("article");
-   card.className="card";
-
-   const heading=document.createElement("h3");
-   heading.textContent="🏫 "+school.name;
-
-   const description=document.createElement("p");
-   description.textContent=
-    "موقع مدرسي مسجل في بيانات OpenStreetMap.";
-
-   const showButton=document.createElement("button");
-   showButton.textContent="عرض الموقع على الخريطة";
-
-   showButton.onclick=()=>{
-    map.setView(position,17);
+  $("heritageGrid").addEventListener("click",e=>{
+    const link=e.target.closest("[data-place]");
+    if(!link)return;
+    const p=heritagePlaces[Number(link.dataset.place)];
+    heritageMap.setView([p.lat,p.lng],13);
+    const marker=heritageMarkers[Number(link.dataset.place)];
     marker.openPopup();
-    el("gis").scrollIntoView({behavior:"smooth"});
-   };
-
-   card.append(heading,description,showButton);
-   results.appendChild(card);
+    setTimeout(()=>heritageMap.invalidateSize(),100);
   });
 
-  if(bounds.length){
-   map.fitBounds(bounds,{
-    padding:[35,35],
-    maxZoom:15
-   });
+  $("showHeritage").addEventListener("click",()=>{
+    const bounds=L.latLngBounds(heritagePlaces.map(p=>[p.lat,p.lng]));
+    heritageMap.fitBounds(bounds.pad(.15));
+  });
+}
+
+/* =========================
+   دليل المدارس والبحث الجغرافي
+========================= */
+let schoolMap,schoolMarker;
+let exploreMap,exploreMarker;
+
+function createBaseMap(id,center,zoom){
+  const map=L.map(id).setView(center,zoom);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    maxZoom:19,attribution:'&copy; OpenStreetMap contributors'
+  }).addTo(map);
+  return map;
+}
+
+async function geocode(query){
+  const url="https://nominatim.openstreetmap.org/search?format=json&limit=5&q="+encodeURIComponent(query);
+  const response=await fetch(url,{headers:{"Accept-Language":"ar"}});
+  if(!response.ok)throw new Error("تعذر الاتصال بخدمة البحث الجغرافي");
+  return await response.json();
+}
+
+async function searchOnMap(query,map,markerRef,type){
+  if(!query.trim()){toast("اكتب اسم المكان أولاً");return markerRef;}
+  try{
+    toast("جارٍ البحث عن الموقع...");
+    const results=await geocode(query);
+    if(!results.length){toast("لم يتم العثور على نتيجة. جرّب اسماً آخر.");return markerRef;}
+    const result=results[0],lat=Number(result.lat),lng=Number(result.lon);
+    if(!Number.isFinite(lat)||!Number.isFinite(lng))throw new Error("إحداثيات غير صالحة");
+    map.setView([lat,lng],15);
+    if(markerRef)map.removeLayer(markerRef);
+    markerRef=L.marker([lat,lng]).addTo(map)
+      .bindPopup(`<b>${escapeHTML(type)}</b><br>${escapeHTML(result.display_name)}`).openPopup();
+    toast("تم تحديد الموقع على الخريطة");
+    return markerRef;
+  }catch(error){
+    console.error(error);
+    toast(error.message||"حدث خطأ أثناء البحث");
+    return markerRef;
   }
-
-  setStatus(
-   "schoolStatus",
-   "عدد المدارس التي ظهرت: "+schools.length+
-   ". البيانات المفتوحة قد تكون غير مكتملة وليست حصرًا رسميًا.",
-   "success"
-  );
-
- }catch(error){
-  console.error(error);
-
-  setStatus(
-   "schoolStatus",
-   "تعذر تحميل بيانات المدارس الآن. حاول مرة أخرى لاحقًا.",
-   "error"
-  );
-
- }finally{
-  schoolRequestRunning=false;
-
-  setButtonBusy(
-   button,
-   false,
-   "جارٍ البحث...",
-   "🔎 استكشاف المدارس القريبة"
-  );
- }
 }
 
-/* حاسبة المسافة الجغرافية */
-function calculateDistance(){
- const ids=["lat1","lon1","lat2","lon2"];
- const raw=ids.map(id=>el(id).value.trim());
- const output=el("distanceResult");
+function initMaps(){
+  schoolMap=createBaseMap("schoolMap",[23.5,57.9],8);
+  exploreMap=createBaseMap("exploreMap",[22.5,57.5],6);
 
- if(raw.some(value=>value==="")){
-  setStatus(
-   "distanceResult",
-   "يرجى إدخال جميع الإحداثيات أولًا.",
-   "error"
-  );
-  return;
- }
+  $("schoolSearchBtn").addEventListener("click",async()=>{
+    schoolMarker=await searchOnMap($("schoolSearch").value,schoolMap,schoolMarker,"نتيجة البحث");
+  });
+  $("schoolSearch").addEventListener("keydown",e=>{
+    if(e.key==="Enter")$("schoolSearchBtn").click();
+  });
 
- const values=raw.map(Number);
+  $("exploreSearchBtn").addEventListener("click",async()=>{
+    exploreMarker=await searchOnMap($("exploreSearch").value,exploreMap,exploreMarker,"موقع جغرافي");
+  });
+  $("exploreSearch").addEventListener("keydown",e=>{
+    if(e.key==="Enter")$("exploreSearchBtn").click();
+  });
 
- if(values.some(value=>!Number.isFinite(value))){
-  setStatus(
-   "distanceResult",
-   "أدخل أرقامًا صحيحة للإحداثيات.",
-   "error"
-  );
-  return;
- }
-
- const [lat1,lon1,lat2,lon2]=values;
-
- if(
-  Math.abs(lat1)>90||
-  Math.abs(lat2)>90||
-  Math.abs(lon1)>180||
-  Math.abs(lon2)>180
- ){
-  setStatus(
-   "distanceResult",
-   "الإحداثيات خارج النطاق الجغرافي الصحيح.",
-   "error"
-  );
-  return;
- }
-
- const rad=value=>value*Math.PI/180;
- const earthRadius=6371;
-
- const deltaLat=rad(lat2-lat1);
- const deltaLon=rad(lon2-lon1);
-
- const a=
-  Math.sin(deltaLat/2)**2+
-  Math.cos(rad(lat1))*
-  Math.cos(rad(lat2))*
-  Math.sin(deltaLon/2)**2;
-
- const safeA=Math.min(1,Math.max(0,a));
-
- const km=
-  2*earthRadius*
-  Math.atan2(
-   Math.sqrt(safeA),
-   Math.sqrt(1-safeA)
-  );
-
- setStatus(
-  "distanceResult",
-  "المسافة التقريبية: "+
-  km.toFixed(3)+
-  " كيلومتر ("+
-  (km*1000).toFixed(1)+
-  " متر).",
-  "success"
- );
+  $("schoolLocateBtn").addEventListener("click",()=>{
+    if(!navigator.geolocation){toast("خدمة تحديد الموقع غير مدعومة");return;}
+    navigator.geolocation.getCurrentPosition(position=>{
+      const lat=position.coords.latitude,lng=position.coords.longitude;
+      schoolMap.setView([lat,lng],16);
+      if(schoolMarker)schoolMap.removeLayer(schoolMarker);
+      schoolMarker=L.marker([lat,lng]).addTo(schoolMap).bindPopup("موقعك الحالي").openPopup();
+    },()=>toast("تعذر تحديد موقعك. تحقق من إذن الموقع."));
+  });
 }
 
-/* الجولة الافتراضية في المدرسة - 13 محطة */
+/* =========================
+   الكرة الأرضية ثلاثية الأبعاد
+========================= */
+function init3D(){
+  if(!window.Cesium){
+    $("cesiumContainer").innerHTML="<div style='padding:35px;text-align:center;color:white'>تعذر تحميل مكتبة العرض ثلاثي الأبعاد. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.</div>";
+    return;
+  }
+  try{
+    const viewer=new Cesium.Viewer("cesiumContainer",{
+      animation:false,
+      timeline:false,
+      geocoder:true,
+      homeButton:true,
+      sceneModePicker:true,
+      baseLayerPicker:true,
+      navigationHelpButton:true,
+      fullscreenButton:true,
+      infoBox:false,
+      selectionIndicator:false,
+      shouldAnimate:true
+    });
+    viewer.camera.flyTo({
+      destination:Cesium.Cartesian3.fromDegrees(57.5,20.5,12500000),
+      duration:2.5
+    });
+    window.schoolGlobeViewer=viewer;
+  }catch(error){
+    console.error("Cesium:",error);
+    $("cesiumContainer").innerHTML="<div style='padding:35px;text-align:center;color:white'>تعذر إنشاء الكرة الأرضية ثلاثية الأبعاد في هذه اللحظة.</div>";
+  }
+}
+
+/* =========================
+   الجولة الافتراضية – 13 محطة
+========================= */
 const stations=[
- "مدخل المدرسة والبوابة الرئيسية",
- "جوانب المدرسة (الأيمن والأيسر)",
- "الممرات الداخلية والدرج (الجانب الأيسر)",
- "الممرات الداخلية والدرج (الجانب الأيمن)",
- "غرفة المعلمين الأولى",
- "غرفة المعلمين الثانية",
- "الفصول الدراسية",
- "المرافق التعليمية",
- "المختبرات المدرسية",
- "المكتبة المدرسية",
- "الساحة المدرسية",
- "مختبر الجغرافيا والتقنيات الحديثة",
- "قاعة الأنشطة والابتكار"
+ {title:"مدخل المدرسة والبوابة الرئيسية",desc:"نبدأ الجولة بالتعرف على المدخل الرئيسي والبوابة."},
+ {title:"جوانب المدرسة – الأيمن والأيسر",desc:"استكشف الواجهات الخارجية والجوانب المحيطة بمبنى المدرسة."},
+ {title:"الممرات الداخلية والدرج – الجانب الأيسر",desc:"تعرف على الممرات الداخلية والدرج في الجانب الأيسر."},
+ {title:"الممرات الداخلية والدرج – الجانب الأيمن",desc:"تابع الجولة في الممرات الداخلية والدرج في الجانب الأيمن."},
+ {title:"غرفة المعلمين الأولى",desc:"محطة للتعرف على غرفة المعلمين الأولى."},
+ {title:"غرفة المعلمين الثانية",desc:"استكشف غرفة المعلمين الثانية ومرافقها."},
+ {title:"الفصول الدراسية",desc:"تعرف على بيئة التعلم داخل الفصول الدراسية."},
+ {title:"المرافق التعليمية",desc:"استكشف المرافق التي تدعم العملية التعليمية."},
+ {title:"المختبرات المدرسية",desc:"تعرف على المختبرات ودورها في التعلم التطبيقي."},
+ {title:"المكتبة المدرسية",desc:"محطة المعرفة والقراءة ومصادر التعلم."},
+ {title:"الساحة المدرسية",desc:"استكشف الساحة والمساحات المفتوحة في المدرسة."},
+ {title:"مختبر الجغرافيا والتقنيات الحديثة",desc:"تعرف على مساحة تعلم الجغرافيا واستخدام التقنيات الحديثة."},
+ {title:"قاعة الأنشطة والابتكار",desc:"المحطة الختامية للتعرف على قاعة الأنشطة والابتكار."}
 ];
 
-/* إدارة روابط الملفات المحلية */
-function createTemporaryURL(file){
- const url=URL.createObjectURL(file);
- temporaryObjectURLs.add(url);
- return url;
+let currentStation=0;
+let uploadedImages=[];
+let activeTourUrls=[];
+
+function renderStationStrip(){
+  $("stationStrip").innerHTML=stations.map((s,i)=>`
+   <button class="station-btn ${i===currentStation?"active":""}" data-station="${i}">
+    <small>المحطة ${String(i+1).padStart(2,"0")}</small>
+    ${escapeHTML(s.title)}
+   </button>
+  `).join("");
 }
 
-function revokeTemporaryURL(url){
- if(!url)return;
+function renderStation(){
+  const station=stations[currentStation];
+  $("stationTitle").textContent=`المحطة ${currentStation+1}: ${station.title}`;
+  $("stationDescription").textContent=station.desc;
+  $("stationCount").textContent=`${String(currentStation+1).padStart(2,"0")} / 13`;
 
- try{
-  URL.revokeObjectURL(url);
- }catch(error){
-  console.warn(error);
- }
+  const image=activeTourUrls.find(item=>item.station===currentStation);
+  const stage=$("tourStage");
+  const oldImage=stage.querySelector("img");
+  if(oldImage)oldImage.remove();
 
- temporaryObjectURLs.delete(url);
+  let placeholder=stage.querySelector(".tour-placeholder");
+  if(image){
+    if(placeholder)placeholder.remove();
+    const img=document.createElement("img");
+    img.src=image.url;
+    img.alt=station.title;
+    stage.insertBefore(img,stage.querySelector(".tour-overlay"));
+  }else{
+    if(!placeholder){
+      placeholder=document.createElement("div");
+      placeholder.className="tour-placeholder";
+      placeholder.innerHTML='<i class="fa-solid fa-image"></i><h3>لا توجد صورة لهذه المحطة بعد</h3><p>أضف صورة من مدير الصور أدناه لتظهر هنا.</p>';
+      stage.insertBefore(placeholder,stage.querySelector(".tour-overlay"));
+    }
+  }
+  renderStationStrip();
 }
 
-function showTourMedia(title,url,type){
- const viewer=el("tourViewer");
- const media=el("tourMedia");
+$("prevStation").addEventListener("click",()=>{
+  currentStation=(currentStation-1+stations.length)%stations.length;
+  renderStation();
+});
+$("nextStation").addEventListener("click",()=>{
+  currentStation=(currentStation+1)%stations.length;
+  renderStation();
+});
+$("stationStrip").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-station]");
+  if(!btn)return;
+  currentStation=Number(btn.dataset.station);
+  renderStation();
+});
 
- el("tourViewerTitle").textContent=title;
- media.replaceChildren();
-
- if(type==="video"){
-  const video=document.createElement("video");
-  video.src=url;
-  video.controls=true;
-  video.playsInline=true;
-  video.preload="metadata";
-  media.appendChild(video);
- }else{
-  const image=document.createElement("img");
-  image.src=url;
-  image.alt=title;
-  image.loading="lazy";
-  media.appendChild(image);
- }
-
- viewer.classList.remove("hidden");
-
- viewer.scrollIntoView({
-  behavior:"smooth",
-  block:"center"
- });
+/* =========================
+   مدير الصور واقتراح المحطة
+========================= */
+function suggestStation(filename){
+  const name=filename.toLowerCase();
+  const keywords=[
+    ["مدخل","بوابة","باب","gate","entrance"],
+    ["جانب","واجهة","خارجي","يمين","يسار","side"],
+    ["ممر","درج","سلم","stair","corridor"],
+    ["ممر","درج","سلم","stair","corridor"],
+    ["معلمين","معلمون","teacher","teachers"],
+    ["غرفة","معلمين","teacher","teachers"],
+    ["فصل","صف","class","classroom"],
+    ["مرفق","مرافق","تعليمي","facility"],
+    ["مختبر","معمل","lab","laboratory"],
+    ["مكتبة","library","books"],
+    ["ساحة","ملعب","yard","playground"],
+    ["جغرافيا","خرائط","gis","geography","map"],
+    ["أنشطة","ابتكار","قاعة","activity","innovation"]
+  ];
+  for(let i=0;i<keywords.length;i++){
+    if(keywords[i].some(word=>name.includes(word)))return i;
+  }
+  return 0;
 }
 
-/* بناء محطات الجولة */
-function renderTour(){
- const root=el("tourStations");
- root.replaceChildren();
-
- stations.forEach((name,index)=>{
-  const item=document.createElement("div");
-  item.className="station";
-
-  const heading=document.createElement("strong");
-  heading.textContent="المحطة "+(index+1)+": "+name;
-
-  const description=document.createElement("p");
-  description.className="muted";
-  description.textContent=
-   "أضف صورة أو مقطع فيديو أصليًا لهذه المحطة لمعاينته داخل الجولة.";
-
-  const label=document.createElement("label");
-  label.textContent="إضافة صورة أو فيديو للمحطة";
-
-  const file=document.createElement("input");
-  file.type="file";
-  file.accept="image/*,video/*";
-
-  const previewButton=document.createElement("button");
-  previewButton.className="light";
-  previewButton.textContent="عرض المحطة";
-  previewButton.disabled=true;
-
-  let localURL=null;
-  let mediaType="image";
-
-  file.addEventListener("change",()=>{
-   const selected=file.files&&file.files[0];
-
-   if(!selected)return;
-
-   if(
-    !selected.type.startsWith("image/")&&
-    !selected.type.startsWith("video/")
-   ){
-    description.textContent="نوع الملف غير مدعوم. اختر صورة أو فيديو.";
-    file.value="";
+function renderUploadList(){
+  const list=$("uploadList");
+  if(!uploadedImages.length){
+    list.innerHTML="";
+    $("imageStatus").textContent="لم تتم إضافة صور بعد.";
     return;
-   }
+  }
+  list.innerHTML=uploadedImages.map((item,index)=>`
+   <div class="upload-item">
+    <img src="${item.url}" alt="معاينة الصورة">
+    <div class="filename">${escapeHTML(item.file.name)}</div>
+    <select data-image-index="${index}" aria-label="اختيار محطة الصورة">
+     ${stations.map((s,i)=>`<option value="${i}" ${i===item.station?"selected":""}>${i+1}. ${escapeHTML(s.title)}</option>`).join("")}
+    </select>
+   </div>
+  `).join("");
+  $("imageStatus").textContent=`عدد الصور المختارة: ${uploadedImages.length}`;
+}
 
-   if(selected.size>MAX_UPLOAD_SIZE){
-    description.textContent=
-     "حجم الملف أكبر من الحد المسموح (50 ميجابايت).";
-    file.value="";
-    return;
-   }
+$("tourFiles").addEventListener("change",event=>{
+  const files=Array.from(event.target.files||[]);
+  const valid=files.filter(file=>file.type.startsWith("image/"));
+  if(!valid.length){toast("لم يتم اختيار ملفات صور صالحة");return;}
 
-   if(localURL){
-    revokeTemporaryURL(localURL);
-    localURL=null;
-   }
-
-   localURL=createTemporaryURL(selected);
-
-   mediaType=selected.type.startsWith("video/")
-    ?"video"
-    :"image";
-
-   previewButton.disabled=false;
-   previewButton.textContent="مشاهدة المادة المضافة";
-
-   description.textContent=
-    "تم اختيار الملف: "+
-    selected.name+
-    " — المعاينة على هذا الجهاز فقط.";
+  valid.forEach(file=>{
+    const url=URL.createObjectURL(file);
+    uploadedImages.push({
+      file,
+      url,
+      station:suggestStation(file.name)
+    });
   });
+  renderUploadList();
+  toast(`تمت إضافة ${valid.length} صورة. راجع المحطات المقترحة.`);
+  event.target.value="";
+});
 
-  previewButton.onclick=()=>{
-   if(localURL){
-    showTourMedia(
-     "المحطة "+(index+1)+": "+name,
-     localURL,
-     mediaType
-    );
-   }
+$("uploadList").addEventListener("change",event=>{
+  const select=event.target.closest("select[data-image-index]");
+  if(!select)return;
+  const index=Number(select.dataset.imageIndex);
+  if(uploadedImages[index])uploadedImages[index].station=Number(select.value);
+});
+
+$("applyImages").addEventListener("click",()=>{
+  if(!uploadedImages.length){toast("أضف الصور أولاً");return;}
+  activeTourUrls.forEach(item=>URL.revokeObjectURL(item.url));
+  activeTourUrls=uploadedImages.map(item=>({
+    station:item.station,
+    url:item.url,
+    name:item.file.name
+  }));
+  currentStation=0;
+  renderStation();
+  toast("تم اعتماد الصور في الجولة على هذا الجهاز");
+});
+
+$("clearImages").addEventListener("click",()=>{
+  uploadedImages.forEach(item=>URL.revokeObjectURL(item.url));
+  activeTourUrls.forEach(item=>URL.revokeObjectURL(item.url));
+  uploadedImages=[];
+  activeTourUrls=[];
+  renderUploadList();
+  renderStation();
+  toast("تم مسح الصور المختارة من الجلسة الحالية");
+});
+
+$("exportManifest").addEventListener("click",()=>{
+  if(!uploadedImages.length){toast("لا توجد صور لتصدير توزيعها");return;}
+  const manifest={
+    platform:"الجغرافيا الذكية – مدرسة ثابت بن قيس",
+    note:"هذا الملف يسجل أسماء الصور والمحطات المقترحة فقط. يجب رفع ملفات الصور إلى GitHub وربط مساراتها في الموقع.",
+    images:uploadedImages.map(item=>({
+      fileName:item.file.name,
+      stationIndex:item.station,
+      stationName:stations[item.station].title
+    }))
   };
+  const blob=new Blob([JSON.stringify(manifest,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="school-tour-images-manifest.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("تم تصدير ملف توزيع الصور");
+});
 
-  item.append(
-   heading,
-   description,
-   label,
-   file,
-   previewButton
-  );
-
-  root.appendChild(item);
- });
+/* =========================
+   تشغيل المنصة
+========================= */
+function startApp(){
+  renderStation();
+  initHeritage();
+  initMaps();
+  init3D();
 }
 
-/* التحدي الجغرافي */
-const questions=[
- {
-  q:"ما التقنية التي تستخدم صور الأقمار الصناعية لدراسة سطح الأرض؟",
-  a:[
-   "نظم المعلومات الجغرافية",
-   "الاستشعار عن بُعد",
-   "الرسم اليدوي"
-  ],
-  correct:1
- },
- {
-  q:"ما الأداة التي تساعد على تحديد المواقع والإحداثيات؟",
-  a:[
-   "نظام تحديد المواقع GPS",
-   "مقياس الحرارة",
-   "الميزان"
-  ],
-  correct:0
- },
- {
-  q:"ما العنصر الذي يوضح معاني الرموز في الخريطة؟",
-  a:[
-   "العنوان",
-   "المفتاح",
-   "الإطار"
-  ],
-  correct:1
- },
- {
-  q:"ما الخطوط التي تحدد المواقع شمالًا وجنوبًا؟",
-  a:[
-   "دوائر العرض",
-   "خطوط الطول",
-   "خطوط الارتفاع"
-  ],
-  correct:0
- },
- {
-  q:"ما التقنية المستخدمة في تحليل البيانات المكانية؟",
-  a:[
-   "GIS",
-   "التصوير العادي فقط",
-   "الكتابة"
-  ],
-  correct:0
- }
-];
-
-let questionIndex=0;
-let score=0;
-let answered=false;
-let completedQuestions=0;
-
-function renderQuestion(){
- const question=questions[questionIndex];
-
- el("question").textContent=question.q;
-
- const root=el("answers");
- root.replaceChildren();
-
- question.a.forEach((answerText,index)=>{
-  const button=document.createElement("button");
-  button.type="button";
-  button.className="light";
-  button.textContent=answerText;
-
-  button.addEventListener("click",()=>{
-   answer(index);
-  });
-
-  root.appendChild(button);
- });
-
- setStatus("quizResult","اختر إجابة واحدة.");
-
- el("quizProgress").textContent=
-  "السؤال "+(questionIndex+1)+" من "+questions.length;
-
- answered=false;
- el("nextQuestionButton").textContent="السؤال التالي";
-}
-
-function answer(index){
- if(answered||completedQuestions>=questions.length)return;
-
- answered=true;
-
- const question=questions[questionIndex];
- const buttons=el("answers").querySelectorAll("button");
-
- buttons.forEach(button=>{
-  button.disabled=true;
- });
-
- completedQuestions++;
-
- const result=el("quizResult");
-
- if(index===question.correct){
-  score++;
-  setStatus(result.id,"إجابة صحيحة! أحسنت.","success");
- }else{
-  setStatus(
-   result.id,
-   "إجابة غير صحيحة. الإجابة الصحيحة: "+
-   question.a[question.correct],
-   "error"
-  );
- }
-
- el("score").textContent=score;
-
- if(completedQuestions===questions.length){
-  el("quizProgress").textContent=
-   "اكتمل التحدي! نتيجتك: "+
-   score+
-   " من "+
-   questions.length;
-
-  el("nextQuestionButton").textContent="إعادة التحدي";
- }
-}
-
-function nextQuestion(){
- if(completedQuestions===questions.length){
-  restartQuiz();
-  return;
- }
-
- if(!answered){
-  setStatus(
-   "quizResult",
-   "أجب عن السؤال أولًا قبل الانتقال.",
-   "error"
-  );
-  return;
- }
-
- questionIndex++;
- renderQuestion();
-}
-
-function restartQuiz(){
- questionIndex=0;
- score=0;
- answered=false;
- completedQuestions=0;
-
- el("score").textContent="0";
- renderQuestion();
-}
-
-/* تحسين لوحة المفاتيح لنافذة التراث */
-function handleHeritageKeyboard(event){
- const modal=el("heritageTourModal");
-
- if(!modal||!modal.classList.contains("active"))return;
-
- if(event.key==="Escape"){
-  closeHeritageTour();
-  return;
- }
-
- if(event.key==="Tab"){
-  const focusable=modal.querySelectorAll(
-   'button:not([disabled]),input:not([disabled]),a[href]'
-  );
-
-  if(!focusable.length)return;
-
-  const first=focusable[0];
-  const last=focusable[focusable.length-1];
-
-  if(event.shiftKey&&document.activeElement===first){
-   event.preventDefault();
-   last.focus();
-  }else if(!event.shiftKey&&document.activeElement===last){
-   event.preventDefault();
-   first.focus();
+window.addEventListener("load",()=>{
+  try{
+    startApp();
+  }catch(error){
+    console.error("خطأ في تشغيل المنصة:",error);
+    toast("حدث خطأ في تحميل أحد أجزاء المنصة. افتح وحدة التحكم لمعرفة التفاصيل.");
   }
- }
-}
+});
 
-/* إغلاق الموارد المؤقتة */
-function cleanupTemporaryFiles(){
- temporaryObjectURLs.forEach(url=>{
-  try{URL.revokeObjectURL(url)}
-  catch(error){console.warn(error)}
- });
-
- temporaryObjectURLs.clear();
-}
-
-/* تشغيل المنصة */
-function initializePlatform(){
- renderHeritage();
- renderTour();
- renderQuestion();
-
- el("searchButton").addEventListener("click",searchPlace);
- el("barkaButton").addEventListener("click",goBarka);
- el("schoolButton").addEventListener("click",loadSchools);
- el("distanceButton").addEventListener("click",calculateDistance);
- el("nextQuestionButton").addEventListener("click",nextQuestion);
- el("restartQuizButton").addEventListener("click",restartQuiz);
-
- document.querySelectorAll("[data-layer]").forEach(button=>{
-  button.addEventListener("click",()=>{
-   changeLayer(button.dataset.layer);
-  });
- });
-
- el("placeSearch").addEventListener("keydown",event=>{
-  if(event.key==="Enter"){
-   event.preventDefault();
-   searchPlace();
-  }
- });
-
- window.addEventListener("resize",()=>{
-  if(map)map.invalidateSize();
-
-  if(heritage360Viewer){
-   try{heritage360Viewer.resize()}
-   catch(error){console.warn(error)}
-  }
- });
-
- document.addEventListener("keydown",handleHeritageKeyboard);
-
- window.addEventListener("pagehide",cleanupTemporaryFiles);
-
- initializeMap();
-}
-
-if(document.readyState==="loading"){
- document.addEventListener(
-  "DOMContentLoaded",
-  initializePlatform,
-  {once:true}
- );
-}else{
- initializePlatform();
-}
+window.addEventListener("resize",()=>{
+  if(heritageMap)setTimeout(()=>heritageMap.invalidateSize(),150);
+  if(schoolMap)setTimeout(()=>schoolMap.invalidateSize(),150);
+  if(exploreMap)setTimeout(()=>exploreMap.invalidateSize(),150);
+});
 </script>
 </body>
 </html>
