@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102b3f">
-<meta name="description" content="منصة الجغرافيا الذكية بمدرسة ثابت بن قيس في سلطنة عمان">
+<meta name="description" content="منصة الجغرافيا الذكية بمدرسة ثابت بن قيس للتعليم الأساسي في سلطنة عمان">
 <title>الجغرافيا الذكية | مدرسة ثابت بن قيس</title>
 
 <link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://tile.openstreetmap.org">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
@@ -23,7 +24,7 @@
  --red:#a83d3d;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:75px}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{
  margin:0;
  font-family:Tahoma,Arial,sans-serif;
@@ -34,11 +35,11 @@ body{
 header{
  background:linear-gradient(120deg,#102b3f,#176b87);
  color:white;
- padding:28px 16px;
+ padding:30px 16px;
  text-align:center;
  border-bottom:5px solid var(--gold);
 }
-header h1{margin:0;font-size:30px}
+header h1{margin:0;font-size:32px}
 header p{margin:5px 0}
 header small{color:#f4d995}
 nav{
@@ -65,12 +66,12 @@ nav a:hover,nav a:focus{
  background:var(--gold);
  color:#102b3f;
 }
-.container{max-width:1200px;margin:auto;padding:18px}
+.container{max-width:1250px;margin:auto;padding:18px}
 .hero{
  background:linear-gradient(120deg,#fff,#e7f1f6);
  border:1px solid var(--border);
  border-radius:15px;
- padding:22px;
+ padding:24px;
  margin-bottom:20px;
 }
 .hero h2{color:var(--navy);margin-top:0}
@@ -110,6 +111,7 @@ button,.btn{
  font-size:14px;
 }
 button:hover,.btn:hover{background:var(--navy)}
+button:disabled{opacity:.55;cursor:not-allowed}
 button:focus-visible,.btn:focus-visible,a:focus-visible,input:focus-visible{
  outline:3px solid var(--gold);
  outline-offset:2px;
@@ -117,6 +119,7 @@ button:focus-visible,.btn:focus-visible,a:focus-visible,input:focus-visible{
 .gold{background:#a77a25}
 .green{background:var(--green)}
 .light{background:#e7eff4;color:var(--navy)}
+.red{background:var(--red)}
 input,select{
  width:100%;
  padding:11px;
@@ -126,8 +129,9 @@ input,select{
  font-family:inherit;
  font-size:15px;
 }
+label{font-weight:bold}
 #map{
- height:430px;
+ height:450px;
  border-radius:12px;
  z-index:1;
  background:#e7eff4;
@@ -141,7 +145,7 @@ input,select{
 }
 .station{
  border-right:4px solid var(--gold);
- padding:10px 14px;
+ padding:12px 14px;
  background:#f7fafc;
  margin:10px 0;
  border-radius:8px;
@@ -150,22 +154,39 @@ footer{
  background:var(--navy);
  color:white;
  text-align:center;
- padding:20px;
+ padding:22px;
  margin-top:30px;
 }
 footer strong{color:#f0cd7b}
 .muted{color:#667985;font-size:13px}
-.hidden{display:none}
-a{color:#176b87}
 .status-error{color:var(--red)}
 .status-success{color:var(--green)}
 .map-links{margin-top:10px}
 .map-links a{display:inline-block;margin:4px}
+.badge{
+ display:inline-block;
+ background:#e8f1f5;
+ color:#176b87;
+ border-radius:20px;
+ padding:3px 10px;
+ font-size:12px;
+ margin:3px;
+}
+.feature-number{
+ color:var(--gold);
+ font-size:25px;
+ font-weight:bold;
+}
+#answers button{display:block;width:100%;text-align:right}
+#searchResults .card,#schoolResults .card{display:flex;flex-direction:column}
+#searchResults .card button,#schoolResults .card button{margin-top:auto}
+.leaflet-popup-content{font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+.hidden{display:none!important}
 @media(max-width:600px){
- header h1{font-size:23px}
+ header h1{font-size:24px}
  .container{padding:10px}
  .section{padding:14px}
- #map{height:350px}
+ #map{height:360px}
  button,.btn{font-size:13px;padding:9px 11px}
 }
 </style>
@@ -187,11 +208,14 @@ a{color:#176b87}
  <a href="#distance">حاسبة المسافة</a>
  <a href="#tour">الجولة الافتراضية</a>
  <a href="#lab">مختبر الجغرافيا</a>
+ <a href="#academy">أكاديمية الجغرافيا</a>
+ <a href="#teacher">مركز المعلم</a>
  <a href="#challenge">التحدي الجغرافي</a>
 </nav>
 
 <main class="container">
 
+<!-- الرئيسية -->
 <section class="hero" id="home">
  <h2>مرحبًا بكم في عالم الجغرافيا الذكية</h2>
  <p>
@@ -199,33 +223,46 @@ a{color:#176b87}
  وتتيح استكشاف المواقع العُمانية وتحليل الخرائط والتعرف على التراث
  والمجال المكاني لولاية بركاء.
  </p>
+
  <div class="grid">
   <div class="card">
    <h3>🗺️ الخرائط الرقمية</h3>
-   <p>استكشف المواقع والظواهر الجغرافية.</p>
+   <p>استكشف المواقع والظواهر الجغرافية من خلال الخرائط التفاعلية.</p>
   </div>
   <div class="card">
    <h3>🛰️ الاستشعار عن بُعد</h3>
-   <p>تعرف على صور الأقمار الصناعية واستخداماتها.</p>
+   <p>تعرف على صور الأقمار الصناعية واستخداماتها في دراسة الأرض.</p>
   </div>
   <div class="card">
    <h3>📍 نظم المعلومات الجغرافية</h3>
-   <p>اربط البيانات بالمواقع وحلل الأنماط المكانية.</p>
+   <p>اربط البيانات بالمواقع وحلل الأنماط والعلاقات المكانية.</p>
   </div>
   <div class="card">
    <h3>🏛️ التراث العُماني</h3>
-   <p>جولة معرفية في المعالم التاريخية.</p>
+   <p>جولة معرفية لاستكشاف المعالم التاريخية في سلطنة عُمان.</p>
   </div>
+ </div>
+
+ <div class="result">
+  <strong>وجهتنا التعليمية:</strong>
+  مدرسة ثابت بن قيس – ولاية بركاء – سلطنة عُمان.
  </div>
 </section>
 
+<!-- الخريطة -->
 <section class="section" id="gis">
  <h2>🗺️ الخريطة الجغرافية التفاعلية</h2>
- <p>استكشف سلطنة عُمان وولاية بركاء، وبدّل بين طبقات الخريطة.</p>
+ <p>
+ استكشف ولاية بركاء والمواقع الجغرافية المحيطة بها،
+ وبدّل بين خرائط الشوارع والصور الفضائية.
+ </p>
 
- <label for="placeSearch">البحث عن موقع</label>
- <input id="placeSearch" type="search" placeholder="اكتب اسم مكان للبحث عنه">
- <button type="button" onclick="searchPlace()">🔎 ابحث عن المكان</button>
+ <label for="placeSearch">البحث عن موقع في بيانات الخرائط المفتوحة</label>
+ <input id="placeSearch" type="search"
+ placeholder="مثال: حصن بركاء، بيت النعمان، مدرسة..."
+ autocomplete="off">
+
+ <button type="button" id="searchButton" onclick="searchPlace()">🔎 ابحث عن المكان</button>
  <button type="button" class="light" onclick="goBarka()">📍 الانتقال إلى بركاء</button>
 
  <div style="margin:10px 0">
@@ -236,36 +273,49 @@ a{color:#176b87}
 
  <div id="map" role="region" aria-label="الخريطة التفاعلية"></div>
 
- <div class="result">
-  <strong>روابط الاستكشاف الخارجي:</strong><br>
-  <a href="https://www.google.com/maps/" target="_blank" rel="noopener noreferrer">فتح Google Maps</a> |
-  <a href="https://earth.google.com/web/" target="_blank" rel="noopener noreferrer">فتح Google Earth</a> |
-  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">فتح OpenStreetMap</a>
+ <div id="mapStatus" class="result" aria-live="polite">
+ جارٍ تجهيز الخريطة...
  </div>
 
- <p id="mapStatus" class="muted" aria-live="polite">جارٍ تجهيز الخريطة...</p>
+ <div id="searchResults" class="grid" style="margin-top:12px"></div>
+
+ <div class="result">
+  <strong>خدمات الخرائط المفتوحة:</strong><br>
+  <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> |
+  <a href="https://www.arcgis.com/apps/mapviewer/" target="_blank" rel="noopener noreferrer">ArcGIS Map Viewer</a> |
+  <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA Worldview</a>
+ </div>
+
+ <p class="muted">
+ البحث داخل المنصة يستخدم بيانات OpenStreetMap عبر Overpass API،
+ ولا يستخدم Google Maps أو Google Earth أو Nominatim.
+ قد تختلف النتائج بحسب اكتمال البيانات المتاحة.
+ </p>
 </section>
 
+<!-- أطلس التراث -->
 <section class="section" id="heritage">
  <h2>🏛️ أطلس التراث العُماني</h2>
- <p>اختر أحد المعالم لفتحه في خدمة الخرائط المناسبة.</p>
+ <p>اختر أحد المعالم لعرض موقعه على خريطة المنصة أو استكشافه عبر الخرائط المفتوحة.</p>
  <div class="grid" id="heritageList"></div>
 </section>
 
+<!-- المدارس -->
 <section class="section" id="schools">
  <h2>🏫 المدارس والمجال التعليمي في بركاء</h2>
  <p>
- يمكن استكشاف المدارس المسجلة في بيانات الخرائط المفتوحة.
- النتائج تعتمد على توافر البيانات الجغرافية ولا تمثل حصرًا رسميًا.
+ استكشف المدارس المسجلة في بيانات الخرائط المفتوحة ضمن النطاق الجغرافي لبركاء.
+ النتائج ليست حصرًا رسميًا للمدارس.
  </p>
- <button type="button" onclick="loadSchools()">🔎 استكشاف المدارس القريبة</button>
+ <button type="button" id="schoolButton" onclick="loadSchools()">🔎 استكشاف المدارس القريبة</button>
  <div id="schoolStatus" class="result" aria-live="polite">اضغط الزر لبدء البحث.</div>
- <div id="schoolResults" class="grid"></div>
+ <div id="schoolResults" class="grid" style="margin-top:12px"></div>
 </section>
 
+<!-- حاسبة المسافة -->
 <section class="section" id="distance">
  <h2>📏 حاسبة المسافة الجغرافية</h2>
- <p>احسب المسافة التقريبية بين نقطتين باستخدام الإحداثيات.</p>
+ <p>احسب المسافة التقريبية بين نقطتين باستخدام الإحداثيات الجغرافية.</p>
 
  <div class="grid">
   <div class="card">
@@ -287,82 +337,179 @@ a{color:#176b87}
 
  <button type="button" onclick="calculateDistance()">احسب المسافة</button>
  <div id="distanceResult" class="result" aria-live="polite">ستظهر نتيجة الحساب هنا.</div>
+ <p class="muted">الحساب تقريبي ويعتمد على المسافة الجغرافية المباشرة بين النقطتين، وليس مسافة الطريق.</p>
 </section>
 
+<!-- الجولة الافتراضية -->
 <section class="section" id="tour">
  <h2>🏫 الجولة الافتراضية في مدرسة ثابت بن قيس</h2>
  <p>
- جولة تعريفية بمحطات المدرسة. يمكن إضافة الصور الأصلية أو مقاطع الفيديو
- لكل محطة عند توفر المادة المصورة.
+ جولة تعريفية تتكون من 13 محطة داخل المدرسة.
+ يمكن إضافة الصور الأصلية أو مقاطع الفيديو لكل محطة عند توفرها.
  </p>
+
+ <div class="result">
+  <strong>جولة استكشافية:</strong>
+  اختر المحطة التي ترغب في التعرف عليها.
+ </div>
+
  <div id="tourStations"></div>
+
  <p class="muted">
- المحطات التي لم تُحدد أسماؤها بعد تظهر كخانات قابلة للتخصيص،
+ المحطات التي لم تُحدد تفاصيلها بعد تظهر كخانات قابلة للتخصيص،
  وليست وصفًا مؤكدًا لمرافق المدرسة.
  </p>
 </section>
 
+<!-- مختبر الجغرافيا -->
 <section class="section" id="lab">
  <h2>🛰️ مختبر الجغرافيا والتقنيات الحديثة</h2>
  <div class="grid">
 
   <div class="card">
-   <h3>نظم المعلومات الجغرافية GIS</h3>
-   <p>تقنية لجمع البيانات المكانية وإدارتها وتحليلها وعرضها.</p>
+   <h3>🌐 نظم المعلومات الجغرافية GIS</h3>
+   <p>تقنيات جمع البيانات المكانية وإدارتها وتحليلها وعرضها.</p>
    <a class="btn" href="https://www.arcgis.com/" target="_blank" rel="noopener noreferrer">استكشف ArcGIS</a>
   </div>
 
   <div class="card">
-   <h3>الاستشعار عن بُعد</h3>
-   <p>استخدام صور الأقمار الصناعية لدراسة سطح الأرض والتغيرات البيئية.</p>
-   <a class="btn" href="https://earth.google.com/web/" target="_blank" rel="noopener noreferrer">استكشف الأرض</a>
+   <h3>🛰️ الاستشعار عن بُعد</h3>
+   <p>دراسة سطح الأرض من خلال صور الأقمار الصناعية.</p>
+   <a class="btn" href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">استكشف صور ناسا</a>
   </div>
 
   <div class="card">
-   <h3>الخرائط المفتوحة</h3>
-   <p>تعرف على البيانات الجغرافية المفتوحة ومجتمعات رسم الخرائط.</p>
+   <h3>🗺️ الخرائط المفتوحة</h3>
+   <p>التعرف على البيانات الجغرافية المفتوحة ومجتمعات رسم الخرائط.</p>
    <a class="btn" href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">استكشف الخرائط</a>
   </div>
 
   <div class="card">
-   <h3>صور الأقمار الصناعية</h3>
-   <p>مشاهدة صور فضائية ومعلومات عن الأرض.</p>
-   <a class="btn" href="https://apps.sentinel-hub.com/eo-browser/" target="_blank" rel="noopener noreferrer">مستكشف الصور الفضائية</a>
+   <h3>🌍 مستكشف الصور الفضائية</h3>
+   <p>مشاهدة صور الأقمار الصناعية وتحليل التغيرات على سطح الأرض.</p>
+   <a class="btn" href="https://apps.sentinel-hub.com/eo-browser/" target="_blank" rel="noopener noreferrer">مستكشف Sentinel</a>
+  </div>
+
+  <div class="card">
+   <h3>🧭 خرائط ArcGIS التعليمية</h3>
+   <p>إنشاء الخرائط الرقمية والتعرف على أدوات التحليل المكاني.</p>
+   <a class="btn" href="https://www.arcgis.com/apps/mapviewer/" target="_blank" rel="noopener noreferrer">افتح عارض الخرائط</a>
+  </div>
+
+  <div class="card">
+   <h3>🌎 بيانات الأرض</h3>
+   <p>مصادر علمية لاستكشاف بيانات الأرض والمناخ والبيئة.</p>
+   <a class="btn" href="https://earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">بيانات ناسا</a>
   </div>
 
  </div>
 </section>
 
-<section class="section" id="challenge">
- <h2>🧠 التحدي الجغرافي</h2>
+<!-- أكاديمية الجغرافيا -->
+<section class="section" id="academy">
+ <h2>🎓 أكاديمية الجغرافيا</h2>
+ <p>مساحة تعليمية للتعرف على المفاهيم الجغرافية والتقنيات الحديثة.</p>
 
- <div class="card">
-  <h3 id="question">ما التقنية التي تستخدم صور الأقمار الصناعية لدراسة سطح الأرض؟</h3>
-  <div id="answers"></div>
-  <div id="quizResult" class="result" aria-live="polite">اختر إجابة واحدة.</div>
-  <button type="button" onclick="nextQuestion()">السؤال التالي</button>
-  <p>النتيجة: <strong id="score">0</strong></p>
-  <p class="muted" id="quizProgress"></p>
+ <div class="grid">
+  <div class="card">
+   <h3>🗺️ تعلم قراءة الخرائط</h3>
+   <p>تعرف على العنوان والمفتاح ومقياس الرسم والاتجاهات والإحداثيات.</p>
+   <span class="badge">مهارات جغرافية</span>
+  </div>
+
+  <div class="card">
+   <h3>📍 تعلم الإحداثيات</h3>
+   <p>تعرف على خطوط الطول ودوائر العرض وتحديد المواقع.</p>
+   <span class="badge">الموقع الجغرافي</span>
+  </div>
+
+  <div class="card">
+   <h3>🛰️ تعلم الاستشعار عن بُعد</h3>
+   <p>تعرف على دور الأقمار الصناعية في دراسة الظواهر الأرضية.</p>
+   <span class="badge">تقنيات حديثة</span>
+  </div>
+
+  <div class="card">
+   <h3>📊 تعلم التحليل المكاني</h3>
+   <p>اكتشف كيف تساعد البيانات والخرائط على فهم العلاقات المكانية.</p>
+   <span class="badge">تحليل جغرافي</span>
+  </div>
  </div>
 </section>
 
-<section class="section">
+<!-- مركز المعلم -->
+<section class="section" id="teacher">
+ <h2>👨‍🏫 مركز المعلم</h2>
+ <p>مصادر وأدوات مساندة لتوظيف التقنيات الجغرافية في التعليم.</p>
+
+ <div class="grid">
+  <div class="card">
+   <h3>📚 مصادر جغرافية</h3>
+   <p>مواقع علمية ومصادر بيانات تساعد في إعداد الدروس والأنشطة.</p>
+   <a class="btn" href="https://www.usgs.gov/" target="_blank" rel="noopener noreferrer">المصادر الجيولوجية</a>
+  </div>
+
+  <div class="card">
+   <h3>🧩 أنشطة تفاعلية</h3>
+   <p>استخدم التحدي الجغرافي في هذه المنصة لتقويم تعلم الطلاب.</p>
+   <a class="btn" href="#challenge">انتقل إلى التحدي</a>
+  </div>
+
+  <div class="card">
+   <h3>🌐 خرائط تعليمية</h3>
+   <p>استفد من أدوات إنشاء الخرائط الرقمية والطبقات الجغرافية.</p>
+   <a class="btn" href="https://www.arcgis.com/" target="_blank" rel="noopener noreferrer">منصة ArcGIS</a>
+  </div>
+
+  <div class="card">
+   <h3>🛰️ بيانات فضائية</h3>
+   <p>استخدم مصادر صور الأقمار الصناعية في الأنشطة الجغرافية.</p>
+   <a class="btn" href="https://earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">بيانات الأرض</a>
+  </div>
+ </div>
+</section>
+
+<!-- التحدي -->
+<section class="section" id="challenge">
+ <h2>🧠 التحدي الجغرافي</h2>
+ <p>اختبر معلوماتك في الخرائط والتقنيات الجغرافية.</p>
+
+ <div class="card">
+  <div class="badge" id="quizProgress">السؤال 1 من 5</div>
+  <h3 id="question">جارٍ تحميل السؤال...</h3>
+  <div id="answers"></div>
+  <div id="quizResult" class="result" aria-live="polite">اختر إجابة واحدة.</div>
+  <button type="button" id="nextQuestionButton" onclick="nextQuestion()">السؤال التالي</button>
+  <button type="button" class="light" onclick="restartQuiz()">إعادة التحدي</button>
+  <p>النتيجة: <strong id="score">0</strong> من 5</p>
+ </div>
+</section>
+
+<!-- المصادر -->
+<section class="section" id="sources">
  <h2>📚 مصادر تعليمية موثوقة</h2>
  <div class="grid">
   <div class="card">
    <h3>وكالة ناسا</h3>
+   <p>مصادر علمية وصور وبيانات عن الأرض والفضاء.</p>
    <a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
   </div>
+
   <div class="card">
    <h3>هيئة المساحة الجيولوجية الأمريكية</h3>
+   <p>بيانات علمية وجغرافية عن الأرض.</p>
    <a href="https://www.usgs.gov/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
   </div>
+
   <div class="card">
    <h3>منظمة الأمم المتحدة</h3>
+   <p>مصادر ومعلومات دولية.</p>
    <a href="https://www.un.org/" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
   </div>
+
   <div class="card">
    <h3>Esri للتعليم الجغرافي</h3>
+   <p>أدوات وموارد تعليم نظم المعلومات الجغرافية.</p>
    <a href="https://www.esri.com/en-us/industries/education/overview" target="_blank" rel="noopener noreferrer">زيارة الموقع</a>
   </div>
  </div>
@@ -371,9 +518,10 @@ a{color:#176b87}
 </main>
 
 <footer>
- <strong>منصة الجغرافيا الذكية</strong>
+ <strong>🌍 منصة الجغرافيا الذكية</strong>
  <p>مدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عُمان</p>
  <p>تصميم وإعداد: د. قناوي حسين</p>
+ <small>الجغرافيا الذكية... معرفة مكانية برؤية رقمية</small>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -381,29 +529,88 @@ a{color:#176b87}
 <script>
 "use strict";
 
-/* =================================
-   إعدادات عامة
-================================= */
+/* =========================================
+   1. الإعدادات العامة
+========================================= */
 
-const barka = [23.7042, 57.8860];
+const BARKA = [23.7042,57.8860];
 
-const mapStatus = document.getElementById("mapStatus");
+const BARKA_BOUNDS = {
+ south:23.45,
+ west:57.55,
+ north:23.95,
+ east:58.20
+};
+
+const OVERPASS_SERVERS = [
+ "https://overpass-api.de/api/interpreter",
+ "https://overpass.kumi.systems/api/interpreter",
+ "https://overpass.private.coffee/api/interpreter"
+];
 
 let map = null;
 let activeLayer = null;
+let mapLayers = {};
+let searchMarkers = null;
 let schoolMarkers = null;
+let searchRunning = false;
 let schoolRequestRunning = false;
 
-/* =================================
-   إعداد الخريطة
-================================= */
+/* =========================================
+   2. أدوات مساعدة
+========================================= */
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,function(char){
+  const entities = {
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#39;"
+  };
+  return entities[char];
+ });
+}
+
+function setStatus(id,message,error=false){
+ const element = document.getElementById(id);
+ if(!element) return;
+ element.textContent = message;
+ element.classList.toggle("status-error",error);
+ element.classList.toggle("status-success",!error);
+}
+
+function createExternalLink(label,url,className=""){
+ const link = document.createElement("a");
+ link.className = "btn " + className;
+ link.textContent = label;
+ link.href = url;
+ link.target = "_blank";
+ link.rel = "noopener noreferrer";
+ return link;
+}
+
+function openOSMSearch(query){
+ const url = "https://www.openstreetmap.org/search?query=" +
+  encodeURIComponent(query);
+ window.open(url,"_blank","noopener");
+}
+
+/* =========================================
+   3. تهيئة الخريطة
+========================================= */
 
 function initializeMap(){
 
+ const status = document.getElementById("mapStatus");
+
  if(typeof L === "undefined"){
-  mapStatus.textContent =
-   "تعذر تحميل مكتبة الخرائط. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.";
-  mapStatus.classList.add("status-error");
+  setStatus(
+   "mapStatus",
+   "تعذر تحميل مكتبة الخرائط. تحقق من اتصال الإنترنت وأعد تحميل الصفحة.",
+   true
+  );
   return;
  }
 
@@ -412,9 +619,9 @@ function initializeMap(){
   map = L.map("map",{
    zoomControl:true,
    scrollWheelZoom:true
-  }).setView(barka,12);
+  }).setView(BARKA,12);
 
-  const layers = {
+  mapLayers = {
 
    street:L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -427,54 +634,57 @@ function initializeMap(){
    light:L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
     {
-     attribution:"© OpenStreetMap © CARTO",
-     maxZoom:19
+     maxZoom:19,
+     attribution:"© OpenStreetMap © CARTO"
     }
    ),
 
    satellite:L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     {
-     attribution:"Tiles © Esri",
-     maxZoom:19
+     maxZoom:19,
+     attribution:"Tiles © Esri"
     }
    )
 
   };
 
-  window.mapLayers = layers;
-
-  activeLayer = layers.street;
+  activeLayer = mapLayers.street;
   activeLayer.addTo(map);
 
+  searchMarkers = L.layerGroup().addTo(map);
   schoolMarkers = L.layerGroup().addTo(map);
 
-  L.marker(barka)
+  L.marker(BARKA)
    .addTo(map)
-   .bindPopup("<strong>ولاية بركاء</strong><br>سلطنة عُمان");
+   .bindPopup(
+    "<strong>ولاية بركاء</strong><br>سلطنة عُمان"
+   );
 
-  mapStatus.textContent = "الخريطة جاهزة للاستكشاف.";
-  mapStatus.classList.remove("status-error");
+  setStatus("mapStatus","الخريطة جاهزة للاستكشاف.");
 
   setTimeout(function(){
-   map.invalidateSize();
-  },300);
+   if(map) map.invalidateSize();
+  },400);
 
  }catch(error){
 
-  mapStatus.textContent =
-   "حدثت مشكلة أثناء تجهيز الخريطة. أعد تحميل الصفحة.";
-  mapStatus.classList.add("status-error");
+  console.error("Map error:",error);
 
-  console.error("Map initialization error:",error);
+  setStatus(
+   "mapStatus",
+   "حدثت مشكلة أثناء تجهيز الخريطة. أعد تحميل الصفحة.",
+   true
+  );
+
  }
 
 }
 
 function changeLayer(name){
 
- if(!map || !window.mapLayers || !window.mapLayers[name]){
-  mapStatus.textContent = "الخريطة غير متاحة حاليًا.";
+ if(!map || !mapLayers[name]){
+  setStatus("mapStatus","الخريطة غير متاحة حاليًا.",true);
   return;
  }
 
@@ -482,134 +692,356 @@ function changeLayer(name){
   map.removeLayer(activeLayer);
  }
 
- activeLayer = window.mapLayers[name];
+ activeLayer = mapLayers[name];
  activeLayer.addTo(map);
 
- mapStatus.textContent = "تم تغيير طبقة الخريطة.";
+ setStatus("mapStatus","تم تغيير طبقة الخريطة بنجاح.");
 }
 
 function goBarka(){
 
  if(!map){
-  mapStatus.textContent = "الخريطة غير متاحة حاليًا.";
+  setStatus("mapStatus","الخريطة غير متاحة حاليًا.",true);
   return;
  }
 
- map.setView(barka,14);
+ map.setView(BARKA,14);
+ setStatus("mapStatus","أنت الآن تستكشف ولاية بركاء.");
 }
 
-/* =================================
-   البحث عن موقع
-================================= */
+/* =========================================
+   4. البحث باستخدام Overpass API
+   لا يستخدم Google ولا Nominatim
+========================================= */
 
-function searchPlace(){
+function escapeOverpassRegex(value){
+ return value.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+}
+
+async function overpassRequest(query){
+
+ let lastError = null;
+
+ for(const server of OVERPASS_SERVERS){
+
+  const controller = new AbortController();
+  const timer = setTimeout(function(){
+   controller.abort();
+  },22000);
+
+  try{
+
+   const response = await fetch(server,{
+    method:"POST",
+    headers:{
+     "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"
+    },
+    body:"data=" + encodeURIComponent(query),
+    signal:controller.signal
+   });
+
+   if(!response.ok){
+    throw new Error("HTTP " + response.status);
+   }
+
+   const data = await response.json();
+
+   if(!data || !Array.isArray(data.elements)){
+    throw new Error("بيانات غير صالحة");
+   }
+
+   return data;
+
+  }catch(error){
+
+   lastError = error;
+   console.warn("Overpass endpoint failed:",server,error);
+
+  }finally{
+
+   clearTimeout(timer);
+
+  }
+
+ }
+
+ throw lastError || new Error("تعذر الاتصال بخدمة البيانات.");
+
+}
+
+function getElementCoordinates(item){
+
+ if(typeof item.lat === "number" &&
+    typeof item.lon === "number"){
+  return [item.lat,item.lon];
+ }
+
+ if(item.center &&
+    typeof item.center.lat === "number" &&
+    typeof item.center.lon === "number"){
+  return [item.center.lat,item.center.lon];
+ }
+
+ return null;
+}
+
+function getElementName(item){
+ return item.tags && item.tags.name
+  ? item.tags.name
+  : "موقع دون اسم";
+}
+
+function buildNameSearchQuery(searchText){
+
+ const safeText = escapeOverpassRegex(searchText);
+
+ const box =
+  BARKA_BOUNDS.south + "," +
+  BARKA_BOUNDS.west + "," +
+  BARKA_BOUNDS.north + "," +
+  BARKA_BOUNDS.east;
+
+ return `
+ [out:json][timeout:20];
+ (
+  node["name"~"${safeText}",i](${box});
+  way["name"~"${safeText}",i](${box});
+  relation["name"~"${safeText}",i](${box});
+ );
+ out center tags;
+ `;
+
+}
+
+async function searchPlace(){
 
  const input = document.getElementById("placeSearch");
- const q = input.value.trim();
+ const query = input.value.trim();
+ const button = document.getElementById("searchButton");
+ const results = document.getElementById("searchResults");
 
- if(!q){
-  alert("اكتب اسم المكان أولًا.");
+ if(!query){
+  setStatus("mapStatus","اكتب اسم المكان الذي تريد البحث عنه.",true);
   input.focus();
   return;
  }
 
- const url =
-  "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent(q);
+ if(searchRunning) return;
 
- /* الانتقال المباشر أكثر توافقًا مع متصفحات الهواتف */
- window.location.assign(url);
+ if(!map){
+  setStatus("mapStatus","الخريطة غير متاحة حاليًا.",true);
+  return;
+ }
+
+ searchRunning = true;
+ button.disabled = true;
+ button.textContent = "جارٍ البحث...";
+ results.replaceChildren();
+
+ setStatus("mapStatus","جارٍ البحث في بيانات الخرائط المفتوحة...");
+
+ try{
+
+  const data = await overpassRequest(buildNameSearchQuery(query));
+
+  searchMarkers.clearLayers();
+
+  const unique = new Map();
+
+  data.elements.forEach(function(item){
+
+   const coords = getElementCoordinates(item);
+   if(!coords || !item.tags) return;
+
+   const key = item.type + "-" + item.id;
+
+   if(!unique.has(key)){
+    unique.set(key,{
+     name:getElementName(item),
+     lat:coords[0],
+     lon:coords[1],
+     type:item.tags.amenity || item.tags.historic || item.tags.building || "موقع جغرافي"
+    });
+   }
+
+  });
+
+  const found = Array.from(unique.values()).slice(0,30);
+
+  if(!found.length){
+
+   setStatus(
+    "mapStatus",
+    "لم نعثر على نتائج مطابقة في نطاق بركاء. يمكنك تجربة اسم مختصر أو فتح البحث في OpenStreetMap.",
+    true
+   );
+
+   const fallback = document.createElement("button");
+   fallback.className = "green";
+   fallback.textContent = "فتح البحث في OpenStreetMap";
+   fallback.onclick = function(){
+    openOSMSearch(query);
+   };
+   results.appendChild(fallback);
+
+   return;
+  }
+
+  const bounds = [];
+
+  found.forEach(function(place){
+
+   const position = [place.lat,place.lon];
+   bounds.push(position);
+
+   const marker = L.marker(position).bindPopup(
+    "<strong>" + escapeHTML(place.name) + "</strong><br>" +
+    escapeHTML(place.type)
+   );
+
+   searchMarkers.addLayer(marker);
+
+   const card = document.createElement("article");
+   card.className = "card";
+
+   const title = document.createElement("h3");
+   title.textContent = "📍 " + place.name;
+
+   const description = document.createElement("p");
+   description.textContent = place.type;
+
+   const showButton = document.createElement("button");
+   showButton.textContent = "عرض على الخريطة";
+   showButton.onclick = function(){
+    map.setView(position,17);
+    marker.openPopup();
+    document.getElementById("gis").scrollIntoView({behavior:"smooth"});
+   };
+
+   const osmButton = document.createElement("button");
+   osmButton.className = "light";
+   osmButton.textContent = "فتح في OpenStreetMap";
+   osmButton.onclick = function(){
+    openOSMSearch(place.name);
+   };
+
+   card.append(title,description,showButton,osmButton);
+   results.appendChild(card);
+
+  });
+
+  if(bounds.length){
+   map.fitBounds(bounds,{padding:[35,35],maxZoom:16});
+  }
+
+  setStatus(
+   "mapStatus",
+   "عدد النتائج التي ظهرت: " + found.length +
+   ". البيانات مأخوذة من OpenStreetMap."
+  );
+
+ }catch(error){
+
+  console.error("Place search error:",error);
+
+  setStatus(
+   "mapStatus",
+   "تعذر الاتصال بخدمة البحث حاليًا. قد تكون الخدمة مزدحمة أو الاتصال محجوبًا.",
+   true
+  );
+
+  const fallback = document.createElement("button");
+  fallback.className = "green";
+  fallback.textContent = "جرّب البحث عبر OpenStreetMap";
+  fallback.onclick = function(){
+   openOSMSearch(query);
+  };
+  results.appendChild(fallback);
+
+ }finally{
+
+  searchRunning = false;
+  button.disabled = false;
+  button.textContent = "🔎 ابحث عن المكان";
+
+ }
+
 }
 
-/* =================================
-   أطلس التراث العُماني
-   زران فقط لكل معلم
-================================= */
+/* =========================================
+   5. أطلس التراث العماني
+========================================= */
 
 const heritage = [
 
  {
   name:"حصن بركاء",
-  query:"حصن بركاء سلطنة عمان",
+  query:"حصن بركاء",
   icon:"🏰",
   desc:"معلم تاريخي بارز في ولاية بركاء."
  },
 
  {
   name:"بيت النعمان",
-  query:"بيت النعمان بركاء عمان",
+  query:"بيت النعمان بركاء",
   icon:"🏛️",
   desc:"من المعالم التراثية في ولاية بركاء."
  },
 
  {
   name:"قلعة نخل",
-  query:"قلعة نخل سلطنة عمان",
+  query:"قلعة نخل",
   icon:"🏰",
   desc:"قلعة تاريخية في محافظة جنوب الباطنة."
  },
 
  {
   name:"قلعة الرستاق",
-  query:"قلعة الرستاق سلطنة عمان",
+  query:"قلعة الرستاق",
   icon:"🏯",
   desc:"من القلاع التاريخية العريقة في عُمان."
  },
 
  {
   name:"قلعة نزوى",
-  query:"قلعة نزوى سلطنة عمان",
+  query:"قلعة نزوى",
   icon:"🏰",
   desc:"معلم تاريخي في ولاية نزوى."
  },
 
  {
   name:"قلعة بهلاء",
-  query:"قلعة بهلاء سلطنة عمان",
+  query:"قلعة بهلاء",
   icon:"🏯",
   desc:"موقع تراث عالمي في سلطنة عُمان."
  },
 
  {
   name:"قلعة جبرين",
-  query:"قلعة جبرين سلطنة عمان",
+  query:"قلعة جبرين",
   icon:"🏛️",
   desc:"صرح معماري تاريخي عُماني."
  },
 
  {
   name:"حصن جعلان بني بو حسن",
-  query:"حصن جعلان بني بو حسن عمان",
+  query:"حصن جعلان بني بو حسن",
   icon:"🏰",
   desc:"معلم تراثي في محافظة جنوب الشرقية."
  },
 
  {
   name:"متحف أرض اللبان",
-  query:"متحف أرض اللبان سلطنة عمان",
+  query:"متحف أرض اللبان",
   icon:"🏺",
   desc:"يعرض جوانب من تاريخ اللبان والتراث العُماني."
  }
 
 ];
 
-function createExternalLink(label,url,className){
-
- const link = document.createElement("a");
-
- link.className = "btn " + (className || "");
- link.textContent = label;
- link.href = url;
- link.target = "_blank";
- link.rel = "noopener noreferrer";
-
- return link;
-}
-
 function renderHeritage(){
 
  const root = document.getElementById("heritageList");
-
  root.replaceChildren();
 
  heritage.forEach(function(place){
@@ -623,286 +1055,200 @@ function renderHeritage(){
   const description = document.createElement("p");
   description.textContent = place.desc;
 
-  const query = encodeURIComponent(place.query);
+  const showButton = document.createElement("button");
+  showButton.textContent = "عرض على خريطة المنصة";
+  showButton.onclick = function(){
 
-  const googleUrl =
-   "https://www.google.com/maps/search/?api=1&query=" + query;
+   document.getElementById("placeSearch").value = place.query;
 
-  const osmUrl =
-   "https://www.openstreetmap.org/search?query=" + query;
+   document.getElementById("gis").scrollIntoView({
+    behavior:"smooth"
+   });
 
-  const links = document.createElement("div");
-  links.className = "map-links";
+   searchPlace();
 
-  const googleLink = createExternalLink(
-   "Google Maps",
-   googleUrl,
-   ""
-  );
+  };
 
-  const osmLink = createExternalLink(
-   "OpenStreetMap",
-   osmUrl,
-   "green"
-  );
+  const osmButton = document.createElement("button");
+  osmButton.className = "light";
+  osmButton.textContent = "استكشاف OpenStreetMap";
+  osmButton.onclick = function(){
+   openOSMSearch(place.query);
+  };
 
-  links.append(googleLink,osmLink);
-  card.append(heading,description,links);
+  card.append(heading,description,showButton,osmButton);
   root.appendChild(card);
 
  });
 
 }
 
-/* =================================
-   المدارس عبر OpenStreetMap Overpass
-================================= */
+/* =========================================
+   6. استكشاف المدارس عبر Overpass
+========================================= */
+
+function buildSchoolsQuery(){
+
+ const box =
+  BARKA_BOUNDS.south + "," +
+  BARKA_BOUNDS.west + "," +
+  BARKA_BOUNDS.north + "," +
+  BARKA_BOUNDS.east;
+
+ return `
+ [out:json][timeout:25];
+ (
+  node["amenity"="school"](${box});
+  way["amenity"="school"](${box});
+  relation["amenity"="school"](${box});
+ );
+ out center tags;
+ `;
+
+}
 
 async function loadSchools(){
 
- if(schoolRequestRunning){
-  return;
- }
+ if(schoolRequestRunning) return;
 
  if(!map){
-  document.getElementById("schoolStatus").textContent =
-   "الخريطة غير متاحة حاليًا. لا يمكن عرض مواقع المدارس.";
+  setStatus("schoolStatus","الخريطة غير متاحة حاليًا.",true);
   return;
  }
 
  schoolRequestRunning = true;
 
+ const button = document.getElementById("schoolButton");
  const status = document.getElementById("schoolStatus");
  const results = document.getElementById("schoolResults");
 
- status.textContent = "جارٍ البحث عن بيانات المدارس...";
- status.classList.remove("status-error");
+ button.disabled = true;
+ button.textContent = "جارٍ البحث...";
  results.replaceChildren();
 
- const query = `
- [out:json][timeout:25];
- (
-  node["amenity"="school"](23.55,57.72,23.85,58.05);
-  way["amenity"="school"](23.55,57.72,23.85,58.05);
-  relation["amenity"="school"](23.55,57.72,23.85,58.05);
- );
- out center tags;
- `;
-
- const servers = [
-  "https://overpass-api.de/api/interpreter",
-  "https://overpass.kumi.systems/api/interpreter",
-  "https://overpass.private.coffee/api/interpreter"
- ];
-
- let data = null;
+ setStatus("schoolStatus","جارٍ استكشاف المدارس المسجلة في نطاق بركاء...");
 
  try{
 
-  for(const server of servers){
+  const data = await overpassRequest(buildSchoolsQuery());
 
-   let controller = null;
-   let timer = null;
+  schoolMarkers.clearLayers();
 
-   try{
-
-    controller = new AbortController();
-
-    timer = setTimeout(function(){
-     controller.abort();
-    },25000);
-
-    const response = await fetch(server,{
-     method:"POST",
-     body:"data=" + encodeURIComponent(query),
-     headers:{
-      "Content-Type":"application/x-www-form-urlencoded"
-     },
-     signal:controller.signal
-    });
-
-    if(!response.ok){
-     continue;
-    }
-
-    const received = await response.json();
-
-    if(received && Array.isArray(received.elements)){
-     data = received;
-     break;
-    }
-
-   }catch(error){
-
-    console.warn("Overpass server failed:",server,error);
-
-   }finally{
-
-    if(timer){
-     clearTimeout(timer);
-    }
-
-   }
-
-  }
-
-  if(!data){
-   status.textContent =
-    "تعذر تحميل بيانات المدارس الآن. حاول مرة أخرى لاحقًا.";
-   status.classList.add("status-error");
-   return;
-  }
-
-  const uniqueSchools = new Map();
+  const unique = new Map();
 
   data.elements.forEach(function(item){
 
-   if(!item.tags || !item.tags.name){
-    return;
-   }
+   if(!item.tags) return;
 
-   const lat = item.lat ?? item.center?.lat;
-   const lon = item.lon ?? item.center?.lon;
+   const coords = getElementCoordinates(item);
+   if(!coords) return;
 
-   if(
-    typeof lat !== "number" ||
-    typeof lon !== "number" ||
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lon)
-   ){
-    return;
-   }
-
+   const name = getElementName(item);
    const key = item.type + "-" + item.id;
 
-   if(!uniqueSchools.has(key)){
-    uniqueSchools.set(key,{
-     name:item.tags.name,
-     lat:lat,
-     lon:lon
+   if(!unique.has(key)){
+    unique.set(key,{
+     name:name,
+     lat:coords[0],
+     lon:coords[1]
     });
    }
 
   });
 
-  const schools = Array.from(uniqueSchools.values());
+  const schools = Array.from(unique.values());
 
   if(!schools.length){
-   status.textContent =
-    "لم تظهر مدارس مسجلة في نطاق البحث الحالي.";
+   setStatus(
+    "schoolStatus",
+    "لم تظهر مدارس مسجلة في نطاق البحث الحالي. قد تكون البيانات غير مكتملة.",
+    true
+   );
    return;
   }
 
-  /* إزالة علامات البحث السابق */
-  schoolMarkers.clearLayers();
+  schools.slice(0,50).forEach(function(school){
 
-  schools.slice(0,40).forEach(function(school){
+   const position = [school.lat,school.lon];
 
-   const marker = L.marker([school.lat,school.lon]);
-
-   marker.bindPopup(
+   const marker = L.marker(position).bindPopup(
     "<strong>" + escapeHTML(school.name) + "</strong>"
    );
 
    schoolMarkers.addLayer(marker);
 
-   const card = document.createElement("div");
+   const card = document.createElement("article");
    card.className = "card";
 
    const heading = document.createElement("h3");
    heading.textContent = "🏫 " + school.name;
 
    const description = document.createElement("p");
-   description.textContent = "بيانات جغرافية من OpenStreetMap.";
+   description.textContent = "موقع مدرسي مسجل في بيانات OpenStreetMap.";
 
-   const button = document.createElement("button");
-   button.type = "button";
-   button.textContent = "عرض الموقع على الخريطة";
-
-   button.addEventListener("click",function(){
-
-    map.setView([school.lat,school.lon],16);
+   const showButton = document.createElement("button");
+   showButton.textContent = "عرض الموقع على الخريطة";
+   showButton.onclick = function(){
+    map.setView(position,17);
     marker.openPopup();
+    document.getElementById("gis").scrollIntoView({behavior:"smooth"});
+   };
 
-    document.getElementById("gis").scrollIntoView({
-     behavior:"smooth"
-    });
-
-   });
-
-   card.append(heading,description,button);
+   card.append(heading,description,showButton);
    results.appendChild(card);
 
   });
 
-  status.textContent =
+  setStatus(
+   "schoolStatus",
    "عدد المدارس التي ظهرت في نتائج البحث: " +
    schools.length +
-   ". البيانات المفتوحة قد تكون غير مكتملة وليست حصرًا رسميًا.";
+   ". البيانات المفتوحة قد تكون غير مكتملة وليست حصرًا رسميًا."
+  );
 
  }catch(error){
 
   console.error("School search error:",error);
 
-  status.textContent =
-   "حدث خطأ أثناء تحميل بيانات المدارس. حاول لاحقًا.";
-
-  status.classList.add("status-error");
+  setStatus(
+   "schoolStatus",
+   "تعذر تحميل بيانات المدارس الآن. حاول مرة أخرى لاحقًا.",
+   true
+  );
 
  }finally{
 
   schoolRequestRunning = false;
+  button.disabled = false;
+  button.textContent = "🔎 استكشاف المدارس القريبة";
 
  }
 
 }
 
-/* حماية النصوص عند عرضها داخل Popup */
-function escapeHTML(value){
-
- return String(value).replace(/[&<>"']/g,function(char){
-
-  const entities = {
-   "&":"&amp;",
-   "<":"&lt;",
-   ">":"&gt;",
-   '"':"&quot;",
-   "'":"&#39;"
-  };
-
-  return entities[char];
-
- });
-
-}
-
-/* =================================
-   حاسبة المسافة الجغرافية
-================================= */
+/* =========================================
+   7. حاسبة المسافة الجغرافية
+========================================= */
 
 function calculateDistance(){
 
  const ids = ["lat1","lon1","lat2","lon2"];
 
- const rawValues = ids.map(function(id){
+ const raw = ids.map(function(id){
   return document.getElementById(id).value.trim();
  });
 
- if(rawValues.some(function(value){
-  return value === "";
- })){
-  document.getElementById("distanceResult").textContent =
-   "يرجى إدخال جميع الإحداثيات أولًا.";
+ const output = document.getElementById("distanceResult");
+
+ if(raw.some(function(value){return value === "";})){
+  output.textContent = "يرجى إدخال جميع الإحداثيات أولًا.";
   return;
  }
 
- const values = rawValues.map(Number);
+ const values = raw.map(Number);
 
- if(values.some(function(value){
-  return !Number.isFinite(value);
- })){
-  document.getElementById("distanceResult").textContent =
-   "أدخل أرقامًا صحيحة للإحداثيات.";
+ if(values.some(function(value){return !Number.isFinite(value);})){
+  output.textContent = "أدخل أرقامًا صحيحة للإحداثيات.";
   return;
  }
 
@@ -914,8 +1260,7 @@ function calculateDistance(){
   Math.abs(lon1)>180 ||
   Math.abs(lon2)>180
  ){
-  document.getElementById("distanceResult").textContent =
-   "الإحداثيات خارج النطاق الجغرافي الصحيح.";
+  output.textContent = "الإحداثيات خارج النطاق الجغرافي الصحيح.";
   return;
  }
 
@@ -924,7 +1269,6 @@ function calculateDistance(){
  };
 
  const earthRadius = 6371;
-
  const deltaLat = rad(lat2-lat1);
  const deltaLon = rad(lon2-lon1);
 
@@ -943,18 +1287,18 @@ function calculateDistance(){
    Math.sqrt(1-safeA)
   );
 
- document.getElementById("distanceResult").textContent =
+ output.textContent =
   "المسافة التقريبية: " +
   km.toFixed(3) +
   " كيلومتر (" +
-  (km*1000).toFixed(0) +
+  (km*1000).toFixed(1) +
   " متر).";
 
 }
 
-/* =================================
-   الجولة الافتراضية في المدرسة
-================================= */
+/* =========================================
+   8. الجولة الافتراضية في المدرسة
+========================================= */
 
 const stations = [
 
@@ -989,7 +1333,6 @@ const stations = [
 function renderTour(){
 
  const root = document.getElementById("tourStations");
-
  root.replaceChildren();
 
  stations.forEach(function(name,index){
@@ -998,8 +1341,7 @@ function renderTour(){
   item.className = "station";
 
   const heading = document.createElement("strong");
-  heading.textContent =
-   "المحطة " + (index+1) + ": " + name;
+  heading.textContent = "المحطة " + (index+1) + ": " + name;
 
   const description = document.createElement("p");
   description.className = "muted";
@@ -1013,59 +1355,39 @@ function renderTour(){
 
 }
 
-/* =================================
-   التحدي الجغرافي
-================================= */
+/* =========================================
+   9. التحدي الجغرافي
+========================================= */
 
 const questions = [
 
  {
   q:"ما التقنية التي تستخدم صور الأقمار الصناعية لدراسة سطح الأرض؟",
-  a:[
-   "نظم المعلومات الجغرافية",
-   "الاستشعار عن بُعد",
-   "الرسم اليدوي"
-  ],
+  a:["نظم المعلومات الجغرافية","الاستشعار عن بُعد","الرسم اليدوي"],
   correct:1
  },
 
  {
   q:"ما الأداة التي تساعد على تحديد المواقع والإحداثيات؟",
-  a:[
-   "نظام تحديد المواقع GPS",
-   "مقياس الحرارة",
-   "الميزان"
-  ],
+  a:["نظام تحديد المواقع GPS","مقياس الحرارة","الميزان"],
   correct:0
  },
 
  {
   q:"ما العنصر الذي يوضح معاني الرموز في الخريطة؟",
-  a:[
-   "العنوان",
-   "المفتاح",
-   "الإطار"
-  ],
+  a:["العنوان","المفتاح","الإطار"],
   correct:1
  },
 
  {
   q:"ما الخطوط التي تحدد المواقع شمالًا وجنوبًا؟",
-  a:[
-   "دوائر العرض",
-   "خطوط الطول",
-   "خطوط الارتفاع"
-  ],
+  a:["دوائر العرض","خطوط الطول","خطوط الارتفاع"],
   correct:0
  },
 
  {
   q:"ما التقنية المستخدمة في تحليل البيانات المكانية؟",
-  a:[
-   "GIS",
-   "التصوير العادي فقط",
-   "الكتابة"
-  ],
+  a:["GIS","التصوير العادي فقط","الكتابة"],
   correct:0
  }
 
@@ -1080,8 +1402,7 @@ function renderQuestion(){
 
  const question = questions[questionIndex];
 
- document.getElementById("question").textContent =
-  question.q;
+ document.getElementById("question").textContent = question.q;
 
  const root = document.getElementById("answers");
  root.replaceChildren();
@@ -1089,7 +1410,6 @@ function renderQuestion(){
  question.a.forEach(function(answerText,index){
 
   const button = document.createElement("button");
-
   button.type = "button";
   button.className = "light";
   button.textContent = answerText;
@@ -1102,9 +1422,8 @@ function renderQuestion(){
 
  });
 
- document.getElementById("quizResult").textContent =
-  "اختر إجابة واحدة.";
-
+ document.getElementById("quizResult").textContent = "اختر إجابة واحدة.";
+ document.getElementById("quizResult").classList.remove("status-success");
  document.getElementById("quizProgress").textContent =
   "السؤال " + (questionIndex+1) + " من " + questions.length;
 
@@ -1114,9 +1433,7 @@ function renderQuestion(){
 
 function answer(index){
 
- if(answered){
-  return;
- }
+ if(answered) return;
 
  answered = true;
 
@@ -1131,22 +1448,21 @@ function answer(index){
 
  completedQuestions++;
 
+ const result = document.getElementById("quizResult");
+
  if(index === question.correct){
 
   score++;
-
-  document.getElementById("quizResult").textContent =
-   "إجابة صحيحة! أحسنت.";
-
-  document.getElementById("quizResult").classList.add("status-success");
+  result.textContent = "إجابة صحيحة! أحسنت.";
+  result.classList.add("status-success");
 
  }else{
 
-  document.getElementById("quizResult").textContent =
+  result.textContent =
    "إجابة غير صحيحة. الإجابة الصحيحة: " +
    question.a[question.correct];
 
-  document.getElementById("quizResult").classList.remove("status-success");
+  result.classList.remove("status-success");
 
  }
 
@@ -1155,11 +1471,10 @@ function answer(index){
  if(completedQuestions === questions.length){
 
   document.getElementById("quizProgress").textContent =
-   "اكتمل التحدي! نتيجتك: " +
-   score +
-   " من " +
-   questions.length +
-   ". اضغط السؤال التالي لإعادة المحاولة.";
+   "اكتمل التحدي! نتيجتك: " + score + " من " + questions.length;
+
+  document.getElementById("nextQuestionButton").textContent =
+   "عرض النتيجة النهائية";
 
  }
 
@@ -1167,27 +1482,38 @@ function answer(index){
 
 function nextQuestion(){
 
+ if(completedQuestions === questions.length){
+  restartQuiz();
+  return;
+ }
+
  questionIndex++;
 
  if(questionIndex >= questions.length){
-
   questionIndex = 0;
-  score = 0;
-  completedQuestions = 0;
-
-  document.getElementById("score").textContent = "0";
-
  }
-
- document.getElementById("quizResult").classList.remove("status-success");
 
  renderQuestion();
 
 }
 
-/* =================================
-   تشغيل المنصة
-================================= */
+function restartQuiz(){
+
+ questionIndex = 0;
+ score = 0;
+ answered = false;
+ completedQuestions = 0;
+
+ document.getElementById("score").textContent = "0";
+ document.getElementById("nextQuestionButton").textContent = "السؤال التالي";
+
+ renderQuestion();
+
+}
+
+/* =========================================
+   10. تشغيل المنصة
+========================================= */
 
 document.addEventListener("DOMContentLoaded",function(){
 
@@ -1195,6 +1521,21 @@ document.addEventListener("DOMContentLoaded",function(){
  renderHeritage();
  renderTour();
  renderQuestion();
+
+ const searchInput = document.getElementById("placeSearch");
+
+ searchInput.addEventListener("keydown",function(event){
+  if(event.key === "Enter"){
+   event.preventDefault();
+   searchPlace();
+  }
+ });
+
+ window.addEventListener("resize",function(){
+  if(map){
+   map.invalidateSize();
+  }
+ });
 
 });
 
