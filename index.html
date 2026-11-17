@@ -1,137 +1,97 @@
-<!-- =========================================
-     إضافة الجولات الافتراضية للمعالم العمانية
-     لا تحذف أي كود موجود في موقعك
-========================================= -->
-
+<!-- الجولات الرسمية 360 - استبدال إضافة الجولات القديمة فقط -->
 <style>
-.virtual-tour-btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 11px 18px;
-  border: 0;
-  border-radius: 9px;
-  background: #087f75;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-.virtual-tour-btn:hover {
-  background: #05645d;
-}
 #oman-tour-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(0,0,0,.94);
-  padding: 15px;
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  background:#071522;
+  padding:12px;
 }
 #oman-tour-modal.active {
-  display: flex;
-  flex-direction: column;
+  display:flex;
+  flex-direction:column;
 }
 #oman-tour-modal iframe {
-  width: 100%;
-  flex: 1;
-  min-height: 300px;
-  border: 0;
-  border-radius: 10px;
-  background: #111;
+  width:100%;
+  flex:1;
+  min-height:300px;
+  border:0;
+  border-radius:12px;
+  background:white;
 }
-.oman-tour-close {
-  align-self: flex-end;
-  margin-bottom: 10px;
-  padding: 10px 18px;
-  background: #b83232;
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+#oman-tour-modal .tour-actions {
+  display:flex;
+  gap:10px;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  color:white;
 }
-.oman-tour-open {
-  color: white;
-  text-align: center;
-  padding: 12px;
+#oman-tour-modal button,
+#oman-tour-modal a {
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  color:white;
+  background:#087f75;
+  text-decoration:none;
+  cursor:pointer;
+  font-weight:bold;
 }
+#oman-tour-modal button {background:#a83232}
 </style>
 
-<div id="oman-tour-modal" aria-hidden="true">
-  <button class="oman-tour-close" onclick="closeOmanTour()">
-    ✕ إغلاق الجولة
-  </button>
+<div id="oman-tour-modal">
+  <div class="tour-actions">
+    <strong>الجولة الافتراضية للمعلم العماني</strong>
+    <button type="button" onclick="closeOmanTour()">إغلاق ✕</button>
+  </div>
   <iframe id="oman-tour-frame"
-    title="الجولة الافتراضية داخل المعلم"
-    allow="fullscreen; xr-spatial-tracking"
+    title="الجولة الافتراضية الرسمية"
+    allow="fullscreen; gyroscope; accelerometer"
     allowfullscreen>
   </iframe>
-  <a id="oman-tour-external"
-     class="oman-tour-open"
-     target="_blank"
-     rel="noopener">
-     إذا لم تظهر الجولة هنا، اضغط لفتحها في نافذة جديدة
-  </a>
+  <div class="tour-actions">
+    <span>إذا لم تعمل الجولة داخل النافذة:</span>
+    <a id="oman-tour-link" target="_blank" rel="noopener">
+      فتح الجولة في صفحة مستقلة
+    </a>
+  </div>
 </div>
 
 <script>
-/*
-  روابط Matterport التي أُدرجت في النسخة السابقة.
-  يجب اختبار كل رابط؛ لا يعني إدراجه أنه متاح حاليًا.
-*/
-const OMAN_VIRTUAL_TOURS = {
-  "جبرين": "https://my.matterport.com/show/?m=QgqPGf6a5Np",
-  "الحزم": "https://my.matterport.com/show/?m=kfEWtigW7cj",
-  "صحار": "https://my.matterport.com/show/?m=Cd2DPdi93XH",
-  "خصب": "https://my.matterport.com/show/?m=rUNhaKWuT5K",
-  "مرباط": "https://my.matterport.com/show/?m=ugqMv9i3dob"
+const OMAN_OFFICIAL_TOURS = {
+  "جبرين":
+  "https://experienceoman.om/ar/وجهات/محافظة-الداخلية/حصن-جبرين",
+
+  "الحزم":
+  "https://experienceoman.om/ar/وجهات/محافظة-جنوب-الباطنة/حصن-الحزم",
+
+  "خصب":
+  "https://stg.experienceoman.om/ar/وجهات/محافظة-مسندم/حصن-خصب",
+
+  "مرباط":
+  "https://experienceoman.om/ar/وجهات/محافظة-ظفار/حصن-مرباط",
+
+  "صحار":
+  "https://stg.experienceoman.om/en/destinations/al-batinah-north/sohar-fort"
 };
 
 function openOmanTour(name) {
-  const url = OMAN_VIRTUAL_TOURS[name];
-
+  const url = OMAN_OFFICIAL_TOURS[name];
   if (!url) {
-    alert("لا تتوفر جولة مباشرة مؤكدة لهذا المعلم حتى الآن.");
+    alert("لا توجد جولة رسمية مدرجة لهذا المعلم.");
     return;
   }
 
-  const modal = document.getElementById("oman-tour-modal");
-  const frame = document.getElementById("oman-tour-frame");
-  const external = document.getElementById("oman-tour-external");
-
-  frame.src = url;
-  external.href = url;
-  modal.classList.add("active");
-  modal.setAttribute("aria-hidden", "false");
+  document.getElementById("oman-tour-frame").src = url;
+  document.getElementById("oman-tour-link").href = url;
+  document.getElementById("oman-tour-modal").classList.add("active");
 }
 
 function closeOmanTour() {
-  const modal = document.getElementById("oman-tour-modal");
-  const frame = document.getElementById("oman-tour-frame");
-
-  modal.classList.remove("active");
-  modal.setAttribute("aria-hidden", "true");
-  frame.src = "about:blank";
-}
-
-/*
-  إضافة زر الجولة إلى بطاقة المعلم.
-  استخدم:
-  addOmanTourButton("جبرين", عنصر البطاقة)
-*/
-function addOmanTourButton(name, card) {
-  if (!card || !OMAN_VIRTUAL_TOURS[name]) return;
-
-  if (card.querySelector(".virtual-tour-btn")) return;
-
-  const button = document.createElement("button");
-  button.className = "virtual-tour-btn";
-  button.type = "button";
-  button.textContent = "🎥 ابدأ الجولة الافتراضية";
-  button.addEventListener("click", function () {
-    openOmanTour(name);
-  });
-
-  card.appendChild(button);
+  document.getElementById("oman-tour-modal").classList.remove("active");
+  document.getElementById("oman-tour-frame").src = "about:blank";
 }
 </script>
