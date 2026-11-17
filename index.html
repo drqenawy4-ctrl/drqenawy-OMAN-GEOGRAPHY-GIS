@@ -1,65 +1,498 @@
-.portal-icon{font-size:30px;display:inline-block}
-    .portal-btn{display:inline-block;text-decoration:none;border:0;border-radius:9px;padding:10px 14px;background:#087e9e;color:#fff;font-weight:bold;font-size:12px;cursor:pointer}
-    .portal-btn.gold{background:#e9b949;color:#1b2d38}
-    .portal-btn.dark{background:#173d55;color:white}
-    .portal-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:15px 0}
-    .portal-controls label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}
-    .portal-controls select,.portal-controls input{width:100%;padding:12px;border:1px solid #cbd8de;border-radius:9px;background:#fff;color:#173042;font:14px Tahoma}
-    .game-box{background:#102b3f;color:#fff;border-radius:15px;padding:20px}
-    .game-box h3{color:#70e2ed;margin-top:0}
-    .game-options{display:grid;gap:8px;margin-top:12px}
-    .game-options button{background:#244b62;color:white;border:1px solid #557387;text-align:right;padding:12px}
-    .game-options button:disabled{opacity:.8;cursor:default}
-    .game-feedback{min-height:28px;color:#ffd477;font-weight:bold;margin-top:12px}
-    .tour-card{overflow:hidden;padding:0}
-    .tour-card .tour-head{background:linear-gradient(135deg,#173d55,#087e9e);color:#fff;padding:18px;font-size:24px}
-    .tour-card .tour-body{padding:16px}
-    .resource-note{background:#fff8e7;border:1px solid #ead49b;border-radius:12px;padding:12px;color:#705a25;font-size:12px;line-height:1.8;margin-top:16px}
-    .site-footer{background:#0b2030;color:#d7e6ec;padding:25px;text-align:center;line-height:2}
-    .action-icon{display:inline-flex;align-items:center;gap:6px}
-    .map-status{position:absolute;z-index:450;right:14px;bottom:14px;max-width:min(340px,calc(100% - 28px));background:rgba(255,255,255,.95);color:#173042;border:1px solid #d9e3e8;border-radius:10px;padding:8px 11px;font-size:11px;line-height:1.7;box-shadow:var(--shadow)}
-    .map-status[hidden]{display:none}
-    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #39c6d6;outline-offset:2px}
-    .map-tools-extra{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-    .map-tools-extra button{min-height:40px}
-    .academy-hint{font-size:12px;color:#647987;line-height:1.8;margin-top:10px}
-    @media(max-width:800px){.map-status{bottom:10px;right:10px}.map-title{max-width:calc(100% - 20px)}}
-    @media(max-width:800px){.quick-nav{grid-template-columns:repeat(3,1fr)}.content-section{padding:34px 15px}.content-section h2{font-size:22px}}
-    .map-fallback{padding:24px;text-align:center;color:#173042;background:#fff;border:1px solid #d9e3e8;border-radius:14px;margin:18px;font-size:14px;line-height:1.9}
-    .map-fallback a{display:inline-block;margin-top:10px;padding:9px 14px;border-radius:9px;background:#087e9e;color:#fff;text-decoration:none;font-weight:bold}
-    .layer input{cursor:pointer}
-    .portal-btn, .mini, .quick-nav a{touch-action:manipulation}
-    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e9b949;outline-offset:2px}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b3f">
+<meta name="description" content="جولة افتراضية ثلاثية الأبعاد لاستكشاف التراث العُماني">
+<title>جولة التراث العُماني ثلاثية الأبعاد</title>
 
-
-    /* مركز المعلم: إضافة تعليمية مدمجة تحافظ على الهوية الأصلية */
-    .teacher-hub{background:linear-gradient(135deg,#eef5f7,#f8fafb)}
-    .teacher-grid{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(300px,1.1fr);gap:18px;align-items:start}
-    .teacher-panel,.teacher-output{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(11,39,57,.07)}
-    .teacher-panel h3,.teacher-output h3{margin:0 0 12px;color:var(--navy)}
-    .teacher-form{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-    .teacher-form .wide{grid-column:1/-1}
-    .teacher-form label{display:block;font-size:12px;font-weight:bold;color:var(--ink);margin-bottom:5px}
-    .teacher-form input,.teacher-form select,.teacher-form textarea{width:100%;border:1px solid #cbd9df;border-radius:9px;padding:10px;font:13px Tahoma,Arial,sans-serif;background:#fff;color:var(--ink)}
-    .teacher-form textarea{min-height:105px;resize:vertical;line-height:1.8}
-    .teacher-form input:focus,.teacher-form select:focus,.teacher-form textarea:focus{outline:3px solid rgba(57,198,214,.2);border-color:var(--blue)}
-    .teacher-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .teacher-actions button{flex:1;min-width:120px}
-    .teacher-output{min-height:340px}
-    .teacher-placeholder{border:1px dashed #b8cbd4;border-radius:12px;padding:28px 15px;text-align:center;color:var(--muted);line-height:1.9;background:#f8fbfc}
-    .plan-sheet{color:#243b49;line-height:1.9;font-size:13px}
-    .plan-sheet h3{padding-bottom:8px;border-bottom:2px solid #dbe8ed;margin:0 0 12px}
-    .plan-sheet h4{color:#087e9e;margin:13px 0 4px;font-size:13px}
-    .plan-sheet ul{margin:4px 0;padding-right:20px}
-    .plan-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:#f1f6f8;border-radius:10px;padding:10px;margin-bottom:12px}
-    .plan-meta span{font-size:12px}
-    .teacher-note{font-size:11px;color:#647987;line-height:1.8;margin-top:10px}
-    .tool-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
-    .tool-chip{padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1.7}
-    .tool-chip b{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
-    .teacher-status{font-size:12px;color:#087e9e;margin-top:8px;min-height:20px}
-    @media(max-width:800px){.teacher-grid{grid-template-columns:1fr}.tool-strip{grid-template-columns:1fr 1fr}}
-    @media(max-width:520px){.teacher-form{grid-template-columns:1fr}.teacher-form .wide{grid-column:auto}.teacher-panel,.teacher-output{padding:13px}.tool-strip{grid-template-columns:1fr}}
-
-  </style>
+<style>
+:root{
+  --bg:#071b29;
+  --panel:#102f40;
+  --gold:#e7bd72;
+  --cream:#f6eddd;
+  --muted:#c0cdd0;
+  --line:#ffffff24;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at 50% -20%,#315665 0,transparent 55%),var(--bg);
+  color:#fff;
+  font-family:Tahoma,Arial,sans-serif;
+  min-height:100vh;
+}
+.wrap{width:min(1180px,94%);margin:auto}
+.header{padding:25px 0 18px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:54px;height:54px;border-radius:16px;
+  background:linear-gradient(145deg,#f5d99e,#b47b35);
+  color:#163040;display:grid;place-items:center;
+  font-size:27px;font-weight:bold
+}
+.brand small{color:var(--gold)}
+h1{font-size:clamp(23px,4vw,38px);margin:5px 0}
+.lead{color:var(--muted);line-height:1.9;margin:18px 0 20px}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(260px,.8fr);
+  gap:18px;align-items:stretch
+}
+.viewer{
+  position:relative;min-height:570px;
+  border:1px solid var(--line);border-radius:22px;
+  overflow:hidden;background:linear-gradient(#18394a,#071923)
+}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.overlay{
+  position:absolute;z-index:2;top:17px;right:17px;left:17px;
+  display:flex;justify-content:space-between;gap:10px;
+  pointer-events:none
+}
+.pill{
+  background:#071b29c9;border:1px solid #ffffff28;
+  border-radius:999px;padding:9px 13px;
+  font-size:12px;color:#f8e7c6;backdrop-filter:blur(8px)
+}
+.hint{
+  position:absolute;z-index:2;bottom:15px;right:15px;left:15px;
+  text-align:center;color:#e5edf0;background:#071b29b8;
+  border:1px solid #ffffff22;border-radius:12px;
+  padding:10px;font-size:12px;pointer-events:none
+}
+.side{
+  border:1px solid var(--line);border-radius:22px;
+  background:linear-gradient(145deg,#ffffff12,#ffffff06);
+  padding:20px
+}
+.side h2{margin:0 0 8px;color:var(--cream);font-size:20px}
+.side p{color:var(--muted);font-size:13px;line-height:1.8;margin:0 0 16px}
+.places{display:grid;gap:9px;max-height:420px;overflow:auto;padding-left:3px}
+.place{
+  width:100%;text-align:right;border:1px solid var(--line);
+  background:#ffffff09;color:white;border-radius:13px;
+  padding:12px;cursor:pointer;font:inherit;
+  display:flex;align-items:center;gap:10px;transition:.2s
+}
+.place:hover,.place.active{border-color:var(--gold);background:#e7bd7218}
+.place .ico{font-size:21px;width:30px;text-align:center}
+.place b{display:block;font-size:13px}
+.place small{display:block;color:#b7c7ca;font-size:11px;margin-top:4px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.control{
+  border:1px solid #ffffff30;background:#ffffff10;
+  color:white;padding:10px 13px;border-radius:10px;
+  font:inherit;font-size:12px;cursor:pointer
+}
+.control.primary{
+  background:linear-gradient(135deg,#f0d292,#bd873f);
+  color:#102b3f;border:0;font-weight:bold
+}
+.details{margin-top:17px;border-top:1px solid var(--line);padding-top:14px}
+.details strong{color:var(--gold);font-size:13px}
+.details div{color:var(--muted);font-size:12px;line-height:1.8;margin-top:7px}
+.footer{color:#9eb0b6;font-size:11px;line-height:1.8;padding:18px 0 28px}
+.loading{
+  position:absolute;inset:0;display:grid;place-items:center;
+  color:#e9d6b3;font-size:13px;z-index:1;pointer-events:none
+}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .viewer{min-height:440px}
+  .places{grid-template-columns:repeat(2,minmax(0,1fr));max-height:none}
+}
+@media(max-width:520px){
+  .viewer{min-height:390px}
+  .places{grid-template-columns:1fr 1fr}
+  .side{padding:15px}
+  .place{padding:10px 8px}
+  .place b{font-size:12px}
+}
+</style>
 </head>
+
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">عُ</div>
+      <div>
+        <small>سلطنة عُمان</small>
+        <h1>جولة التراث العُماني ثلاثية الأبعاد</h1>
+      </div>
+    </div>
+    <p class="lead">
+      استكشف نماذج معمارية تراثية عُمانية في مشهد ثلاثي الأبعاد تفاعلي.
+      اختر معلمًا، ودوّر المشهد واسحب للتجول حول النموذج،
+      واستخدم التكبير لرؤية التفاصيل.
+    </p>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:20px">
+  <div class="layout">
+
+    <section class="viewer" aria-label="عارض الجولة ثلاثية الأبعاد">
+      <div class="loading" id="loading">جارٍ تحميل المشهد ثلاثي الأبعاد…</div>
+      <canvas id="scene"></canvas>
+
+      <div class="overlay">
+        <span class="pill">مشهد ثلاثي الأبعاد تفاعلي</span>
+        <span class="pill" id="sceneName">قلعة نزوى</span>
+      </div>
+
+      <div class="hint">
+        اسحب بالماوس أو الإصبع لتدوير المشهد •
+        استخدم عجلة الماوس أو إصبعيك للتكبير
+      </div>
+    </section>
+
+    <aside class="side">
+      <h2>اختر معلمًا تراثيًا</h2>
+      <p>تتغير هيئة النموذج واسم المعلم عند الاختيار.</p>
+
+      <div class="places" id="places"></div>
+
+      <div class="controls">
+        <button class="control primary" id="reset">إعادة ضبط المشهد</button>
+        <button class="control" id="auto">إيقاف الدوران</button>
+      </div>
+
+      <div class="details">
+        <strong id="detailTitle">قلعة نزوى</strong>
+        <div id="detailText">
+          نموذج ثلاثي الأبعاد توضيحي مستوحى من العمارة الدفاعية العُمانية.
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="footer">
+    تنويه: هذه نسخة تفاعلية تعليمية بنماذج ثلاثية الأبعاد توضيحية.
+    لا تمثل تصويرًا فوتوغرامتريًا أو جولة داخلية موثقة للمعالم.
+    يتطلب إنشاء جولة واقعية داخل المبنى صورًا بانورامية 360°
+    أو نموذجًا ثلاثي الأبعاد أصليًا لكل معلم.
+  </div>
+</main>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const places=[
+ {
+  name:'قلعة نزوى',region:'نزوى • الداخلية',icon:'🏰',
+  desc:'نموذج توضيحي لقلعة عُمانية ذات برج دائري وكتل دفاعية تراثية.',
+  type:0
+ },
+ {
+  name:'قلعة بهلاء',region:'بهلاء • الداخلية',icon:'🏯',
+  desc:'نموذج توضيحي مستوحى من الحصون الطينية والأسوار المتدرجة.',
+  type:1
+ },
+ {
+  name:'قلعة جبرين',region:'بهلاء • الداخلية',icon:'🏛️',
+  desc:'نموذج توضيحي لقصر تراثي بواجهات وأبراج وزخارف معمارية.',
+  type:2
+ },
+ {
+  name:'حصن الرستاق',region:'الرستاق • جنوب الباطنة',icon:'🛡️',
+  desc:'نموذج توضيحي لحصن عُماني متعدد الأبراج والكتل الدفاعية.',
+  type:3
+ },
+ {
+  name:'قلعة نخل',region:'نخل • جنوب الباطنة',icon:'🏰',
+  desc:'نموذج توضيحي لقلعة جبلية ذات برج رئيسي وسور محيط.',
+  type:0
+ },
+ {
+  name:'قلعة الحزم',region:'الرستاق • جنوب الباطنة',icon:'🏯',
+  desc:'نموذج توضيحي لعمارة الحصون العُمانية ذات الفناء والأسوار.',
+  type:2
+ },
+ {
+  name:'قلعة صحار',region:'صحار • شمال الباطنة',icon:'⚓',
+  desc:'نموذج توضيحي لمعْلم دفاعي مرتبط بتاريخ مدينة صحار.',
+  type:1
+ },
+ {
+  name:'قلعة خصب',region:'خصب • مسندم',icon:'🏰',
+  desc:'نموذج توضيحي لقلعة ساحلية في محافظة مسندم.',
+  type:3
+ },
+ {
+  name:'قلعة مرباط',region:'مرباط • ظفار',icon:'🏛️',
+  desc:'نموذج توضيحي لعمارة حصون الساحل العُماني.',
+  type:0
+ }
+];
+
+const canvas=document.querySelector('#scene');
+const loading=document.querySelector('#loading');
+
+const renderer=new THREE.WebGLRenderer({
+ canvas,antialias:true,alpha:true
+});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color('#102b3b');
+scene.fog=new THREE.Fog('#102b3b',18,38);
+
+const camera=new THREE.PerspectiveCamera(
+ 42,canvas.clientWidth/canvas.clientHeight,.1,100
+);
+camera.position.set(9,7,11);
+
+scene.add(new THREE.HemisphereLight(0xf5e7cb,0x34434a,2));
+
+const sun=new THREE.DirectionalLight(0xffdfaa,3);
+sun.position.set(7,12,8);
+sun.castShadow=true;
+scene.add(sun);
+
+const ground=new THREE.Mesh(
+ new THREE.CircleGeometry(13,80),
+ new THREE.MeshStandardMaterial({color:'#b89b70',roughness:1})
+);
+ground.rotation.x=-Math.PI/2;
+ground.position.y=-.16;
+ground.receiveShadow=true;
+scene.add(ground);
+
+const grid=new THREE.GridHelper(24,24,0x8d795c,0x8d795c);
+grid.position.y=-.145;
+grid.material.transparent=true;
+grid.material.opacity=.18;
+scene.add(grid);
+
+const model=new THREE.Group();
+scene.add(model);
+
+const matWall=new THREE.MeshStandardMaterial({
+ color:'#c9a879',roughness:.92
+});
+const matDark=new THREE.MeshStandardMaterial({
+ color:'#8c6848',roughness:1
+});
+const matRoof=new THREE.MeshStandardMaterial({
+ color:'#a77b4f',roughness:.9
+});
+const matDoor=new THREE.MeshStandardMaterial({
+ color:'#493a2c'
+});
+const matGold=new THREE.MeshStandardMaterial({
+ color:'#d9b36e',metalness:.18,roughness:.55
+});
+
+function box(parent,w,h,d,x,y,z,mat){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
+ m.position.set(x,y+h/2,z);
+ m.castShadow=true;
+ m.receiveShadow=true;
+ parent.add(m);
+ return m;
+}
+
+function tower(parent,x,z,r=1.05,h=4.4){
+ const t=new THREE.Mesh(
+  new THREE.CylinderGeometry(r*.88,r,h,24),matWall
+ );
+ t.position.set(x,h/2,z);
+ t.castShadow=true;
+ t.receiveShadow=true;
+ parent.add(t);
+
+ const roof=new THREE.Mesh(
+  new THREE.CylinderGeometry(r*1.05,r*.95,.42,24),matRoof
+ );
+ roof.position.set(x,h+.2,z);
+ roof.castShadow=true;
+ parent.add(roof);
+
+ for(let i=0;i<8;i++){
+  const a=i*Math.PI/4;
+  const slit=box(
+   parent,.12,.55,.13,
+   x+Math.cos(a)*r*.91,
+   h*.55,
+   z+Math.sin(a)*r*.91,
+   matDoor
+  );
+  slit.rotation.y=-a;
+ }
+ return t;
+}
+
+function build(type){
+ model.clear();
+
+ const base=box(model,7,.42,6,0,0,0,matDark);
+ base.position.y=.05;
+
+ if(type===0){
+  box(model,5.4,3.1,4.5,0,.25,0,matWall);
+  tower(model,0,0,1.48,6.2);
+  tower(model,-2.8,-2.2,.68,3.8);
+  tower(model,2.8,2.2,.68,3.8);
+ }
+
+ if(type===1){
+  box(model,6.3,2.8,5.2,0,.25,0,matWall);
+  tower(model,-2.8,-2.25,.72,4.2);
+  tower(model,2.8,-2.25,.72,3.7);
+  tower(model,-2.8,2.25,.72,4.6);
+  tower(model,2.8,2.25,.72,3.9);
+  box(model,2.1,3.8,1.5,0,.25,-1.9,matRoof);
+ }
+
+ if(type===2){
+  box(model,5.8,3.4,4.8,0,.25,0,matWall);
+  box(model,3.5,1.4,3.2,0,3.65,0,matRoof);
+  tower(model,-2.7,-2.1,.58,4.4);
+  tower(model,2.7,2.1,.58,4.4);
+  box(model,1.25,2.2,.18,0,.25,-2.42,matDoor);
+ }
+
+ if(type===3){
+  box(model,5.7,2.6,4.6,0,.25,0,matWall);
+  tower(model,-2.75,-2.2,.82,4.7);
+  tower(model,2.75,-2.2,.82,4.1);
+  tower(model,-2.75,2.2,.82,4.3);
+  tower(model,2.75,2.2,.82,5.1);
+  box(model,1.4,2.4,.2,0,.25,-2.32,matDoor);
+ }
+
+ for(let x=-2;x<=2;x+=1){
+  const band=box(model,.48,.12,.08,x,.85,-2.32,matGold);
+  band.position.z=-2.34;
+ }
+
+ const arch=new THREE.Mesh(
+  new THREE.TorusGeometry(.62,.09,8,24,Math.PI),
+  matGold
+ );
+ arch.position.set(0,2.05,-2.38);
+ arch.rotation.z=Math.PI;
+ model.add(arch);
+}
+
+let selected=0;
+let drag=false;
+let lastX=0,lastY=0;
+let rotX=-.18,rotY=.45,zoom=1;
+let spinning=true;
+
+const target=new THREE.Vector3(0,2,0);
+
+function select(i){
+ selected=i;
+ const p=places[i];
+
+ build(p.type);
+
+ document.querySelector('#sceneName').textContent=p.name;
+ document.querySelector('#detailTitle').textContent=p.name;
+ document.querySelector('#detailText').textContent=p.desc;
+
+ document.querySelectorAll('.place').forEach((b,j)=>{
+  b.classList.toggle('active',j===i);
+ });
+}
+
+const list=document.querySelector('#places');
+
+places.forEach((p,i)=>{
+ const b=document.createElement('button');
+ b.className='place';
+ b.innerHTML=`
+  <span class="ico">${p.icon}</span>
+  <span>
+   <b>${p.name}</b>
+   <small>${p.region}</small>
+  </span>
+ `;
+ b.addEventListener('click',()=>select(i));
+ list.append(b);
+});
+
+canvas.addEventListener('pointerdown',e=>{
+ drag=true;
+ lastX=e.clientX;
+ lastY=e.clientY;
+ canvas.setPointerCapture(e.pointerId);
+});
+
+canvas.addEventListener('pointermove',e=>{
+ if(!drag)return;
+
+ rotY+=(e.clientX-lastX)*.009;
+ rotX+=(e.clientY-lastY)*.006;
+
+ rotX=Math.max(-.9,Math.min(.45,rotX));
+
+ lastX=e.clientX;
+ lastY=e.clientY;
+});
+
+canvas.addEventListener('pointerup',()=>drag=false);
+canvas.addEventListener('pointercancel',()=>drag=false);
+
+canvas.addEventListener('wheel',e=>{
+ e.preventDefault();
+ zoom=Math.max(.65,Math.min(1.65,zoom+e.deltaY*.001));
+},{passive:false});
+
+document.querySelector('#reset').addEventListener('click',()=>{
+ rotX=-.18;
+ rotY=.45;
+ zoom=1;
+ camera.position.set(9,7,11);
+});
+
+document.querySelector('#auto').addEventListener('click',e=>{
+ spinning=!spinning;
+ e.currentTarget.textContent=
+  spinning?'إيقاف الدوران':'تشغيل الدوران';
+});
+
+function resize(){
+ const w=canvas.clientWidth;
+ const h=canvas.clientHeight;
+ renderer.setSize(w,h,false);
+ camera.aspect=w/h;
+ camera.updateProjectionMatrix();
+}
+
+new ResizeObserver(resize).observe(canvas);
+
+select(0);
+
+function animate(){
+ requestAnimationFrame(animate);
+
+ if(spinning&&!drag)rotY+=.0022;
+
+ model.rotation.set(rotX,rotY,0);
+
+ camera.position.set(9*zoom,7*zoom,11*zoom);
+ camera.lookAt(target);
+
+ renderer.render(scene,camera);
+}
+
+animate();
+loading.remove();
+
+</script>
+</body>
+</html>
