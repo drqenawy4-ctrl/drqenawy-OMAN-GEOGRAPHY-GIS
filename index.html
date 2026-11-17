@@ -2,286 +2,305 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102b3f">
-<title>أطلس التراث العُماني | جولات افتراضية</title>
+<title>أطلس التراث العُماني | الجولات الافتراضية</title>
 
-<link rel="stylesheet"
- href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
 
 <style>
 :root{
-  --navy:#102b3f;
-  --navy2:#173e53;
-  --gold:#d8b66a;
-  --cream:#f5f1e8;
-  --white:#fff;
-  --muted:#6d7b83;
+--navy:#102b3f;
+--navy2:#173e53;
+--gold:#d8b66a;
+--cream:#f5f1e8;
+--white:#fff;
+--muted:#6d7b83;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:var(--cream);
-  color:#20313b;
-  line-height:1.8;
+margin:0;
+font-family:Tahoma,Arial,sans-serif;
+background:var(--cream);
+color:#20313b;
+line-height:1.8;
 }
 header{
-  background:linear-gradient(125deg,#0b2030,#17475b);
-  color:white;
-  padding:55px 20px 45px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
+background:linear-gradient(125deg,#0b2030,#17475b);
+color:white;
+padding:55px 20px 45px;
+text-align:center;
+position:relative;
+overflow:hidden;
 }
 header:after{
-  content:"";
-  position:absolute;
-  width:260px;height:260px;
-  border:1px solid #d8b66a55;
-  border-radius:50%;
-  top:-140px;right:-50px;
+content:"";
+position:absolute;
+width:260px;height:260px;
+border:1px solid #d8b66a55;
+border-radius:50%;
+top:-140px;right:-50px;
+pointer-events:none;
 }
-.logo{
-  font-size:45px;
-  margin-bottom:5px;
-}
+.logo{font-size:45px}
 header h1{
-  color:var(--gold);
-  font-size:clamp(28px,5vw,46px);
-  margin:5px 0;
+color:var(--gold);
+font-size:clamp(28px,5vw,46px);
+margin:5px 0;
 }
-header p{
-  max-width:750px;
-  margin:10px auto;
-  color:#e6edf0;
-}
+header p{max-width:750px;margin:10px auto;color:#e6edf0}
 .header-tag{
-  display:inline-block;
-  border:1px solid var(--gold);
-  color:var(--gold);
-  padding:5px 18px;
-  border-radius:30px;
-  margin-top:15px;
-  font-size:14px;
+display:inline-block;
+border:1px solid var(--gold);
+color:var(--gold);
+padding:5px 18px;
+border-radius:30px;
+margin-top:15px;
+font-size:14px;
 }
 nav{
-  background:#0b2030;
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:8px;
-  padding:12px;
-  position:sticky;
-  top:0;
-  z-index:20;
+background:#0b2030;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:8px;
+padding:12px;
+position:sticky;
+top:0;
+z-index:20;
 }
 nav a{
-  color:white;
-  text-decoration:none;
-  padding:8px 15px;
-  border-radius:7px;
-  font-size:14px;
+color:white;
+text-decoration:none;
+padding:8px 13px;
+border-radius:7px;
+font-size:13px;
 }
 nav a:hover{background:#31566a;color:var(--gold)}
-.container{
-  width:min(1150px,94%);
-  margin:35px auto;
-}
-.section-title{
-  color:var(--navy);
-  font-size:25px;
-  margin-bottom:8px;
-}
-.section-intro{
-  color:var(--muted);
-  margin-top:0;
-}
+.container{width:min(1150px,94%);margin:35px auto}
+.section-title{color:var(--navy);font-size:25px;margin-bottom:8px}
+.section-intro{color:var(--muted);margin-top:0}
 .intro-box{
-  background:white;
-  border-right:5px solid var(--gold);
-  padding:22px;
-  border-radius:12px;
-  box-shadow:0 5px 20px #142b3b0d;
+background:white;
+border-right:5px solid var(--gold);
+padding:22px;
+border-radius:12px;
+box-shadow:0 5px 20px #142b3b0d;
 }
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:22px 0;
+.controls,.filters,.tour-tools{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:20px 0;
 }
 input,select{
-  padding:12px 14px;
-  border:1px solid #d6dce0;
-  border-radius:9px;
-  font-family:inherit;
-  font-size:14px;
-  background:white;
-  min-width:180px;
+padding:12px 14px;
+border:1px solid #d6dce0;
+border-radius:9px;
+font-family:inherit;
+font-size:14px;
+background:white;
+min-width:180px;
+max-width:100%;
 }
 #search{flex:1}
-.filters{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:20px;
-}
 .filter-btn,.action-btn{
-  border:0;
-  background:var(--navy);
-  color:white;
-  padding:10px 17px;
-  border-radius:8px;
-  cursor:pointer;
-  font-family:inherit;
+border:0;
+background:var(--navy);
+color:white;
+padding:10px 17px;
+border-radius:8px;
+cursor:pointer;
+font-family:inherit;
 }
-.filter-btn.active,.filter-btn:hover,
-.action-btn:hover{background:#bd9650;color:#172b38}
+.filter-btn.active,.filter-btn:hover,.action-btn:hover{
+background:#bd9650;color:#172b38;
+}
 .cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:18px;
 }
 .site-card{
-  background:white;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 5px 18px #152d3c12;
-  border:1px solid #e8e4da;
-  transition:.2s;
+background:white;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 5px 18px #152d3c12;
+border:1px solid #e8e4da;
+transition:.2s;
 }
-.site-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 25px #152d3c20;
-}
+.site-card:hover{transform:translateY(-4px)}
 .card-art{
-  height:145px;
-  background:linear-gradient(135deg,#173e53,#98784b);
-  color:#f4d99a;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:55px;
+height:145px;
+background:linear-gradient(135deg,#173e53,#98784b);
+color:#f4d99a;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:55px;
 }
 .card-content{padding:17px}
 .card-content h3{margin:0;color:var(--navy)}
-.category{
-  color:#98733a;
-  font-size:12px;
-  font-weight:bold;
-}
-.card-content p{
-  color:#65737b;
-  font-size:13px;
-  min-height:65px;
-}
-.card-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
+.category{color:#98733a;font-size:12px;font-weight:bold}
+.card-content p{color:#65737b;font-size:13px;min-height:65px}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap}
 .card-actions button,.card-actions a{
-  flex:1;
-  text-align:center;
-  text-decoration:none;
-  border:0;
-  border-radius:7px;
-  padding:9px 7px;
-  cursor:pointer;
-  font-family:inherit;
-  font-size:12px;
+flex:1;
+text-align:center;
+text-decoration:none;
+border:0;
+border-radius:7px;
+padding:9px 7px;
+cursor:pointer;
+font-family:inherit;
+font-size:12px;
 }
 .tour-btn{background:var(--navy);color:white}
 .map-btn{background:#eee7d8;color:#3e4c50}
+
+/* VirtualPro */
+#virtualpro-section{
+background:linear-gradient(135deg,#0b2030,#173e53);
+color:white;
+border-radius:18px;
+padding:25px;
+margin-top:40px;
+box-shadow:0 8px 25px #102b3f20;
+}
+#virtualpro-section h2{color:var(--gold);margin-top:0}
+.virtualpro-intro{
+color:#e2eaf0;
+max-width:850px;
+}
+.virtualpro-frame{
+width:100%;
+height:650px;
+border:1px solid #d8b66a66;
+border-radius:14px;
+overflow:hidden;
+background:#071722;
+margin-top:18px;
+}
+.virtualpro-frame iframe{
+width:100%;
+height:100%;
+border:0;
+display:block;
+}
+.virtualpro-actions{
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+margin-top:18px;
+}
+.virtualpro-actions a{
+display:inline-block;
+text-decoration:none;
+padding:12px 22px;
+border-radius:9px;
+font-family:inherit;
+font-weight:bold;
+}
+.vp-primary{background:var(--gold);color:#102b3f}
+.vp-secondary{border:1px solid var(--gold);color:var(--gold)}
+.vp-note{
+background:#ffffff12;
+padding:12px 15px;
+border-radius:9px;
+font-size:13px;
+color:#e5eaf0;
+margin-top:15px;
+}
+
+/* Pannellum */
 #tour-section{
-  background:#102b3f;
-  color:white;
-  border-radius:17px;
-  padding:25px;
-  margin-top:45px;
+background:#102b3f;
+color:white;
+border-radius:17px;
+padding:25px;
+margin-top:40px;
 }
 #tour-section h2{color:var(--gold)}
-.tour-layout{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:15px;
-}
 #panorama{
-  width:100%;
-  height:430px;
-  background:#071722;
-  border-radius:12px;
-  overflow:hidden;
+width:100%;
+height:430px;
+background:#071722;
+border-radius:12px;
+overflow:hidden;
 }
 .tour-message{
-  background:#173e53;
-  padding:15px;
-  border-radius:10px;
-  color:#e8edf0;
-}
-.tour-tools{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:15px 0;
+background:#173e53;
+padding:15px;
+border-radius:10px;
+color:#e8edf0;
 }
 .tour-tools input{flex:1}
 .tour-tools button{
-  background:var(--gold);
-  color:#142b38;
-  border:0;
-  border-radius:8px;
-  padding:10px 16px;
-  cursor:pointer;
-  font-family:inherit;
+background:var(--gold);
+color:#142b38;
+border:0;
+border-radius:8px;
+padding:10px 16px;
+cursor:pointer;
+font-family:inherit;
 }
 #tourStatus{color:#f0d99e;font-size:13px}
+
+/* Supademo */
 #demo-section{
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  margin-top:35px;
-  box-shadow:0 5px 20px #142b3b0d;
+background:white;
+padding:25px;
+border-radius:15px;
+margin-top:35px;
+box-shadow:0 5px 20px #142b3b0d;
 }
 #demoFrame{
-  width:100%;
-  height:520px;
-  border:0;
-  border-radius:12px;
-  display:none;
-  margin-top:18px;
-  background:#f1f3f4;
+width:100%;
+height:520px;
+border:0;
+border-radius:12px;
+display:none;
+margin-top:18px;
+background:#f1f3f4;
 }
 .demo-help{
-  background:#f5f1e8;
-  padding:14px;
-  border-radius:9px;
-  color:#53616a;
-  font-size:13px;
+background:#f5f1e8;
+padding:14px;
+border-radius:9px;
+color:#53616a;
+font-size:13px;
 }
 #demoStatus{font-size:13px;color:#52636c}
+.empty{
+text-align:center;
+padding:30px;
+color:#66747c;
+background:white;
+border-radius:10px;
+}
 footer{
-  background:#0b2030;
-  color:#dbe4e8;
-  text-align:center;
-  padding:28px 15px;
-  margin-top:55px;
-  font-size:13px;
+background:#0b2030;
+color:#dbe4e8;
+text-align:center;
+padding:28px 15px;
+margin-top:55px;
+font-size:13px;
 }
 footer strong{color:var(--gold)}
-.empty{
-  text-align:center;
-  padding:30px;
-  color:#66747c;
-  background:white;
-  border-radius:10px;
-}
+
 @media(max-width:600px){
-  header{padding:38px 15px}
-  #panorama{height:310px}
-  nav a{padding:7px 9px;font-size:12px}
-  .container{width:92%}
+header{padding:38px 15px}
+nav{gap:3px}
+nav a{padding:7px 8px;font-size:11px}
+.container{width:92%}
+#panorama{height:310px}
+#virtualpro-section{padding:15px}
+.virtualpro-frame{height:72vh;min-height:430px}
+.virtualpro-actions a{width:100%;text-align:center}
+#demoFrame{height:450px}
 }
 </style>
 </head>
@@ -289,458 +308,438 @@ footer strong{color:var(--gold)}
 <body>
 
 <header>
-  <div class="logo">🏛️</div>
-  <h1>أطلس التراث العُماني</h1>
-  <p>
-    رحلة تفاعلية لاستكشاف القلاع والحصون والأسواق والقرى
-    التاريخية والمواقع الأثرية في سلطنة عُمان
-  </p>
-  <div class="header-tag">اكتشف المكان • تعرّف على التاريخ • تجوّل افتراضياً</div>
+<div class="logo">🏛️</div>
+<h1>أطلس التراث العُماني</h1>
+<p>
+رحلة تفاعلية لاستكشاف القلاع والحصون والأسواق والقرى
+التاريخية والمواقع الأثرية في سلطنة عُمان
+</p>
+<div class="header-tag">اكتشف المكان • تعرّف على التاريخ • تجوّل افتراضياً</div>
 </header>
 
 <nav>
-  <a href="#about">عن الأطلس</a>
-  <a href="#heritage">المعالم التراثية</a>
-  <a href="#tour-section">الجولة 360°</a>
-  <a href="#demo-section">الشرح التفاعلي</a>
+<a href="#about">عن الأطلس</a>
+<a href="#heritage">المعالم التراثية</a>
+<a href="#virtualpro-section">الجولة الافتراضية</a>
+<a href="#tour-section">360°</a>
+<a href="#demo-section">الشرح التفاعلي</a>
 </nav>
 
 <main class="container">
 
 <section id="about">
-  <div class="intro-box">
-    <h2 class="section-title">اكتشف التراث العُماني</h2>
-    <p>
-      يتيح لك هذا الأطلس التعرف على مجموعة من المعالم التراثية
-      في سلطنة عُمان، واستكشاف معلوماتها ومواقعها الجغرافية.
-      ويمكن إضافة صور بانورامية حقيقية للانتقال إلى تجربة
-      التجول الافتراضي داخل المعالم.
-    </p>
-  </div>
+<div class="intro-box">
+<h2 class="section-title">اكتشف التراث العُماني</h2>
+<p>
+يتيح لك هذا الأطلس التعرف على مجموعة من المعالم التراثية
+في سلطنة عُمان، واستكشاف معلوماتها ومواقعها الجغرافية،
+والانتقال إلى تجربة التجول الافتراضي داخل المشاهد والمعالم.
+</p>
+</div>
 </section>
 
 <section id="heritage" style="margin-top:38px">
-  <h2 class="section-title">المعالم التراثية العُمانية</h2>
-  <p class="section-intro">
-    اختر معلماً لقراءة نبذة عنه أو فتح موقعه أو عرض جولته البانورامية.
-  </p>
+<h2 class="section-title">المعالم التراثية العُمانية</h2>
+<p class="section-intro">
+اختر معلماً لقراءة نبذة عنه أو فتح موقعه أو عرض جولته البانورامية.
+</p>
 
-  <div class="controls">
-    <input id="search" type="search"
-      placeholder="ابحث عن قلعة أو سوق أو قرية...">
-    <select id="categorySelect">
-      <option value="all">جميع التصنيفات</option>
-      <option value="قلعة وحصن">القلاع والحصون</option>
-      <option value="سوق تراثي">الأسواق التراثية</option>
-      <option value="قرية تراثية">القرى التراثية</option>
-      <option value="موقع أثري">المواقع الأثرية</option>
-      <option value="نظام مائي">الأفلاج والأنظمة المائية</option>
-    </select>
-  </div>
+<div class="controls">
+<input id="search" type="search" placeholder="ابحث عن قلعة أو سوق أو قرية...">
+<select id="categorySelect">
+<option value="all">جميع التصنيفات</option>
+<option value="قلعة وحصن">القلاع والحصون</option>
+<option value="سوق تراثي">الأسواق التراثية</option>
+<option value="قرية تراثية">القرى التراثية</option>
+<option value="موقع أثري">المواقع الأثرية</option>
+<option value="نظام مائي">الأفلاج والأنظمة المائية</option>
+</select>
+</div>
 
-  <div class="filters">
-    <button class="filter-btn active" data-filter="all">الكل</button>
-    <button class="filter-btn" data-filter="قلعة وحصن">القلاع والحصون</button>
-    <button class="filter-btn" data-filter="سوق تراثي">الأسواق</button>
-    <button class="filter-btn" data-filter="قرية تراثية">القرى</button>
-    <button class="filter-btn" data-filter="موقع أثري">المواقع الأثرية</button>
-    <button class="filter-btn" data-filter="نظام مائي">الأفلاج</button>
-  </div>
+<div class="filters">
+<button class="filter-btn active" data-filter="all">الكل</button>
+<button class="filter-btn" data-filter="قلعة وحصن">القلاع والحصون</button>
+<button class="filter-btn" data-filter="سوق تراثي">الأسواق</button>
+<button class="filter-btn" data-filter="قرية تراثية">القرى</button>
+<button class="filter-btn" data-filter="موقع أثري">المواقع الأثرية</button>
+<button class="filter-btn" data-filter="نظام مائي">الأفلاج</button>
+</div>
 
-  <div id="siteCards" class="cards"></div>
+<div id="siteCards" class="cards"></div>
 </section>
 
+<!-- الجولة الافتراضية الأصلية VirtualPro -->
+<section id="virtualpro-section">
+
+<h2>🌐 الجولة الافتراضية التفاعلية</h2>
+
+<p class="virtualpro-intro">
+عش تجربة التجول الافتراضي واكتشف المكان من الداخل.
+يمكنك تحريك المشهد، واستكشاف الزوايا المختلفة،
+والانتقال بين المشاهد المتاحة من خلال العارض التفاعلي.
+</p>
+
+<div class="virtualpro-frame">
+<iframe
+src="https://saas.virtualpro.online/viewer/index.php?code=f7177163c833dff4b38fc8d2872f1ec6"
+title="الجولة الافتراضية التفاعلية"
+allow="fullscreen; autoplay; gyroscope; accelerometer; xr-spatial-tracking"
+allowfullscreen
+loading="lazy">
+</iframe>
+</div>
+
+<div class="virtualpro-actions">
+<a class="vp-primary"
+href="https://saas.virtualpro.online/viewer/index.php?code=f7177163c833dff4b38fc8d2872f1ec6"
+target="_blank" rel="noopener">
+فتح الجولة بملء الشاشة ↗
+</a>
+
+<a class="vp-secondary" href="#heritage">
+العودة إلى المعالم التراثية
+</a>
+</div>
+
+<div class="vp-note">
+ملاحظة: إذا لم يظهر العارض داخل الصفحة بسبب قيود التضمين
+من الموقع المستضيف، استخدم زر فتح الجولة بملء الشاشة.
+</div>
+
+</section>
+
+<!-- الجولة البانورامية -->
 <section id="tour-section">
-  <h2>الجولة الافتراضية البانورامية 360°</h2>
-  <p>
-    اختر معلماً من البطاقات، ثم أضف رابط صورته البانورامية
-    الأصلية لبدء التجول الافتراضي.
-  </p>
 
-  <div class="tour-message" id="selectedSite">
-    لم يتم اختيار أي معلم بعد. اختر معلماً من القائمة أعلاه.
-  </div>
+<h2>الجولة الافتراضية البانورامية 360°</h2>
 
-  <div class="tour-tools">
-    <input id="panoramaUrl" type="url"
-      placeholder="ألصق رابط صورة 360° الخاصة بالمعلم هنا">
-    <button onclick="loadPanorama()">تشغيل الجولة</button>
-    <button onclick="clearPanorama()">إغلاق الجولة</button>
-  </div>
+<p>
+اختر معلماً من البطاقات، ثم أضف رابط صورته البانورامية الأصلية
+للبدء في التجول الافتراضي.
+</p>
 
-  <div id="panorama"></div>
-  <p id="tourStatus">
-    تنبيه: صورة عادية أو رابط صفحة ويب لا يكفي؛ يلزم رابط مباشر
-    لصورة بانورامية 360° متاحة للعرض.
-  </p>
+<div class="tour-message" id="selectedSite">
+لم يتم اختيار أي معلم بعد. اختر معلماً من القائمة أعلاه.
+</div>
+
+<div class="tour-tools">
+<input id="panoramaUrl" type="url" placeholder="ألصق رابط صورة 360° هنا">
+<button onclick="loadPanorama()">تشغيل الجولة</button>
+<button onclick="clearPanorama()">إغلاق الجولة</button>
+</div>
+
+<div id="panorama"></div>
+
+<p id="tourStatus">
+يلزم رابط مباشر لصورة بانورامية 360° متاحة للعرض.
+</p>
 </section>
 
+<!-- الشرح التفاعلي -->
 <section id="demo-section">
-  <h2 class="section-title">الشرح التاريخي التفاعلي</h2>
-  <p>
-    مساحة مخصصة لعرض جولة تعليمية تفاعلية تم إنشاؤها عبر Supademo،
-    مثل شرح تاريخ المعلم أو عرض مراحله ومكوناته.
-  </p>
 
-  <div class="demo-help">
-    بعد إنشاء العرض في Supademo، انسخ رابط المشاركة أو رابط التضمين
-    والصقه هنا. هذه الجولة التعليمية مكملة للجولة البانورامية
-    وليست بديلاً عنها.
-  </div>
+<h2 class="section-title">الشرح التاريخي التفاعلي</h2>
 
-  <div class="tour-tools">
-    <input id="demoUrl" type="url"
-      placeholder="ألصق رابط Supademo المنشور هنا">
-    <button onclick="loadDemo()">عرض الجولة التفاعلية</button>
-    <button onclick="clearDemo()">إغلاق</button>
-  </div>
+<p>
+مساحة مخصصة لعرض جولة تعليمية تفاعلية تم إنشاؤها عبر Supademo.
+</p>
 
-  <p id="demoStatus">لم تتم إضافة جولة تعليمية بعد.</p>
-  <iframe id="demoFrame"
-    title="جولة تعليمية تفاعلية"
-    allow="fullscreen; clipboard-write"
-    allowfullscreen
-    loading="lazy">
-  </iframe>
+<div class="demo-help">
+ألصق رابط العرض المنشور من Supademo في الحقل التالي.
+هذه الجولة مكملة للجولة الافتراضية وليست بديلاً عنها.
+</div>
+
+<div class="tour-tools">
+<input id="demoUrl" type="url" placeholder="ألصق رابط Supademo هنا">
+<button onclick="loadDemo()">عرض الجولة</button>
+<button onclick="clearDemo()">إغلاق</button>
+</div>
+
+<p id="demoStatus">لم تتم إضافة جولة تعليمية بعد.</p>
+
+<iframe id="demoFrame"
+title="جولة تعليمية تفاعلية"
+allow="fullscreen; clipboard-write"
+allowfullscreen
+loading="lazy">
+</iframe>
+
 </section>
 
 </main>
 
 <footer>
-  <strong>أطلس التراث العُماني</strong>
-  <br>
-  مشروع تعليمي للتعريف بالتراث والتاريخ العُماني
-  <br>
-  سلطنة عُمان
+<strong>أطلس التراث العُماني</strong>
+<br>
+مشروع تعليمي للتعريف بالتراث والتاريخ العُماني
+<br>
+سلطنة عُمان
 </footer>
 
 <script>
 const sites = [
- {
-  id:"nizwa",
-  name:"قلعة نزوى",
-  category:"قلعة وحصن",
-  icon:"🏰",
-  area:"محافظة الداخلية",
-  description:"من أبرز المعالم التاريخية في ولاية نزوى، وتشتهر ببرجها الدائري الكبير.",
-  panorama:""
- },
- {
-  id:"bahla",
-  name:"قلعة بهلاء",
-  category:"قلعة وحصن",
-  icon:"🏯",
-  area:"محافظة الداخلية",
-  description:"قلعة تاريخية بارزة ترتبط بتاريخ واحة بهلاء ونظامها الدفاعي والعمراني.",
-  panorama:""
- },
- {
-  id:"jabrin",
-  name:"قلعة جبرين",
-  category:"قلعة وحصن",
-  icon:"🏛️",
-  area:"محافظة الداخلية",
-  description:"تتميز بتصميمها المعماري وزخارفها وأسقفها الخشبية.",
-  panorama:""
- },
- {
-  id:"rustaq",
-  name:"قلعة الرستاق",
-  category:"قلعة وحصن",
-  icon:"🏰",
-  area:"محافظة جنوب الباطنة",
-  description:"معلم تاريخي مهم في ولاية الرستاق، يرتبط بتاريخ المنطقة.",
-  panorama:""
- },
- {
-  id:"nakhal",
-  name:"قلعة نخل",
-  category:"قلعة وحصن",
-  icon:"🏯",
-  area:"محافظة جنوب الباطنة",
-  description:"تقع على مرتفع صخري وتحيط بها مناظر طبيعية مميزة.",
-  panorama:""
- },
- {
-  id:"muttrah",
-  name:"سوق مطرح",
-  category:"سوق تراثي",
-  icon:"🛍️",
-  area:"محافظة مسقط",
-  description:"من الأسواق التقليدية المعروفة في سلطنة عُمان، ويتميز بأزقته ومحاله التراثية.",
-  panorama:""
- },
- {
-  id:"misfat",
-  name:"قرية مسفاة العبريين",
-  category:"قرية تراثية",
-  icon:"🏘️",
-  area:"محافظة الداخلية",
-  description:"قرية جبلية تشتهر ببيوتها التقليدية ومدرجاتها الزراعية وأفلاجها.",
-  panorama:""
- },
- {
-  id:"wakan",
-  name:"قرية وكان",
-  category:"قرية تراثية",
-  icon:"🌄",
-  area:"محافظة جنوب الباطنة",
-  description:"قرية جبلية تشتهر بطبيعتها ومدرجاتها الزراعية.",
-  panorama:""
- },
- {
-  id:"bat",
-  name:"مواقع بات الأثرية",
-  category:"موقع أثري",
-  icon:"🗿",
-  area:"محافظة الظاهرة",
-  description:"مواقع أثرية تعود إلى عصور قديمة، وتضم مدافن ومنشآت أثرية.",
-  panorama:""
- },
- {
-  id:"rasaljinz",
-  name:"محمية رأس الجنز",
-  category:"موقع أثري",
-  icon:"🌊",
-  area:"محافظة جنوب الشرقية",
-  description:"منطقة ساحلية ذات أهمية طبيعية وأثرية، وترتبط بمواقع استيطان قديمة.",
-  panorama:""
- },
- {
-  id:"falaj",
-  name:"فلج دارس",
-  category:"نظام مائي",
-  icon:"💧",
-  area:"محافظة الداخلية",
-  description:"من الأفلاج العُمانية المعروفة، ويمثل نموذجاً لنظم إدارة المياه التقليدية.",
-  panorama:""
- },
- {
-  id:"bahlah",
-  name:"واحة بهلاء",
-  category:"قرية تراثية",
-  icon:"🌴",
-  area:"محافظة الداخلية",
-  description:"واحة تاريخية ارتبطت بالزراعة والاستقرار البشري ونظام الأفلاج.",
-  panorama:""
- }
+{
+id:"nizwa",name:"قلعة نزوى",category:"قلعة وحصن",
+icon:"🏰",area:"محافظة الداخلية",
+description:"من أبرز المعالم التاريخية في ولاية نزوى، وتشتهر ببرجها الدائري الكبير.",
+panorama:""
+},
+{
+id:"bahla",name:"قلعة بهلاء",category:"قلعة وحصن",
+icon:"🏯",area:"محافظة الداخلية",
+description:"قلعة تاريخية بارزة ترتبط بتاريخ واحة بهلاء ونظامها الدفاعي والعمراني.",
+panorama:""
+},
+{
+id:"jabrin",name:"قلعة جبرين",category:"قلعة وحصن",
+icon:"🏛️",area:"محافظة الداخلية",
+description:"تتميز بتصميمها المعماري وزخارفها وأسقفها الخشبية.",
+panorama:""
+},
+{
+id:"rustaq",name:"قلعة الرستاق",category:"قلعة وحصن",
+icon:"🏰",area:"محافظة جنوب الباطنة",
+description:"معلم تاريخي مهم في ولاية الرستاق، يرتبط بتاريخ المنطقة.",
+panorama:""
+},
+{
+id:"nakhal",name:"قلعة نخل",category:"قلعة وحصن",
+icon:"🏯",area:"محافظة جنوب الباطنة",
+description:"تقع على مرتفع صخري وتحيط بها مناظر طبيعية مميزة.",
+panorama:""
+},
+{
+id:"muttrah",name:"سوق مطرح",category:"سوق تراثي",
+icon:"🛍️",area:"محافظة مسقط",
+description:"من الأسواق التقليدية المعروفة في سلطنة عُمان.",
+panorama:""
+},
+{
+id:"misfat",name:"قرية مسفاة العبريين",category:"قرية تراثية",
+icon:"🏘️",area:"محافظة الداخلية",
+description:"قرية جبلية تشتهر ببيوتها التقليدية ومدرجاتها الزراعية وأفلاجها.",
+panorama:""
+},
+{
+id:"wakan",name:"قرية وكان",category:"قرية تراثية",
+icon:"🌄",area:"محافظة جنوب الباطنة",
+description:"قرية جبلية تشتهر بطبيعتها ومدرجاتها الزراعية.",
+panorama:""
+},
+{
+id:"bat",name:"مواقع بات الأثرية",category:"موقع أثري",
+icon:"🗿",area:"محافظة الظاهرة",
+description:"مواقع أثرية تعود إلى عصور قديمة، وتضم مدافن ومنشآت أثرية.",
+panorama:""
+},
+{
+id:"rasaljinz",name:"محمية رأس الجنز",category:"موقع أثري",
+icon:"🌊",area:"محافظة جنوب الشرقية",
+description:"منطقة ساحلية ذات أهمية طبيعية وأثرية.",
+panorama:""
+},
+{
+id:"falaj",name:"فلج دارس",category:"نظام مائي",
+icon:"💧",area:"محافظة الداخلية",
+description:"من الأفلاج العُمانية المعروفة ويمثل نموذجاً لنظم إدارة المياه التقليدية.",
+panorama:""
+},
+{
+id:"bahlah",name:"واحة بهلاء",category:"قرية تراثية",
+icon:"🌴",area:"محافظة الداخلية",
+description:"واحة تاريخية ارتبطت بالزراعة والاستقرار البشري ونظام الأفلاج.",
+panorama:""
+}
 ];
 
-let selected = null;
-let viewer = null;
-let activeFilter = "all";
+let selected=null;
+let viewer=null;
+let activeFilter="all";
 
-const cards = document.getElementById("siteCards");
+const cards=document.getElementById("siteCards");
 
 function renderSites(){
- const query = document.getElementById("search").value.trim().toLowerCase();
- const category = document.getElementById("categorySelect").value;
+const query=document.getElementById("search").value.trim().toLowerCase();
+const category=document.getElementById("categorySelect").value;
 
- const filtered = sites.filter(site=>{
-  const matchesText =
-   (site.name + " " + site.area + " " + site.description)
-   .toLowerCase().includes(query);
+const filtered=sites.filter(site=>{
+const text=(site.name+" "+site.area+" "+site.description).toLowerCase();
+return text.includes(query) &&
+(activeFilter==="all" || site.category===activeFilter) &&
+(category==="all" || site.category===category);
+});
 
-  const matchesFilter =
-   activeFilter === "all" || site.category === activeFilter;
+if(!filtered.length){
+cards.innerHTML='<div class="empty">لا توجد نتائج مطابقة للبحث.</div>';
+return;
+}
 
-  const matchesCategory =
-   category === "all" || site.category === category;
-
-  return matchesText && matchesFilter && matchesCategory;
- });
-
- if(!filtered.length){
-  cards.innerHTML='<div class="empty">لا توجد نتائج مطابقة للبحث.</div>';
-  return;
- }
-
- cards.innerHTML = filtered.map(site=>`
-  <article class="site-card">
-   <div class="card-art">${site.icon}</div>
-   <div class="card-content">
-    <div class="category">${site.category}</div>
-    <h3>${site.name}</h3>
-    <p>${site.description}</p>
-    <div class="category">📍 ${site.area}</div>
-    <div class="card-actions" style="margin-top:12px">
-     <button class="tour-btn" onclick="selectSite('${site.id}')">
-      استكشف المعلم
-     </button>
-     <a class="map-btn"
-       href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.name+' سلطنة عمان')}"
-       target="_blank" rel="noopener">
-       الموقع الجغرافي
-     </a>
-    </div>
-   </div>
-  </article>
- `).join("");
+cards.innerHTML=filtered.map(site=>`
+<article class="site-card">
+<div class="card-art">${site.icon}</div>
+<div class="card-content">
+<div class="category">${site.category}</div>
+<h3>${site.name}</h3>
+<p>${site.description}</p>
+<div class="category">📍 ${site.area}</div>
+<div class="card-actions" style="margin-top:12px">
+<button class="tour-btn" onclick="selectSite('${site.id}')">استكشف المعلم</button>
+<a class="map-btn"
+href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.name+' سلطنة عمان')}"
+target="_blank" rel="noopener">الموقع الجغرافي</a>
+</div>
+</div>
+</article>
+`).join("");
 }
 
 function selectSite(id){
- selected = sites.find(site=>site.id===id);
- if(!selected) return;
+selected=sites.find(site=>site.id===id);
+if(!selected)return;
 
- document.getElementById("selectedSite").innerHTML =
-  `<strong>${selected.icon} ${selected.name}</strong>
-   <br>${selected.description}
-   <br>الموقع: ${selected.area}`;
+document.getElementById("selectedSite").innerHTML=
+`<strong>${selected.icon} ${selected.name}</strong>
+<br>${selected.description}
+<br>الموقع: ${selected.area}`;
 
- document.getElementById("panoramaUrl").value =
-  selected.panorama || "";
+document.getElementById("panoramaUrl").value=selected.panorama||"";
 
- document.getElementById("tourStatus").textContent =
-  selected.panorama
-   ? "يوجد رابط بانورامي مسجل لهذا المعلم."
-   : "لم تتم إضافة صورة 360° لهذا المعلم بعد. أضف رابط الصورة في الحقل أعلاه.";
+document.getElementById("tourStatus").textContent=
+selected.panorama
+?"يوجد رابط بانورامي مسجل لهذا المعلم."
+:"لم تتم إضافة صورة 360° لهذا المعلم بعد.";
 
- document.getElementById("tour-section").scrollIntoView({
-  behavior:"smooth"
- });
+document.getElementById("tour-section").scrollIntoView({behavior:"smooth"});
 
- if(selected.panorama) loadPanorama();
- else clearPanorama(false);
+if(selected.panorama)loadPanorama();
+else clearPanorama(false);
 }
 
 function loadPanorama(){
- const url = document.getElementById("panoramaUrl").value.trim();
+const url=document.getElementById("panoramaUrl").value.trim();
 
- if(!selected){
-  alert("اختر معلماً من القائمة أولاً.");
-  return;
- }
+if(!selected){
+alert("اختر معلماً من القائمة أولاً.");
+return;
+}
+if(!url){
+alert("أضف رابط صورة بانورامية أولاً.");
+return;
+}
 
- if(!url){
-  alert("أضف رابط صورة بانورامية 360° أولاً.");
-  return;
- }
+try{
+const parsed=new URL(url);
+if(!["http:","https:"].includes(parsed.protocol))throw new Error();
+}catch(e){
+alert("الرابط غير صالح.");
+return;
+}
 
- try{
-  const parsed = new URL(url);
-  if(!["http:","https:"].includes(parsed.protocol)){
-   throw new Error("Invalid URL");
-  }
- }catch(e){
-  alert("الرابط غير صالح. تحقق من الرابط.");
-  return;
- }
+if(typeof pannellum==="undefined"){
+document.getElementById("tourStatus").textContent=
+"تعذر تحميل مكتبة العرض. تحقق من اتصال الإنترنت.";
+return;
+}
 
- if(typeof pannellum === "undefined"){
-  document.getElementById("tourStatus").textContent =
-   "تعذر تحميل مكتبة العرض. تحقق من اتصال الإنترنت.";
-  return;
- }
+if(viewer){
+try{viewer.destroy();}catch(e){}
+viewer=null;
+}
 
- if(viewer){
-  try{viewer.destroy();}catch(e){}
-  viewer = null;
- }
+document.getElementById("panorama").innerHTML="";
+document.getElementById("tourStatus").textContent="جارٍ تحميل الصورة البانورامية...";
 
- document.getElementById("panorama").innerHTML = "";
+try{
+viewer=pannellum.viewer("panorama",{
+type:"equirectangular",
+panorama:url,
+autoLoad:true,
+showZoomCtrl:true,
+showFullscreenCtrl:true,
+compass:true,
+mouseZoom:true,
+hfov:100,
+pitch:0,
+yaw:0
+});
 
- document.getElementById("tourStatus").textContent =
-  "جارٍ تحميل الصورة البانورامية...";
+viewer.on("load",()=>{
+document.getElementById("tourStatus").textContent=
+"تم تحميل الجولة. اسحب الصورة للتحرك واستخدم أدوات التكبير.";
+selected.panorama=url;
+});
 
- try{
-  viewer = pannellum.viewer("panorama",{
-   type:"equirectangular",
-   panorama:url,
-   autoLoad:true,
-   showZoomCtrl:true,
-   showFullscreenCtrl:true,
-   compass:true,
-   mouseZoom:true,
-   hfov:100,
-   pitch:0,
-   yaw:0
-  });
+viewer.on("error",()=>{
+document.getElementById("tourStatus").textContent=
+"تعذر تحميل الصورة. تحقق من أنها صورة 360° مباشرة وتسمح بالعرض الخارجي.";
+});
 
-  viewer.on("load",()=>{
-   document.getElementById("tourStatus").textContent =
-    "تم تحميل الجولة. اسحب الصورة للتحرك حول المكان واستخدم أدوات التكبير.";
-   selected.panorama = url;
-  });
-
-  viewer.on("error",()=>{
-   document.getElementById("tourStatus").textContent =
-    "تعذر تحميل الصورة. تأكد أنها صورة 360° مباشرة وتسمح بالعرض من موقع خارجي.";
-  });
-
- }catch(error){
-  document.getElementById("tourStatus").textContent =
-   "حدث خطأ أثناء تشغيل الجولة. تحقق من رابط الصورة.";
- }
+}catch(error){
+document.getElementById("tourStatus").textContent=
+"حدث خطأ أثناء تشغيل الجولة.";
+}
 }
 
 function clearPanorama(showMessage=true){
- if(viewer){
-  try{viewer.destroy();}catch(e){}
-  viewer=null;
- }
- document.getElementById("panorama").innerHTML="";
- if(showMessage){
-  document.getElementById("tourStatus").textContent =
-   "تم إغلاق الجولة البانورامية.";
- }
+if(viewer){
+try{viewer.destroy();}catch(e){}
+viewer=null;
+}
+document.getElementById("panorama").innerHTML="";
+if(showMessage){
+document.getElementById("tourStatus").textContent="تم إغلاق الجولة البانورامية.";
+}
 }
 
 function loadDemo(){
- const raw = document.getElementById("demoUrl").value.trim();
- const status = document.getElementById("demoStatus");
- const frame = document.getElementById("demoFrame");
+const raw=document.getElementById("demoUrl").value.trim();
+const status=document.getElementById("demoStatus");
+const frame=document.getElementById("demoFrame");
 
- if(!raw){
-  alert("ألصق رابط Supademo المنشور أولاً.");
-  return;
- }
+if(!raw){
+alert("ألصق رابط Supademo المنشور أولاً.");
+return;
+}
 
- try{
-  const parsed = new URL(raw);
-  if(parsed.hostname !== "app.supademo.com"){
-   throw new Error("Invalid host");
-  }
+try{
+const parsed=new URL(raw);
+if(parsed.hostname!=="app.supademo.com")throw new Error();
 
-  const parts = parsed.pathname.split("/").filter(Boolean);
-  let id = "";
+const parts=parsed.pathname.split("/").filter(Boolean);
+let id="";
 
-  if(parts[0] === "demo" || parts[0] === "showcase"){
-   id = parts[1] || "";
-  }else if(parts[0] === "embed"){
-   id = parts[1] || "";
-  }
+if(["demo","showcase","embed"].includes(parts[0])){
+id=parts[1]||"";
+}
 
-  if(!id || !/^[a-zA-Z0-9_-]+$/.test(id)){
-   throw new Error("Invalid demo ID");
-  }
+if(!id||!/^[a-zA-Z0-9_-]+$/.test(id))throw new Error();
 
-  frame.src = "https://app.supademo.com/embed/" + id;
-  frame.style.display = "block";
-  status.textContent = "تم تجهيز العرض التفاعلي. إذا لم يظهر، تحقق من إعدادات المشاركة والتضمين في Supademo.";
- }catch(e){
-  alert("الرابط غير معروف. استخدم رابط Supademo المنشور من صفحة المشاركة.");
- }
+frame.src="https://app.supademo.com/embed/"+id;
+frame.style.display="block";
+status.textContent="تم تجهيز العرض التفاعلي.";
+}catch(e){
+alert("استخدم رابط Supademo المنشور من صفحة المشاركة.");
+}
 }
 
 function clearDemo(){
- const frame = document.getElementById("demoFrame");
- frame.src = "about:blank";
- frame.style.display = "none";
- document.getElementById("demoStatus").textContent =
-  "تم إغلاق العرض التفاعلي.";
+const frame=document.getElementById("demoFrame");
+frame.src="about:blank";
+frame.style.display="none";
+document.getElementById("demoStatus").textContent="تم إغلاق العرض التفاعلي.";
 }
 
 document.getElementById("search").addEventListener("input",renderSites);
 document.getElementById("categorySelect").addEventListener("change",renderSites);
 
 document.querySelectorAll(".filter-btn").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-  activeFilter = button.dataset.filter;
-  document.getElementById("categorySelect").value = "all";
-  renderSites();
- });
+button.addEventListener("click",()=>{
+document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+activeFilter=button.dataset.filter;
+document.getElementById("categorySelect").value="all";
+renderSites();
+});
 });
 
 renderSites();
