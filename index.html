@@ -1,65 +1,65 @@
-<body>
-  <div class="app">
-    <main style="position:relative; min-width:0; grid-column:1; grid-row:1;">
-      <div id="map" aria-label="الخريطة التفاعلية لولاية بركاء"></div>
-      <div class="map-title">
-        🌍 الجغرافيا من حولنا: استكشف العالم بالتقنيات الحديثة
-        <small>منصة الجغرافيا الذكية | ولاية بركاء — المدارس والمعالم والبيئة</small>
-      </div>
-      <div id="mapStatus" class="map-status" role="status" aria-live="polite" hidden></div>
-    </main>
+.portal-icon{font-size:30px;display:inline-block}
+    .portal-btn{display:inline-block;text-decoration:none;border:0;border-radius:9px;padding:10px 14px;background:#087e9e;color:#fff;font-weight:bold;font-size:12px;cursor:pointer}
+    .portal-btn.gold{background:#e9b949;color:#1b2d38}
+    .portal-btn.dark{background:#173d55;color:white}
+    .portal-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:15px 0}
+    .portal-controls label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px}
+    .portal-controls select,.portal-controls input{width:100%;padding:12px;border:1px solid #cbd8de;border-radius:9px;background:#fff;color:#173042;font:14px Tahoma}
+    .game-box{background:#102b3f;color:#fff;border-radius:15px;padding:20px}
+    .game-box h3{color:#70e2ed;margin-top:0}
+    .game-options{display:grid;gap:8px;margin-top:12px}
+    .game-options button{background:#244b62;color:white;border:1px solid #557387;text-align:right;padding:12px}
+    .game-options button:disabled{opacity:.8;cursor:default}
+    .game-feedback{min-height:28px;color:#ffd477;font-weight:bold;margin-top:12px}
+    .tour-card{overflow:hidden;padding:0}
+    .tour-card .tour-head{background:linear-gradient(135deg,#173d55,#087e9e);color:#fff;padding:18px;font-size:24px}
+    .tour-card .tour-body{padding:16px}
+    .resource-note{background:#fff8e7;border:1px solid #ead49b;border-radius:12px;padding:12px;color:#705a25;font-size:12px;line-height:1.8;margin-top:16px}
+    .site-footer{background:#0b2030;color:#d7e6ec;padding:25px;text-align:center;line-height:2}
+    .action-icon{display:inline-flex;align-items:center;gap:6px}
+    .map-status{position:absolute;z-index:450;right:14px;bottom:14px;max-width:min(340px,calc(100% - 28px));background:rgba(255,255,255,.95);color:#173042;border:1px solid #d9e3e8;border-radius:10px;padding:8px 11px;font-size:11px;line-height:1.7;box-shadow:var(--shadow)}
+    .map-status[hidden]{display:none}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #39c6d6;outline-offset:2px}
+    .map-tools-extra{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .map-tools-extra button{min-height:40px}
+    .academy-hint{font-size:12px;color:#647987;line-height:1.8;margin-top:10px}
+    @media(max-width:800px){.map-status{bottom:10px;right:10px}.map-title{max-width:calc(100% - 20px)}}
+    @media(max-width:800px){.quick-nav{grid-template-columns:repeat(3,1fr)}.content-section{padding:34px 15px}.content-section h2{font-size:22px}}
+    .map-fallback{padding:24px;text-align:center;color:#173042;background:#fff;border:1px solid #d9e3e8;border-radius:14px;margin:18px;font-size:14px;line-height:1.9}
+    .map-fallback a{display:inline-block;margin-top:10px;padding:9px 14px;border-radius:9px;background:#087e9e;color:#fff;text-decoration:none;font-weight:bold}
+    .layer input{cursor:pointer}
+    .portal-btn, .mini, .quick-nav a{touch-action:manipulation}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e9b949;outline-offset:2px}
 
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark">🗺️</div>
-        <div>
-          <h1>منصة الجغرافيا الذكية</h1>
-          <div class="school">التقنيات الحديثة ونظم المعلومات الجغرافية</div>
-          <div class="school">مدرسة ثابت بن قيس للتعليم الأساسي</div>
-          <div class="school">إعداد وتصميم: د. قناوي حسين</div>
-        </div>
-      </div>
-      <div class="flag"><span></span><span></span><span></span></div>
-      <p class="intro">
-        منصة تعليمية تفاعلية للتعرّف إلى التوزيع المكاني للمدارس والمدن
-        والمواقع التاريخية والبيئات الطبيعية في سلطنة عُمان.
-      </p>
-      <div class="section-title">🚀 التنقل السريع</div>
-      <div class="quick-nav">
-        <a href="#map">🗺️ الخريطة</a>
-        <a href="#tours">🏰 الجولات</a>
-        <a href="#lab">🛰️ المختبر</a>
-        <a href="#academy">🎓 الأكاديمية</a>
-        <a href="#teacher-hub">🧑‍🏫 مركز المعلم</a>
-        <a href="#games">🎮 الألعاب</a>
-        <a href="#platforms">🌐 المنصات</a>
-      </div>
 
-      <div class="section-title">🔎 البحث عن معلم جغرافي</div>
-      <div class="search-wrap">
-        <input id="searchInput" class="search" type="search"
-          placeholder="اكتب اسم مدرسة أو مدينة أو معلم..."
-          aria-label="البحث عن معلم جغرافي">
-      </div>
+    /* مركز المعلم: إضافة تعليمية مدمجة تحافظ على الهوية الأصلية */
+    .teacher-hub{background:linear-gradient(135deg,#eef5f7,#f8fafb)}
+    .teacher-grid{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(300px,1.1fr);gap:18px;align-items:start}
+    .teacher-panel,.teacher-output{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(11,39,57,.07)}
+    .teacher-panel h3,.teacher-output h3{margin:0 0 12px;color:var(--navy)}
+    .teacher-form{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .teacher-form .wide{grid-column:1/-1}
+    .teacher-form label{display:block;font-size:12px;font-weight:bold;color:var(--ink);margin-bottom:5px}
+    .teacher-form input,.teacher-form select,.teacher-form textarea{width:100%;border:1px solid #cbd9df;border-radius:9px;padding:10px;font:13px Tahoma,Arial,sans-serif;background:#fff;color:var(--ink)}
+    .teacher-form textarea{min-height:105px;resize:vertical;line-height:1.8}
+    .teacher-form input:focus,.teacher-form select:focus,.teacher-form textarea:focus{outline:3px solid rgba(57,198,214,.2);border-color:var(--blue)}
+    .teacher-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .teacher-actions button{flex:1;min-width:120px}
+    .teacher-output{min-height:340px}
+    .teacher-placeholder{border:1px dashed #b8cbd4;border-radius:12px;padding:28px 15px;text-align:center;color:var(--muted);line-height:1.9;background:#f8fbfc}
+    .plan-sheet{color:#243b49;line-height:1.9;font-size:13px}
+    .plan-sheet h3{padding-bottom:8px;border-bottom:2px solid #dbe8ed;margin:0 0 12px}
+    .plan-sheet h4{color:#087e9e;margin:13px 0 4px;font-size:13px}
+    .plan-sheet ul{margin:4px 0;padding-right:20px}
+    .plan-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:#f1f6f8;border-radius:10px;padding:10px;margin-bottom:12px}
+    .plan-meta span{font-size:12px}
+    .teacher-note{font-size:11px;color:#647987;line-height:1.8;margin-top:10px}
+    .tool-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+    .tool-chip{padding:12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1.7}
+    .tool-chip b{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
+    .teacher-status{font-size:12px;color:#087e9e;margin-top:8px;min-height:20px}
+    @media(max-width:800px){.teacher-grid{grid-template-columns:1fr}.tool-strip{grid-template-columns:1fr 1fr}}
+    @media(max-width:520px){.teacher-form{grid-template-columns:1fr}.teacher-form .wide{grid-column:auto}.teacher-panel,.teacher-output{padding:13px}.tool-strip{grid-template-columns:1fr}}
 
-      <div class="section-title">🧭 طبقات المعلومات الجغرافية</div>
-      <div class="layer">
-        <input type="checkbox" id="layer-schools" checked>
-        <label for="layer-schools"><span class="dot" style="background:#18a9d0"></span>مدارس ولاية بركاء</label>
-        <span class="count" id="count-schools">0</span>
-      </div>
-      <div class="layer">
-        <input type="checkbox" id="layer-cities" checked>
-        <label for="layer-cities"><span class="dot" style="background:#e8a72e"></span>المدن والمراكز الرئيسية</label>
-        <span class="count" id="count-cities">0</span>
-      </div>
-      <div class="layer">
-        <input type="checkbox" id="layer-history" checked>
-        <label for="layer-history"><span class="dot" style="background:#e45b5b"></span>المواقع التاريخية والتراثية</label>
-        <span class="count" id="count-history">0</span>
-      </div>
-      <div class="layer">
-        <input type="checkbox" id="layer-nature" checked>
-        <label for="layer-nature"><span class="dot" style="background:#20a477"></span>البيئة والتضاريس</label>
-        <span class="count" id="count-nature">0</span>
-      </div>
+  </style>
+</head>
