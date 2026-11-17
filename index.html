@@ -1,370 +1,861 @@
-<script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071827">
+<meta name="description" content="الجولة الافتراضية داخل مدرسة ثابت بن قيس للتعليم الأساسي، سلطنة عمان">
+<title>الجولة الافتراضية | مدرسة ثابت بن قيس</title>
 
-(() => {
-  const stations = [
-    "مدخل المدرسة والبوابة الرئيسية",
-    "جوانب المدرسة – الأيمن والأيسر",
-    "الممرات الداخلية والدرج – الجانب الأيسر",
-    "الممرات الداخلية والدرج – الجانب الأيمن",
-    "غرفة المعلمين الأولى",
-    "غرفة المعلمين الثانية",
-    "الفصول الدراسية",
-    "المرافق التعليمية",
-    "المختبرات المدرسية",
-    "المكتبة المدرسية",
-    "الساحة المدرسية",
-    "مختبر الجغرافيا والتقنيات الحديثة",
-    "قاعة الأنشطة والابتكار"
-  ];
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  const tourStage = document.getElementById("tourStage");
-  if (!tourStage) return;
+<style>
+:root{
+  --bg:#071827;
+  --panel:#102d46;
+  --panel2:#173c56;
+  --gold:#e9bd68;
+  --mint:#53e1bd;
+  --white:#f5f8fc;
+  --muted:#a9bdcc;
+  --line:#ffffff20;
+  --shadow:0 15px 45px #0005;
+  --radius:18px;
+}
 
-  const panel = document.createElement("section");
-  panel.style.cssText = `
-    margin-top:18px;padding:15px;border-radius:20px;
-    background:#0b2639;border:1px solid #d8b46a88;color:white
-  `;
+*{box-sizing:border-box;margin:0;padding:0}
 
-  panel.innerHTML = `
-    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
-      <h3 style="margin:0;color:#f0d89d">🌐 التجوّل داخل مدرسة ثابت بن قيس – 3D</h3>
-      <span id="school3dStatus" style="font-size:12px;color:#55d6d2">إعداد المشهد...</span>
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Cairo',sans-serif;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+
+button,a{font-family:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:#071827f5;
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  max-width:1250px;
+  margin:auto;
+  padding:13px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.logo{
+  color:var(--gold);
+  font-size:20px;
+  font-weight:900;
+}
+
+.logo span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:500;
+}
+
+.nav-link{
+  color:var(--mint);
+  font-size:13px;
+  font-weight:700;
+}
+
+.hero{
+  min-height:390px;
+  padding:65px 20px;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg,#071827 5%,#071827e8 55%,#07182780),
+    url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85')
+    center/cover;
+}
+
+.hero-content{
+  max-width:1200px;
+  width:100%;
+  margin:auto;
+}
+
+.hero-tag{
+  display:inline-block;
+  padding:7px 17px;
+  border:1px solid #53e1bd88;
+  border-radius:30px;
+  color:var(--mint);
+  background:#53e1bd12;
+  font-size:13px;
+}
+
+.hero h1{
+  font-size:clamp(35px,6vw,65px);
+  line-height:1.4;
+  margin:20px 0;
+  font-weight:900;
+}
+
+.hero h1 em{
+  color:var(--gold);
+  font-style:normal;
+}
+
+.hero p{
+  max-width:650px;
+  color:#d4e2ed;
+  font-size:16px;
+}
+
+.btn{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:11px 20px;
+  border:0;
+  border-radius:10px;
+  background:var(--gold);
+  color:#102033;
+  font-weight:800;
+  font-size:13px;
+  transition:.25s;
+  margin:5px 3px;
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+  filter:brightness(1.08);
+}
+
+.btn.secondary{
+  background:#ffffff14;
+  color:white;
+  border:1px solid #ffffff35;
+}
+
+.btn.mint{
+  background:var(--mint);
+  color:#092a2a;
+}
+
+main{
+  max-width:1300px;
+  margin:auto;
+  padding:35px 20px 65px;
+}
+
+.section-head{
+  text-align:center;
+  margin:25px 0 30px;
+}
+
+.section-head h2{
+  color:var(--gold);
+  font-size:clamp(24px,4vw,34px);
+  font-weight:900;
+}
+
+.section-head p{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:7px;
+}
+
+.tour-layout{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:20px;
+  align-items:start;
+}
+
+.panel{
+  background:linear-gradient(145deg,#153952,#0c263d);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+
+.panel-title{
+  color:var(--gold);
+  font-size:18px;
+  margin-bottom:15px;
+}
+
+.station-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  max-height:650px;
+  overflow-y:auto;
+  padding-left:3px;
+}
+
+.station-btn{
+  width:100%;
+  text-align:right;
+  padding:12px;
+  background:#102d46;
+  color:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font-size:12px;
+  transition:.2s;
+}
+
+.station-btn:hover,
+.station-btn.active{
+  background:#145345;
+  border-color:var(--mint);
+  color:var(--mint);
+}
+
+.station-btn.done::after{
+  content:" ✓";
+  color:var(--mint);
+  font-weight:900;
+}
+
+.tour-view{
+  background:#0d2941;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+
+.tour-heading{
+  padding:20px;
+  border-bottom:1px solid var(--line);
+}
+
+.tour-heading h2{
+  color:var(--gold);
+  font-size:23px;
+}
+
+.tour-heading p{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
+
+.map-container{
+  position:relative;
+  background:#102d46;
+}
+
+#googleMap{
+  display:block;
+  width:100%;
+  height:450px;
+  border:0;
+  background:#102d46;
+}
+
+.map-label{
+  padding:12px 16px;
+  background:#071827;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+
+.station-info{
+  padding:22px;
+}
+
+.station-info h3{
+  color:var(--mint);
+  font-size:20px;
+  margin-bottom:8px;
+}
+
+.station-info p{
+  color:#d4e2ed;
+  font-size:14px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:20px;
+  font-size:12px;
+}
+
+.progress-info strong{
+  color:var(--mint);
+}
+
+.progress{
+  height:8px;
+  background:#ffffff20;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0 18px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--mint);
+  transition:.3s;
+}
+
+.controls{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.google-actions{
+  padding:18px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  border-top:1px solid var(--line);
+}
+
+.notice{
+  margin-top:22px;
+  padding:17px;
+  background:#ffffff09;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.notice strong{
+  color:var(--gold);
+}
+
+footer{
+  text-align:center;
+  padding:35px 15px;
+  background:#04111e;
+  color:var(--muted);
+  font-size:13px;
+  border-top:1px solid var(--line);
+}
+
+footer strong{
+  color:var(--gold);
+}
+
+@media(max-width:850px){
+  .nav{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .tour-layout{
+    grid-template-columns:1fr;
+  }
+
+  .station-list{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    max-height:380px;
+  }
+
+  #googleMap{
+    height:350px;
+  }
+
+  .hero{
+    min-height:330px;
+    padding:45px 18px;
+  }
+
+  main{
+    padding:25px 13px 45px;
+  }
+
+  .controls .btn{
+    flex:1;
+  }
+}
+
+@media(max-width:420px){
+  .station-list{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .station-btn{
+    font-size:11px;
+    padding:10px 7px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      🌍 الجولة الافتراضية
+      <span>مدرسة ثابت بن قيس للتعليم الأساسي | سلطنة عُمان</span>
     </div>
-    <div style="position:relative;height:460px;background:#071b2b;border-radius:15px;overflow:hidden">
-      <canvas id="school3dCanvas" style="width:100%;height:100%;display:block"></canvas>
-      <div id="school3dTitle" style="position:absolute;top:12px;right:12px;background:#071b2bdd;padding:9px 13px;border-radius:10px;font-size:13px">
-        المحطة الأولى
+
+    <a class="nav-link" href="#tour">ابدأ الجولة ↓</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">تجربة استكشافية رقمية</span>
+
+      <h1>
+        اكتشف مدرستك...<br>
+        <em>وتجوّل فيها افتراضيًا</em>
+      </h1>
+
+      <p>
+        جولة افتراضية للتعرف على مرافق مدرسة ثابت بن قيس،
+        من خلال خرائط Google وخدمات التجول المتاحة.
+      </p>
+
+      <a class="btn" href="#tour">ابدأ الجولة الآن ←</a>
+    </div>
+  </section>
+
+  <section id="tour">
+
+    <div class="section-head">
+      <h2>الجولة الافتراضية داخل المدرسة</h2>
+      <p>13 محطة لاستكشاف مرافق مدرسة ثابت بن قيس</p>
+    </div>
+
+    <div class="tour-layout">
+
+      <!-- قائمة المحطات -->
+      <aside class="panel">
+        <h3 class="panel-title">📍 محطات الجولة</h3>
+        <div class="station-list" id="stationList"></div>
+      </aside>
+
+      <!-- شاشة الجولة -->
+      <div class="tour-view">
+
+        <div class="tour-heading">
+          <h2 id="stationTitle">المحطة الأولى: البوابة الرئيسية</h2>
+          <p id="stationDescription">
+            بداية الجولة والتعرف على المدخل الرئيسي للمدرسة.
+          </p>
+        </div>
+
+        <div class="map-container">
+          <iframe
+            id="googleMap"
+            title="موقع مدرسة ثابت بن قيس على خرائط Google"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+
+          <div class="map-label">
+            خريطة Google للموقع المحدد
+          </div>
+        </div>
+
+        <div class="station-info">
+
+          <h3 id="currentStationName">البوابة الرئيسية</h3>
+
+          <p id="currentStationText">
+            استكشف موقع المدرسة وتعرّف على المحطة الأولى.
+          </p>
+
+          <div class="progress-info">
+            <span id="stationCounter">المحطة 1 من 13</span>
+            <strong id="stationPercent">8%</strong>
+          </div>
+
+          <div class="progress">
+            <span id="tourProgress"></span>
+          </div>
+
+          <div class="controls">
+            <button class="btn secondary" id="previousBtn">
+              → المحطة السابقة
+            </button>
+
+            <button class="btn" id="nextBtn">
+              المحطة التالية ←
+            </button>
+          </div>
+
+        </div>
+
+        <div class="google-actions">
+
+          <button class="btn mint" id="openMapBtn">
+            📍 افتح الموقع في Google Maps
+          </button>
+
+          <button class="btn" id="streetViewBtn">
+            🌐 البحث عن التجول الافتراضي
+          </button>
+
+        </div>
+
       </div>
-      <div style="position:absolute;bottom:10px;left:10px;background:#071b2bdd;padding:7px 10px;border-radius:9px;font-size:11px">
-        اسحب للتجول والدوران · استخدم عجلة الفأرة للتقريب والإبعاد
-      </div>
+
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-      <button id="school3dPrev" class="btn btn-outline">المحطة السابقة</button>
-      <button id="school3dNext" class="btn btn-gold">المحطة التالية</button>
-      <button id="school3dReset" class="btn btn-outline">إعادة زاوية الرؤية</button>
-      <button id="school3dAuto" class="btn btn-cyan">بدء الجولة التلقائية</button>
+
+    <div class="notice">
+      <strong>تنبيه بشأن التجول الافتراضي:</strong>
+      يعرض الإطار خريطة موقع المدرسة. أما التجول داخل المبنى
+      فيعتمد على وجود صور داخلية منشورة في Google Street View.
+      عند فتح Google Maps، ابحث عن الصور البانورامية المتاحة
+      أو استخدم رمز التجول الافتراضي إذا ظهر على الخريطة.
     </div>
-    <div id="school3dGallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:9px;margin-top:15px"></div>
-    <p style="font-size:12px;color:#a9bdc9;margin-bottom:0">
-      تُحمّل الصور المنشورة في مستودع GitHub العام وتُعرض على لوحات داخل المشهد ثلاثي الأبعاد.
-    </p>
-  `;
 
-  tourStage.insertAdjacentElement("afterend", panel);
+  </section>
 
-  const canvas = document.getElementById("school3dCanvas");
-  const status = document.getElementById("school3dStatus");
-  const title = document.getElementById("school3dTitle");
-  const gallery = document.getElementById("school3dGallery");
+</main>
 
-  let scene, camera, renderer, controls;
-  let current = 0;
-  let autoTimer = null;
-  let photoObjects = [];
-  const loader = new THREE.TextureLoader();
+<footer>
+  <strong>الجغرافيا الذكية – الجولة الافتراضية</strong><br>
+  مدرسة ثابت بن قيس للتعليم الأساسي – سلطنة عُمان<br>
+  إعداد وتصميم: د. قناوي حسين
+</footer>
 
-  function material(color) {
-    return new THREE.MeshStandardMaterial({
-      color,
-      roughness: 0.85
+<script>
+
+/* =====================================
+   إعداد موقع المدرسة
+   ===================================== */
+
+/*
+  يُستخدم اسم المدرسة للبحث في Google Maps.
+  لم نضع إحداثيات غير مؤكدة لمبنى المدرسة.
+*/
+
+const SCHOOL_QUERY =
+  "مدرسة ثابت بن قيس للتعليم الأساسي، بركاء، سلطنة عمان";
+
+const GOOGLE_MAP_URL =
+  "https://www.google.com/maps/search/?api=1&query=" +
+  encodeURIComponent(SCHOOL_QUERY);
+
+const GOOGLE_MAP_EMBED =
+  "https://maps.google.com/maps?q=" +
+  encodeURIComponent(SCHOOL_QUERY) +
+  "&output=embed";
+
+/* =====================================
+   المحطات الثلاث عشرة
+   ===================================== */
+
+const stations = [
+
+  {
+    name:"البوابة الرئيسية",
+    icon:"🏫",
+    description:"بداية الجولة الافتراضية والتعرف على المدخل الرئيسي للمدرسة."
+  },
+
+  {
+    name:"جوانب المدرسة",
+    icon:"🏢",
+    description:"التعرف على الجوانب الخارجية للمبنى المدرسي."
+  },
+
+  {
+    name:"الممرات والدرج – الجانب الأيسر",
+    icon:"🚶",
+    description:"استكشاف الممرات والدرج في الجانب الأيسر."
+  },
+
+  {
+    name:"الممرات والدرج – الجانب الأيمن",
+    icon:"🚶",
+    description:"استكشاف الممرات والدرج في الجانب الأيمن."
+  },
+
+  {
+    name:"غرفة المعلمين الأولى",
+    icon:"👨‍🏫",
+    description:"التعرف على بيئة العمل التعليمية للمعلمين."
+  },
+
+  {
+    name:"غرفة المعلمين الثانية والإدارة المدرسية",
+    icon:"🏢",
+    description:"التعرف على مرافق الإدارة والبيئة التنظيمية للمدرسة."
+  },
+
+  {
+    name:"الفصول الدراسية",
+    icon:"📚",
+    description:"استكشاف بيئة التعلم داخل الفصول الدراسية."
+  },
+
+  {
+    name:"مركز مصادر التعلم",
+    icon:"📖",
+    description:"التعرف على مصادر المعرفة والقراءة والبحث."
+  },
+
+  {
+    name:"مختبر الحاسوب",
+    icon:"💻",
+    description:"استكشاف بيئة التعلم الرقمي والتقنيات الحديثة."
+  },
+
+  {
+    name:"مختبر الدراسات الاجتماعية",
+    icon:"🌍",
+    description:"التعرف على بيئة تعلم الجغرافيا والتاريخ."
+  },
+
+  {
+    name:"الساحة المدرسية",
+    icon:"🌳",
+    description:"استكشاف الساحة والأنشطة المدرسية."
+  },
+
+  {
+    name:"مختبر الجغرافيا والتقنيات الحديثة",
+    icon:"🛰️",
+    description:"اكتشاف الخرائط الرقمية ونظم المعلومات الجغرافية والاستشعار عن بُعد."
+  },
+
+  {
+    name:"قاعة الأنشطة والابتكار",
+    icon:"💡",
+    description:"مساحة الإبداع والمبادرات والمشروعات الطلابية."
+  }
+
+];
+
+/* =====================================
+   عناصر الصفحة
+   ===================================== */
+
+const stationList = document.getElementById("stationList");
+const stationTitle = document.getElementById("stationTitle");
+const stationDescription = document.getElementById("stationDescription");
+const currentStationName = document.getElementById("currentStationName");
+const currentStationText = document.getElementById("currentStationText");
+const stationCounter = document.getElementById("stationCounter");
+const stationPercent = document.getElementById("stationPercent");
+const tourProgress = document.getElementById("tourProgress");
+const googleMap = document.getElementById("googleMap");
+
+let currentStation = 0;
+
+/* =====================================
+   إنشاء قائمة المحطات
+   ===================================== */
+
+function buildStationList(){
+
+  stationList.replaceChildren();
+
+  stations.forEach((station,index)=>{
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "station-btn";
+
+    button.textContent =
+      (index + 1) + ". " + station.name;
+
+    button.addEventListener("click",()=>{
+
+      currentStation = index;
+      renderStation();
+
     });
-  }
 
-  function block(parent, w, h, d, x, y, z, mat) {
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(w, h, d), mat
-    );
-    mesh.position.set(x, y, z);
-    parent.add(mesh);
-    return mesh;
-  }
+    stationList.appendChild(button);
 
-  function buildSchool() {
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x071b2b);
-    scene.fog = new THREE.Fog(0x071b2b, 18, 42);
-
-    camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
-    camera.position.set(0, 2.5, 8);
-
-    renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-    scene.add(new THREE.HemisphereLight(0xd9efff, 0x263443, 2));
-
-    const light = new THREE.DirectionalLight(0xffe4bd, 2.2);
-    light.position.set(3, 8, 5);
-    scene.add(light);
-
-    const school = new THREE.Group();
-    scene.add(school);
-
-    const floor = material(0x9ba4a8);
-    const walls = material(0xe4e6e3);
-    const brown = material(0x795638);
-    const gold = material(0xc5a15c);
-    const roof = material(0xbfc9ce);
-
-    // أرضية الممر والسقف والجدران
-    block(school, 8, .18, 35, 0, -.12, -11, floor);
-    block(school, 8, .15, 35, 0, 4, -11, roof);
-    block(school, .2, 4, 35, -4, 1.9, -11, walls);
-    block(school, .2, 4, 35, 4, 1.9, -11, walls);
-
-    // أبواب الفصول على جانبي الممر
-    for (let z = 3; z > -28; z -= 4) {
-      block(school, 1.5, 2.7, .12, -3.83, 1.35, z, brown);
-      block(school, 1.5, 2.7, .12, 3.83, 1.35, z, brown);
-
-      block(school, 1.7, .12, .2, -3.82, 2.75, z, gold);
-      block(school, 1.7, .12, .2, 3.82, 2.75, z, gold);
-
-      const lamp = new THREE.Mesh(
-        new THREE.BoxGeometry(1.5, .06, .35),
-        new THREE.MeshBasicMaterial({ color: 0xffefca })
-      );
-      lamp.position.set(0, 3.88, z);
-      school.add(lamp);
-    }
-
-    // بوابة دخول رمزية
-    block(school, 2.8, 2.9, .25, 0, 1.4, 5.5, gold);
-    block(school, 2.4, 2.5, .12, 0, 1.25, 5.3, brown);
-
-    // لوحة اسم المدرسة
-    const signCanvas = document.createElement("canvas");
-    signCanvas.width = 512;
-    signCanvas.height = 128;
-    const ctx = signCanvas.getContext("2d");
-    ctx.fillStyle = "#102f43";
-    ctx.fillRect(0, 0, 512, 128);
-    ctx.fillStyle = "#f0d89d";
-    ctx.font = "bold 38px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("مدرسة ثابت بن قيس", 256, 78);
-
-    const signTexture = new THREE.CanvasTexture(signCanvas);
-    const sign = new THREE.Mesh(
-      new THREE.PlaneGeometry(3.7, .85),
-      new THREE.MeshBasicMaterial({ map: signTexture })
-    );
-    sign.position.set(0, 3.4, 5.32);
-    school.add(sign);
-
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = .07;
-    controls.minDistance = 2.5;
-    controls.maxDistance = 22;
-    controls.maxPolarAngle = Math.PI * .48;
-    controls.target.set(0, 1.5, 0);
-
-    resize();
-    window.addEventListener("resize", resize);
-    animate();
-
-    status.textContent = "المشهد الثلاثي الأبعاد جاهز";
-  }
-
-  function resize() {
-    if (!renderer) return;
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
-    if (!w || !h) return;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-    controls?.update();
-    renderer?.render(scene, camera);
-  }
-
-  function moveToStation(index) {
-    current = (index + stations.length) % stations.length;
-
-    const z = 4 - current * 2.35;
-    camera.position.set(0, 2.5, z + 4.5);
-    controls.target.set(0, 1.5, z);
-    controls.update();
-
-    title.textContent =
-      `المحطة ${String(current + 1).padStart(2, "0")} · ${stations[current]}`;
-  }
-
-  function guessStation(path, index) {
-    const n = path.toLowerCase();
-
-    const keywords = [
-      ["مدخل", "بوابة", "gate", "entrance"],
-      ["جانب", "واجهة", "side"],
-      ["ممر", "درج", "سلم", "stair", "corridor"],
-      ["يمين", "يسار"],
-      ["معلمين", "teacher"],
-      ["غرفة", "teachers"],
-      ["فصل", "صف", "class"],
-      ["مرفق", "facility"],
-      ["مختبر", "معمل", "lab"],
-      ["مكتبة", "library"],
-      ["ساحة", "ملعب", "yard"],
-      ["جغرافيا", "خرائط", "gis", "geography"],
-      ["أنشطة", "ابتكار", "قاعة", "activity"]
-    ];
-
-    for (let i = 0; i < keywords.length; i++) {
-      if (keywords[i].some(word => n.includes(word))) return i;
-    }
-    return index % stations.length;
-  }
-
-  function clearPhotoPanels() {
-    photoObjects.forEach(obj => {
-      scene.remove(obj);
-      obj.material.map?.dispose();
-      obj.material.dispose();
-    });
-    photoObjects = [];
-  }
-
-  function showPhotos(images) {
-    clearPhotoPanels();
-
-    const assigned = Array.from(
-      { length: stations.length },
-      (_, i) => images.filter(x => x.station === i)
-    );
-
-    assigned.forEach((items, i) => {
-      if (!items.length) return;
-
-      const side = i % 2 === 0 ? -1 : 1;
-      const z = 3 - i * 2.35;
-
-      loader.load(items[0].url, texture => {
-        texture.colorSpace = THREE.SRGBColorSpace;
-
-        const plane = new THREE.Mesh(
-          new THREE.PlaneGeometry(2.4, 1.55),
-          new THREE.MeshBasicMaterial({
-            map: texture,
-            side: THREE.DoubleSide
-          })
-        );
-
-        plane.position.set(side * 3.78, 2, z);
-        plane.rotation.y = side < 0 ? Math.PI / 2 : -Math.PI / 2;
-
-        scene.add(plane);
-        photoObjects.push(plane);
-      });
-    });
-  }
-
-  async function loadGitHubPhotos() {
-    const owner = "drqenawy4-ctrl";
-    const repo = "drqenawy-OMAN-GEOGRAPHY-GIS";
-
-    try {
-      const metaResponse = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}`
-      );
-      if (!metaResponse.ok) throw new Error("تعذر الوصول إلى مستودع GitHub");
-
-      const meta = await metaResponse.json();
-      const branch = meta.default_branch || "main";
-
-      const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`
-      );
-      if (!response.ok) throw new Error("تعذر قراءة ملفات المستودع");
-
-      const data = await response.json();
-
-      const files = (data.tree || [])
-        .filter(file =>
-          file.type === "blob" &&
-          /\.(jpg|jpeg|png|webp|gif|avif)$/i.test(file.path)
-        )
-        .sort((a, b) => a.path.localeCompare(b.path));
-
-      const images = files.map((file, index) => ({
-        name: file.path.split("/").pop(),
-        url: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${file.path.split("/").map(encodeURIComponent).join("/")}`,
-        station: guessStation(file.path, index)
-      }));
-
-      gallery.innerHTML = images.map(image => `
-        <figure style="margin:0;background:#071f30;border-radius:10px;overflow:hidden">
-          <img src="${image.url}" loading="lazy"
-            style="width:100%;height:100px;object-fit:cover"
-            alt="${image.name}">
-          <figcaption style="padding:5px;font-size:11px">
-            ${image.name}<br>
-            <span style="color:#55d6d2">${stations[image.station]}</span>
-          </figcaption>
-        </figure>
-      `).join("");
-
-      showPhotos(images);
-      status.textContent = `تم تحميل ${images.length} صورة`;
-    } catch (error) {
-      console.error(error);
-      status.textContent = "تعذر تحميل الصور من المستودع";
-    }
-  }
-
-  document.getElementById("school3dPrev").onclick =
-    () => moveToStation(current - 1);
-
-  document.getElementById("school3dNext").onclick =
-    () => moveToStation(current + 1);
-
-  document.getElementById("school3dReset").onclick =
-    () => moveToStation(current);
-
-  document.getElementById("school3dAuto").onclick = event => {
-    if (autoTimer) {
-      clearInterval(autoTimer);
-      autoTimer = null;
-      event.currentTarget.textContent = "بدء الجولة التلقائية";
-    } else {
-      event.currentTarget.textContent = "إيقاف الجولة التلقائية";
-      autoTimer = setInterval(
-        () => moveToStation(current + 1), 4500
-      );
-    }
-  };
-
-  // مزامنة المحطة مع أزرار الجولة الأصلية في الموقع
-  const titleObserver = new MutationObserver(() => {
-    const text = document.getElementById("stationTitle")?.textContent || "";
-    const match = text.match(/المحطة\s*(\d+)/);
-    if (match) moveToStation(Number(match[1]) - 1);
   });
 
-  const stationTitle = document.getElementById("stationTitle");
-  if (stationTitle) {
-    titleObserver.observe(stationTitle, {
-      childList: true,
-      characterData: true,
-      subtree: true
-    });
+}
+
+/* =====================================
+   عرض المحطة الحالية
+   ===================================== */
+
+function renderStation(){
+
+  const station = stations[currentStation];
+
+  stationTitle.textContent =
+    "المحطة " + (currentStation + 1) + ": " + station.name;
+
+  stationDescription.textContent =
+    station.description;
+
+  currentStationName.textContent =
+    station.icon + " " + station.name;
+
+  currentStationText.textContent =
+    station.description;
+
+  const percent = Math.round(
+    ((currentStation + 1) / stations.length) * 100
+  );
+
+  stationCounter.textContent =
+    "المحطة " + (currentStation + 1) +
+    " من " + stations.length;
+
+  stationPercent.textContent = percent + "%";
+
+  tourProgress.style.width = percent + "%";
+
+  document.querySelectorAll(".station-btn").forEach((button,index)=>{
+
+    button.classList.toggle(
+      "active",
+      index === currentStation
+    );
+
+  });
+
+  document.getElementById("previousBtn").disabled =
+    currentStation === 0;
+
+  document.getElementById("nextBtn").disabled =
+    currentStation === stations.length - 1;
+
+  document.getElementById("previousBtn").style.opacity =
+    currentStation === 0 ? ".45" : "1";
+
+  document.getElementById("nextBtn").style.opacity =
+    currentStation === stations.length - 1 ? ".45" : "1";
+
+}
+
+/* =====================================
+   التنقل بين المحطات
+   ===================================== */
+
+function nextStation(){
+
+  if(currentStation < stations.length - 1){
+
+    currentStation++;
+    renderStation();
+
   }
 
-  buildSchool();
-  moveToStation(0);
-  loadGitHubPhotos();
-})();
+}
+
+function previousStation(){
+
+  if(currentStation > 0){
+
+    currentStation--;
+    renderStation();
+
+  }
+
+}
+
+document.getElementById("nextBtn").addEventListener(
+  "click",
+  nextStation
+);
+
+document.getElementById("previousBtn").addEventListener(
+  "click",
+  previousStation
+);
+
+/* =====================================
+   Google Maps
+   ===================================== */
+
+function openGoogleMap(){
+
+  window.open(
+    GOOGLE_MAP_URL,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+function openStreetViewSearch(){
+
+  /*
+    يفتح موقع المدرسة في Google Maps.
+    يختار الزائر صور Street View إذا كانت متاحة.
+    لا نضع إحداثيات افتراضية غير مؤكدة.
+  */
+
+  const url =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(SCHOOL_QUERY);
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+document.getElementById("openMapBtn").addEventListener(
+  "click",
+  openGoogleMap
+);
+
+document.getElementById("streetViewBtn").addEventListener(
+  "click",
+  openStreetViewSearch
+);
+
+/* =====================================
+   تشغيل الجولة
+   ===================================== */
+
+function initializeTour(){
+
+  googleMap.src = GOOGLE_MAP_EMBED;
+
+  buildStationList();
+
+  renderStation();
+
+}
+
+initializeTour();
+
 </script>
+
 </body>
 </html>
