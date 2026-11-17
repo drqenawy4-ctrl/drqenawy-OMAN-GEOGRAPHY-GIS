@@ -4,22 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102b3f">
+<meta name="description" content="أطلس التراث العماني التفاعلي">
 <title>أطلس التراث العُماني التفاعلي</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
 :root{
 --navy:#102b3f;
 --navy2:#19475b;
 --gold:#d9ad68;
---sand:#f5ead8;
 --ink:#183244;
 --muted:#657984;
+--line:#e2e9e9;
 }
 *{box-sizing:border-box}
 body{
@@ -28,68 +25,99 @@ background:#f2f5f4;
 color:var(--ink);
 font-family:Tahoma,Arial,sans-serif;
 }
-.wrap{width:min(1300px,95%);margin:auto}
+button,input{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1380px,95%);margin:auto}
+
 header{
-background:linear-gradient(115deg,#0b2234,#19475b);
-color:white;padding:22px 0;
+background:linear-gradient(115deg,#091d2d,#19475b);
+color:white;
+padding:24px 0;
 border-bottom:4px solid var(--gold);
 }
-.brand{display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:15px}
 .logo{
-width:54px;height:54px;border-radius:15px;
+width:58px;height:58px;
+border-radius:17px;
 background:linear-gradient(145deg,#f5d99e,#b47b35);
 display:grid;place-items:center;
-color:#173346;font-size:27px;font-weight:bold;
+color:#173346;font-size:29px;font-weight:bold;
 }
-h1{font-size:clamp(23px,4vw,36px);margin:0 0 6px}
-header p{margin:0;color:#d6e1e4;font-size:13px;line-height:1.8}
-.toolbar{
-display:flex;gap:10px;flex-wrap:wrap;
-padding:17px 0;
+h1{font-size:clamp(22px,4vw,36px);margin:0 0 7px}
+header p{margin:0;color:#d6e1e4;font-size:13px;line-height:1.9}
+
+.intro{
+padding:18px 0 4px;
+display:flex;justify-content:space-between;
+gap:12px;flex-wrap:wrap;
 }
-.search{display:flex;gap:8px;flex:1;min-width:230px}
+.intro strong{font-size:15px}
+.intro span{font-size:11px;color:var(--muted)}
+
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;padding:15px 0}
+.search{display:flex;gap:8px;flex:1;min-width:240px}
 input{
-width:100%;padding:12px;border:1px solid #d8e0e2;
-border-radius:10px;font:inherit;
+width:100%;min-width:0;padding:12px 14px;
+border:1px solid #d8e0e2;border-radius:10px;
+outline:none;background:#fff;
 }
-button{
-border:0;border-radius:10px;padding:11px 15px;
-font:inherit;cursor:pointer;
-}
+input:focus{border-color:var(--gold)}
+button{border:0;border-radius:10px;padding:11px 15px}
 .btn{background:var(--navy);color:white}
+.btn:hover{background:var(--navy2)}
 .gold{background:var(--gold);color:#172e3c;font-weight:bold}
 .light{background:#e9eff0;color:#234253}
+
 .layout{
 display:grid;
-grid-template-columns:minmax(0,1.6fr) minmax(300px,.8fr);
-gap:16px;padding-bottom:20px;
+grid-template-columns:minmax(0,1.65fr) minmax(310px,.8fr);
+gap:16px;padding-bottom:22px;
 }
 .mapbox,.panel{
-background:white;border:1px solid #e3e8e9;
+background:white;border:1px solid var(--line);
 border-radius:16px;overflow:hidden;
 box-shadow:0 5px 20px #15384b0a;
 }
 .maphead{
-padding:14px 16px;border-bottom:1px solid #e6ebec;
-display:flex;justify-content:space-between;gap:10px;
+padding:14px 16px;border-bottom:1px solid var(--line);
+display:flex;justify-content:space-between;
+gap:10px;flex-wrap:wrap;
 }
 .maphead strong{font-size:15px}
 .maphead span{font-size:11px;color:var(--muted)}
-#map{height:650px;width:100%;background:#e5eae8}
+#map{height:650px;width:100%;background:#e5eae8;z-index:1}
+.map-status{
+padding:8px 12px;font-size:11px;
+color:#607580;background:#f8faf9;
+border-top:1px solid var(--line);
+}
 .panel{padding:17px}
 .panel h2{font-size:19px;margin:0 0 7px}
-.sub{font-size:12px;color:var(--muted);line-height:1.8}
+.sub{font-size:12px;color:var(--muted);line-height:1.9}
+
+.stats{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:8px;margin:14px 0;
+}
+.stat{
+padding:10px 5px;text-align:center;
+background:#f5f8f7;border-radius:10px;
+}
+.stat b{display:block;color:var(--navy);font-size:18px}
+.stat small{font-size:10px;color:var(--muted)}
+
 .filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
 .filter{
 border:1px solid #dce4e5;background:white;
-padding:7px 11px;font-size:11px;border-radius:20px;
+padding:7px 12px;font-size:11px;border-radius:20px;
 }
 .filter.active{background:var(--navy);color:white}
-.list{display:grid;gap:9px;max-height:270px;overflow:auto}
+
+.list{display:grid;gap:9px;max-height:290px;overflow:auto}
 .site{
 width:100%;display:flex;align-items:center;gap:10px;
-text-align:right;background:white;border:1px solid #e5e9e9;
-padding:9px;border-radius:11px;
+text-align:right;background:white;
+border:1px solid #e5e9e9;padding:9px;border-radius:11px;
 }
 .site.active{border-color:var(--gold);background:#fbf6ed}
 .thumb{
@@ -98,47 +126,77 @@ border-radius:8px;background:#e7e1d5;flex:none;
 }
 .site b{display:block;font-size:12px}
 .site small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
-.selected{border-top:1px solid #e5e9e9;margin-top:15px;padding-top:15px}
+.empty{padding:20px;text-align:center;font-size:12px;color:var(--muted)}
+
+.selected{border-top:1px solid var(--line);margin-top:15px;padding-top:15px}
 .hero{
-width:100%;height:190px;object-fit:cover;
+width:100%;height:205px;object-fit:cover;
 border-radius:11px;background:#e8e2d8;
 }
-.selected h3{margin:11px 0 5px;font-size:17px}
-.selected p{font-size:12px;line-height:1.8;color:var(--muted)}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.note{font-size:10px;line-height:1.8;color:#778991;margin-top:12px}
+.selected h3{margin:11px 0 5px;font-size:18px}
+.selected p{font-size:12px;line-height:1.9;color:var(--muted)}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.tag{background:#edf3f3;color:#345365;padding:6px 9px;border-radius:20px;font-size:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{flex:1;min-width:125px}
+.note{
+font-size:10px;line-height:1.9;color:#657984;
+margin-top:12px;background:#f7f8f6;padding:9px;border-radius:8px;
+}
+
 .modal{
-display:none;position:fixed;inset:0;background:#061724ed;
-z-index:2000;padding:15px;align-items:center;justify-content:center;
+display:none;position:fixed;inset:0;
+background:#061724ed;z-index:3000;
+padding:12px;align-items:center;justify-content:center;
 }
 .modal.open{display:flex}
 .modalbox{
-width:min(1100px,100%);height:min(760px,95vh);
-background:#102b3f;border-radius:15px;overflow:hidden;
-display:flex;flex-direction:column;
+width:min(1150px,100%);height:min(790px,96vh);
+background:#102b3f;border-radius:15px;
+overflow:hidden;display:flex;flex-direction:column;
 }
 .modalhead{
-display:flex;justify-content:space-between;align-items:center;
+display:flex;justify-content:space-between;
+align-items:center;gap:10px;
 padding:12px 15px;color:white;
 }
 .modalhead button{background:#ffffff20;color:white}
-#panorama{height:100%;min-height:250px;background:#071923}
-.tourhelp{color:#e7d8bd;padding:10px;font-size:11px}
-footer{padding:15px 0 25px;color:#75858c;font-size:11px;line-height:1.8}
-.leaflet-popup-content{font-family:Tahoma,Arial,sans-serif;text-align:right}
-.popimg{width:100%;height:95px;object-fit:cover;border-radius:7px}
-.popbtn{
-display:block;margin-top:8px;background:#102b3f;color:white!important;
-text-decoration:none;text-align:center;padding:8px;border-radius:7px;
-font-size:11px;
+#tourFrame{
+width:100%;height:100%;flex:1;
+border:0;background:#071923;
 }
-@media(max-width:900px){
+.tourhelp{
+color:#e7d8bd;padding:9px 12px;
+font-size:11px;display:flex;
+justify-content:space-between;gap:10px;flex-wrap:wrap;
+}
+.tourhelp a{color:#f5d99e}
+footer{
+padding:17px 0 27px;color:#75858c;
+font-size:11px;line-height:1.9;
+border-top:1px solid var(--line);
+}
+.leaflet-popup-content{
+font-family:Tahoma,Arial,sans-serif;
+text-align:right;min-width:175px;
+}
+.popbtn{
+display:block;margin-top:8px;
+background:#102b3f;color:white!important;
+text-decoration:none;text-align:center;
+padding:8px;border-radius:7px;font-size:11px;
+}
+@media(max-width:950px){
 .layout{grid-template-columns:1fr}
-#map{height:470px}
+#map{height:500px}
+.list{max-height:260px}
 }
 @media(max-width:520px){
 #map{height:420px}
-.hero{height:170px}
+.hero{height:175px}
+.wrap{width:94%}
+.panel{padding:13px}
+.search{min-width:100%}
 }
 </style>
 </head>
@@ -151,7 +209,7 @@ font-size:11px;
 <div class="logo">عُ</div>
 <div>
 <h1>أطلس التراث العُماني التفاعلي</h1>
-<p>خريطة تفاعلية لاستكشاف القلاع والحصون والمعالم التاريخية في سلطنة عُمان</p>
+<p>رحلة رقمية لاستكشاف القلاع والحصون والمعالم التاريخية في سلطنة عُمان</p>
 </div>
 </div>
 </div>
@@ -159,9 +217,14 @@ font-size:11px;
 
 <main class="wrap">
 
+<div class="intro">
+<strong>اكتشف ذاكرة المكان العُماني</strong>
+<span>خريطة تفاعلية • صور المعالم • جولات افتراضية 360°</span>
+</div>
+
 <div class="toolbar">
 <div class="search">
-<input id="search" placeholder="ابحث عن قلعة أو حصن أو محافظة">
+<input id="search" type="search" placeholder="ابحث عن قلعة أو حصن أو محافظة">
 <button class="btn" id="searchBtn">بحث</button>
 </div>
 <button class="btn light" id="omanBtn">عرض عُمان كاملة</button>
@@ -172,14 +235,21 @@ font-size:11px;
 <section class="mapbox">
 <div class="maphead">
 <strong>خريطة المواقع التراثية العُمانية</strong>
-<span>اضغط على العلامة لعرض الموقع</span>
+<span>اضغط على العلامة لاستكشاف المعلم</span>
 </div>
 <div id="map"></div>
+<div class="map-status" id="mapStatus">جارٍ تحميل الخريطة...</div>
 </section>
 
 <aside class="panel">
 <h2>دليل المعالم التراثية</h2>
 <p class="sub">اختر معلمًا من القائمة أو اضغط على علامته في الخريطة.</p>
+
+<div class="stats">
+<div class="stat"><b>9</b><small>معالم مدرجة</small></div>
+<div class="stat"><b>5</b><small>روابط جولات مدرجة</small></div>
+<div class="stat"><b>360°</b><small>استكشاف بانورامي</small></div>
+</div>
 
 <div class="filters">
 <button class="filter active" data-filter="الكل">الكل</button>
@@ -191,35 +261,32 @@ font-size:11px;
 
 <div class="selected">
 <img class="hero" id="hero" alt="صورة المعلم التراثي"
-src="https://commons.wikimedia.org/wiki/Special:FilePath/Nizwa_Fort.jpg">
+src="https://placehold.co/900x500/e8e2d8/183244?text=Oman+Heritage">
 
 <h3 id="siteTitle">اختر معلمًا من الخريطة</h3>
+<div class="meta" id="siteMeta">
+<span class="tag">التراث العُماني</span>
+</div>
 
-<p id="siteDesc">
-ستظهر هنا صورة الموقع ومعلوماته ورابط الجولة الافتراضية عند توفرها.
-</p>
+<p id="siteDesc">ستظهر هنا صورة المعلم ومعلوماته وخيارات الجولة الافتراضية.</p>
 
 <div class="actions">
-<button class="btn gold" id="tourBtn" disabled>
-افتح الجولة الافتراضية
-</button>
-<button class="btn light" id="locationBtn" disabled>
-حدد الموقع على الخريطة
-</button>
+<button class="btn gold" id="tourBtn" disabled>افتح الجولة الافتراضية</button>
+<button class="btn light" id="locationBtn" disabled>حدد الموقع على الخريطة</button>
 </div>
 
 <div class="note" id="tourNote">
-الجولة الحقيقية تحتاج صورة بانورامية 360° أو رابط جولة موثوقًا.
+الجولات المباشرة مرتبطة بمصادرها. قد يمنع مزود الجولة تضمينها داخل الموقع.
 </div>
 </div>
 </aside>
+
 </div>
 
 <footer>
-الخريطة من OpenStreetMap. عرض الصور والجولات يعتمد على توافر المصادر
-والروابط الأصلية لكل معلم.
+الخريطة من OpenStreetMap. الصور البديلة تُحمّل من ويكيبيديا عند توافرها.
+الجولات الافتراضية تعتمد على روابط المعالم الموثقة، وقد يتطلب بعضها فتح الجولة في نافذة مستقلة.
 </footer>
-
 </main>
 
 <div class="modal" id="tourModal">
@@ -228,235 +295,305 @@ src="https://commons.wikimedia.org/wiki/Special:FilePath/Nizwa_Fort.jpg">
 <strong id="modalTitle">الجولة الافتراضية</strong>
 <button id="closeTour">إغلاق ✕</button>
 </div>
-<div id="panorama"></div>
+<iframe id="tourFrame" title="الجولة الافتراضية"
+src="about:blank"
+allow="fullscreen; xr-spatial-tracking"
+allowfullscreen></iframe>
 <div class="tourhelp">
-اسحب المشهد للتحرك حولك، واستخدم التكبير لرؤية التفاصيل.
+<span>استخدم اللمس أو الفأرة للتنقل داخل الجولة.</span>
+<a id="openExternal" href="#" target="_blank" rel="noopener">إذا لم تظهر الجولة، افتحها في نافذة مستقلة</a>
 </div>
 </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
-const SITES=[
-{id:'nizwa',name:'قلعة نزوى',kind:'قلعة',gov:'الداخلية',
-lat:22.9333,lon:57.5333,wiki:'Nizwa_Fort',
-desc:'من أبرز المعالم التاريخية في ولاية نزوى.'},
+"use strict";
 
-{id:'bahla',name:'قلعة بهلاء',kind:'قلعة',gov:'الداخلية',
-lat:22.9647,lon:57.3047,wiki:'Bahla_Fort',
-desc:'قلعة تاريخية ضمن موقع بهلاء المسجل في التراث العالمي.'},
+const OFFICIAL_TOURS = "https://experienceoman.om/360-virtual-tours";
 
-{id:'jabrin',name:'قلعة جبرين',kind:'قلعة',gov:'الداخلية',
-lat:22.905,lon:57.252,wiki:'Jabrin_Castle',
-desc:'قصر محصن معروف بعناصره المعمارية التاريخية.'},
-
-{id:'nakhal',name:'قلعة نخل',kind:'قلعة',gov:'جنوب الباطنة',
-lat:23.394,lon:57.832,wiki:'Nakhal_Fort',
-desc:'قلعة تاريخية في ولاية نخل.'},
-
-{id:'hazm',name:'قلعة الحزم',kind:'قلعة',gov:'جنوب الباطنة',
-lat:23.405,lon:57.383,wiki:'Al_Hazm_Castle',
-desc:'معلم دفاعي تاريخي في ولاية الرستاق.'},
-
-{id:'rustaq',name:'حصن الرستاق',kind:'حصن',gov:'جنوب الباطنة',
-lat:23.390,lon:57.424,wiki:'Rustaq_Fort',
-desc:'حصن تاريخي بارز في ولاية الرستاق.'},
-
-{id:'sohar',name:'حصن صحار',kind:'حصن',gov:'شمال الباطنة',
-lat:24.347,lon:56.733,wiki:'Sohar_Fort',
-desc:'حصن تاريخي في مدينة صحار الساحلية.'},
-
-{id:'khasab',name:'حصن خصب',kind:'حصن',gov:'مسندم',
-lat:26.191,lon:56.247,wiki:'Khasab_Fort',
-desc:'حصن تاريخي في ولاية خصب.'},
-
-{id:'mirbat',name:'حصن مرباط',kind:'حصن',gov:'ظفار',
-lat:16.992,lon:54.691,wiki:'Mirbat_Fort',
-desc:'معلم تاريخي في ولاية مرباط بمحافظة ظفار.'}
+const SITES = [
+{
+id:"nizwa",name:"قلعة نزوى",kind:"قلعة",gov:"الداخلية",
+lat:22.9333,lon:57.5333,wiki:"Nizwa Fort",
+desc:"من أبرز المعالم التاريخية في ولاية نزوى، وتتميز ببرجها الدائري الكبير وموقعها التاريخي."
+},
+{
+id:"bahla",name:"قلعة بهلاء",kind:"قلعة",gov:"الداخلية",
+lat:22.9647,lon:57.3047,wiki:"Bahla Fort",
+desc:"قلعة تاريخية بارزة في ولاية بهلاء، وترتبط بالواحات والأسوار التاريخية للمدينة."
+},
+{
+id:"jabrin",name:"قلعة جبرين",kind:"قلعة",gov:"الداخلية",
+lat:22.905,lon:57.252,wiki:"Jabreen Castle",
+desc:"قصر محصن معروف بعناصره المعمارية التاريخية وزخارفه الداخلية.",
+tour:"https://my.matterport.com/show/?m=QgqPGf6a5Np"
+},
+{
+id:"nakhal",name:"قلعة نخل",kind:"قلعة",gov:"جنوب الباطنة",
+lat:23.394,lon:57.832,wiki:"Nakhal Fort",
+desc:"قلعة تاريخية في ولاية نخل، تقع في بيئة جبلية مميزة."
+},
+{
+id:"hazm",name:"حصن الحزم",kind:"حصن",gov:"جنوب الباطنة",
+lat:23.405,lon:57.383,wiki:"Al Hazm Castle",
+desc:"معلم دفاعي تاريخي في ولاية الرستاق، يتميز بتصميمه المعماري العُماني.",
+tour:"https://my.matterport.com/show/?m=kfEWtigW7cj"
+},
+{
+id:"rustaq",name:"حصن الرستاق",kind:"حصن",gov:"جنوب الباطنة",
+lat:23.390,lon:57.424,wiki:"Rustaq Fort",
+desc:"حصن تاريخي بارز في ولاية الرستاق، يرتبط بتاريخ المنطقة ومكانتها."
+},
+{
+id:"sohar",name:"حصن صحار",kind:"حصن",gov:"شمال الباطنة",
+lat:24.347,lon:56.733,wiki:"Sohar Fort",
+desc:"حصن تاريخي ومتحف يعرض جانبًا من التراث البحري لمدينة صحار.",
+tour:"https://my.matterport.com/show/?m=Cd2DPdi93XH"
+},
+{
+id:"khasab",name:"حصن خصب",kind:"حصن",gov:"مسندم",
+lat:26.191,lon:56.247,wiki:"Khasab Fort",
+desc:"حصن تاريخي في ولاية خصب يعكس جانبًا من التراث المعماري في مسندم.",
+tour:"https://my.matterport.com/show/?m=rUNhaKWuT5K"
+},
+{
+id:"mirbat",name:"حصن مرباط",kind:"حصن",gov:"ظفار",
+lat:16.992,lon:54.691,wiki:"Mirbat Fort",
+desc:"معلم تاريخي في ولاية مرباط بمحافظة ظفار، يرتبط بتاريخ الساحل العُماني.",
+tour:"https://my.matterport.com/show/?m=ugqMv9i3dob"
+}
 ];
 
-/*
-أضف رابط صورة بانورامية 360 حقيقية عند توفره.
-لا تضع رابط صورة عادية في هذا الحقل.
-مثال:
-jabrin: "رابط_صورة_بانورامية_360"
-*/
-const TOURS={};
+let map=null;
+let markers={};
+let activeSite=null;
+let activeFilter="الكل";
+const imageCache={};
+const fallback="https://placehold.co/900x500/e8e2d8/183244?text=Oman+Heritage";
 
-const OFFICIAL_TOURS=
-'https://experienceoman.om/360-virtual-tours';
-
-const map=L.map('map').setView([22.7,57.2],7);
-
-L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:19,
-attribution:'&copy; OpenStreetMap'
-}).addTo(map);
-
-const markers={};
-let active=null;
-let filter='الكل';
-let viewer=null;
-
-function imageUrl(site){
-return 'https://commons.wikimedia.org/wiki/Special:FilePath/'
-+encodeURIComponent(site.wiki+'.jpg')+'?width=600';
+function escapeHTML(value){
+return String(value).replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
 }
 
-function popup(site){
-return `
-<div>
-<img class="popimg" src="${imageUrl(site)}"
-alt="${site.name}"
-onerror="this.style.display='none'">
-<b>${site.name}</b>
-<div style="font-size:11px;color:#657783;margin-top:4px">
-${site.gov}
-</div>
-<a class="popbtn" href="#"
-onclick="window.chooseSite('${site.id}');return false">
-عرض الصورة والتفاصيل
-</a>
-</div>`;
+function normalizeText(value){
+return String(value||"").toLowerCase()
+.replace(/[أإآ]/g,"ا").replace(/ة/g,"ه")
+.replace(/ى/g,"ي").trim();
 }
 
-SITES.forEach(site=>{
-const marker=L.marker([site.lat,site.lon])
-.addTo(map).bindPopup(popup(site));
-
-marker.on('click',()=>chooseSite(site.id));
-markers[site.id]=marker;
-});
-
-function renderList(){
-const list=document.getElementById('siteList');
-list.innerHTML='';
-
-const query=document.getElementById('search').value.trim();
-
-SITES.filter(site=>
-(filter==='الكل'||site.kind===filter)&&
-(site.name+' '+site.gov).includes(query)
-).forEach(site=>{
-const b=document.createElement('button');
-b.className='site'+(active===site.id?' active':'');
-
-b.innerHTML=`
-<img class="thumb" src="${imageUrl(site)}"
-alt="${site.name}"
-onerror="this.style.display='none'">
-<span>
-<b>${site.name}</b>
-<small>${site.gov}</small>
-</span>`;
-
-b.onclick=()=>{
-chooseSite(site.id);
-map.flyTo([site.lat,site.lon],14);
-markers[site.id].openPopup();
-};
-
-list.appendChild(b);
-});
-}
-
-window.chooseSite=function(id){
-const site=SITES.find(x=>x.id===id);
-if(!site)return;
-
-active=id;
-
-document.getElementById('hero').src=imageUrl(site);
-document.getElementById('siteTitle').textContent=site.name;
-document.getElementById('siteDesc').textContent=
-site.desc+' — محافظة '+site.gov;
-
-document.getElementById('locationBtn').disabled=false;
-document.getElementById('tourBtn').disabled=false;
-
-document.getElementById('tourBtn').textContent=
-TOURS[id]?'ابدأ الجولة 360°':'افتح دليل الجولات الرسمية';
-
-document.getElementById('tourNote').textContent=
-TOURS[id]
-?'تتوفر صورة بانورامية مرتبطة بهذا الموقع.'
-:'لم تتم إضافة رابط بانورامي موثق لهذا المعلم بعد. يمكنك مراجعة دليل الجولات الرسمي.';
-
-document.getElementById('locationBtn').onclick=()=>{
-map.flyTo([site.lat,site.lon],15);
-};
-
-document.getElementById('tourBtn').onclick=()=>{
-openTour(site);
-};
-
-renderList();
-};
-
-function openTour(site){
-const url=TOURS[site.id];
-
-if(!url){
-window.open(OFFICIAL_TOURS,'_blank','noopener');
+function initMap(){
+if(!window.L){
+document.getElementById("mapStatus").textContent=
+"تعذر تحميل مكتبة الخرائط. تحقق من الإنترنت وأعد تحميل الصفحة.";
 return;
 }
 
-document.getElementById('tourModal').classList.add('open');
-document.getElementById('modalTitle').textContent=
-'جولة افتراضية — '+site.name;
+map=L.map("map",{scrollWheelZoom:true}).setView([22.7,57.2],7);
 
-if(viewer){
-try{viewer.destroy()}catch(e){}
-viewer=null;
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+maxZoom:19,
+attribution:"&copy; OpenStreetMap contributors"
+}).addTo(map);
+
+SITES.forEach(site=>{
+const marker=L.marker([site.lat,site.lon]).addTo(map);
+
+marker.bindPopup(`
+<div>
+<b>${escapeHTML(site.name)}</b>
+<div style="font-size:11px;color:#657783;margin-top:5px">
+${escapeHTML(site.gov)}
+</div>
+<button class="popbtn" onclick="window.chooseHeritage('${site.id}')">
+عرض التفاصيل
+</button>
+</div>
+`);
+
+marker.on("click",()=>selectSite(site.id));
+markers[site.id]=marker;
+});
+
+document.getElementById("mapStatus").textContent=
+"الخريطة جاهزة — اختر علامة لعرض تفاصيل المعلم.";
+
+setTimeout(()=>map.invalidateSize(),400);
 }
 
-viewer=pannellum.viewer('panorama',{
-type:'equirectangular',
-panorama:url,
-autoLoad:true,
-showControls:true,
-compass:true,
-mouseZoom:true
+async function getImage(site){
+if(imageCache[site.id])return imageCache[site.id];
+
+try{
+const response=await fetch(
+"https://en.wikipedia.org/api/rest_v1/page/summary/"+
+encodeURIComponent(site.wiki)
+);
+
+if(!response.ok)throw new Error("Image unavailable");
+
+const data=await response.json();
+imageCache[site.id]=data.thumbnail?.source||fallback;
+
+}catch(error){
+imageCache[site.id]=fallback;
+}
+
+return imageCache[site.id];
+}
+
+function loadImage(img,site){
+getImage(site).then(url=>{img.src=url;});
+img.onerror=()=>{
+img.onerror=null;
+img.src=fallback;
+};
+}
+
+function renderList(){
+const list=document.getElementById("siteList");
+const query=normalizeText(document.getElementById("search").value);
+
+list.innerHTML="";
+
+const filtered=SITES.filter(site=>{
+const filterMatch=activeFilter==="الكل"||site.kind===activeFilter;
+const searchable=normalizeText(site.name+" "+site.gov+" "+site.kind);
+return filterMatch&&searchable.includes(query);
+});
+
+if(!filtered.length){
+list.innerHTML='<div class="empty">لا توجد نتائج مطابقة لبحثك.</div>';
+return;
+}
+
+filtered.forEach(site=>{
+const button=document.createElement("button");
+button.className="site"+(activeSite===site.id?" active":"");
+
+const img=document.createElement("img");
+img.className="thumb";
+img.alt=site.name;
+img.src=fallback;
+loadImage(img,site);
+
+const text=document.createElement("span");
+text.innerHTML="<b>"+escapeHTML(site.name)+"</b>"+
+"<small>"+escapeHTML(site.gov)+" • "+escapeHTML(site.kind)+"</small>";
+
+button.append(img,text);
+
+button.onclick=()=>{
+selectSite(site.id);
+if(map){
+map.flyTo([site.lat,site.lon],14);
+markers[site.id].openPopup();
+}
+};
+
+list.appendChild(button);
 });
 }
 
-document.getElementById('closeTour').onclick=()=>{
-document.getElementById('tourModal').classList.remove('open');
-if(viewer){
-try{viewer.destroy()}catch(e){}
-viewer=null;
+async function selectSite(id){
+const site=SITES.find(item=>item.id===id);
+if(!site)return;
+
+activeSite=id;
+
+const hero=document.getElementById("hero");
+hero.src=fallback;
+loadImage(hero,site);
+
+document.getElementById("siteTitle").textContent=site.name;
+document.getElementById("siteDesc").textContent=site.desc;
+
+document.getElementById("siteMeta").innerHTML=
+'<span class="tag">'+escapeHTML(site.kind)+'</span>'+
+'<span class="tag">محافظة '+escapeHTML(site.gov)+'</span>';
+
+const tourButton=document.getElementById("tourBtn");
+
+tourButton.disabled=false;
+tourButton.textContent=site.tour?
+"ابدأ الجولة الافتراضية":"استكشف الجولات الرسمية";
+
+document.getElementById("tourNote").textContent=site.tour?
+"يوجد رابط جولة تفاعلية لهذا المعلم. إذا لم تعمل داخل النافذة، استخدم رابط الفتح الخارجي.":
+"لم أتحقق من رابط مباشر لجولة هذا المعلم. يمكنك مراجعة دليل الجولات الرسمية.";
+
+document.getElementById("locationBtn").disabled=false;
+
+document.getElementById("locationBtn").onclick=()=>{
+if(!map)return;
+map.flyTo([site.lat,site.lon],15);
+markers[id].openPopup();
+};
+
+tourButton.onclick=()=>openTour(site);
+
+renderList();
 }
-document.getElementById('panorama').innerHTML='';
-};
 
-document.getElementById('tourModal').onclick=e=>{
-if(e.target.id==='tourModal'){
-document.getElementById('closeTour').click();
+window.chooseHeritage=selectSite;
+
+function openTour(site){
+if(!site.tour){
+window.open(OFFICIAL_TOURS,"_blank","noopener");
+return;
 }
-};
 
-document.getElementById('omanBtn').onclick=()=>{
-map.fitBounds(SITES.map(s=>[s.lat,s.lon]),{padding:[25,25]});
-};
+const modal=document.getElementById("tourModal");
+const frame=document.getElementById("tourFrame");
 
-document.getElementById('searchBtn').onclick=renderList;
-document.getElementById('search').oninput=renderList;
+document.getElementById("modalTitle").textContent=
+"الجولة الافتراضية — "+site.name;
 
-document.querySelectorAll('.filter').forEach(b=>{
-b.onclick=()=>{
-filter=b.dataset.filter;
-document.querySelectorAll('.filter')
-.forEach(x=>x.classList.toggle('active',x===b));
+document.getElementById("openExternal").href=site.tour;
+frame.src=site.tour;
+modal.classList.add("open");
+}
+
+function closeTour(){
+document.getElementById("tourModal").classList.remove("open");
+document.getElementById("tourFrame").src="about:blank";
+}
+
+document.getElementById("closeTour").onclick=closeTour;
+
+document.getElementById("tourModal").addEventListener("click",event=>{
+if(event.target.id==="tourModal")closeTour();
+});
+
+document.addEventListener("keydown",event=>{
+if(event.key==="Escape")closeTour();
+});
+
+document.getElementById("searchBtn").onclick=renderList;
+document.getElementById("search").addEventListener("input",renderList);
+
+document.querySelectorAll(".filter").forEach(button=>{
+button.onclick=()=>{
+activeFilter=button.dataset.filter;
+document.querySelectorAll(".filter").forEach(item=>{
+item.classList.toggle("active",item===button);
+});
 renderList();
 };
 });
 
+document.getElementById("omanBtn").onclick=()=>{
+if(!map)return;
+map.fitBounds(SITES.map(site=>[site.lat,site.lon]),{
+padding:[30,30],maxZoom:7
+});
+};
+
 renderList();
-setTimeout(()=>map.invalidateSize(),300);
+initMap();
 </script>
 
 </body>
