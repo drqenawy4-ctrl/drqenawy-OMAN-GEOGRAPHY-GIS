@@ -1,329 +1,750 @@
-<!-- =========================================
- أطلس التراث العُماني - مركز الجولات الافتراضية
- نسخة موحدة ومعزولة عن بقية الموقع
-========================================= -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102b3f">
+<title>أطلس التراث العُماني | جولات افتراضية</title>
 
-<section id="oman-heritage-atlas" dir="rtl">
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
 
 <style>
-#oman-heritage-atlas {
-  --atlas-navy:#102b3f;
-  --atlas-gold:#d5a84f;
+:root{
+  --navy:#102b3f;
+  --navy2:#173e53;
+  --gold:#d8b66a;
+  --cream:#f5f1e8;
+  --white:#fff;
+  --muted:#6d7b83;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
   font-family:Tahoma,Arial,sans-serif;
-  color:#183348;
-  width:100%;
-  margin:25px 0;
-  box-sizing:border-box;
+  background:var(--cream);
+  color:#20313b;
+  line-height:1.8;
 }
-#oman-heritage-atlas * {
-  box-sizing:border-box;
-}
-#oman-heritage-atlas .atlas-header {
-  background:linear-gradient(135deg,#102b3f,#1d5064);
+header{
+  background:linear-gradient(125deg,#0b2030,#17475b);
   color:white;
-  padding:25px 18px;
-  border-radius:16px;
+  padding:55px 20px 45px;
   text-align:center;
-}
-#oman-heritage-atlas .atlas-header h2 {
-  color:#e5c47b;
-  margin:10px 0;
-}
-#oman-heritage-atlas .atlas-header p {
-  line-height:1.9;
-}
-#oman-heritage-atlas .heritage-intro {
-  margin:20px 0 12px;
-  color:#102b3f;
-}
-#oman-heritage-atlas .heritage-choices {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
-  gap:12px;
-  margin:18px 0;
-}
-#oman-heritage-atlas .heritage-choices button {
-  width:100%;
-  min-height:65px;
-  padding:13px 8px;
-  border:2px solid var(--atlas-gold);
-  border-radius:11px;
-  background:white;
-  color:var(--atlas-navy);
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-}
-#oman-heritage-atlas .heritage-choices button:hover,
-#oman-heritage-atlas .heritage-choices button.selected {
-  background:var(--atlas-navy);
-  color:white;
-}
-#oman-heritage-atlas .virtual-tour {
-  background:var(--atlas-navy);
-  color:white;
-  padding:17px;
-  border-radius:15px;
-  margin-top:18px;
-}
-#oman-heritage-atlas .virtual-tour h3 {
-  color:#e5c47b;
-}
-#oman-heritage-atlas .viewer-title {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px;
-}
-#oman-heritage-atlas .viewer-badge {
-  background:var(--atlas-gold);
-  color:var(--atlas-navy);
-  padding:8px 12px;
-  border-radius:25px;
-  font-weight:bold;
-}
-#oman-heritage-atlas .viewer-container {
   position:relative;
-  width:100%;
-  height:470px;
-  background:#172b3c;
-  border-radius:12px;
   overflow:hidden;
 }
-#oman-heritage-atlas .viewer-container iframe {
-  width:100%;
-  height:100%;
-  border:0;
-  border-radius:12px;
-}
-#oman-heritage-atlas .viewer-placeholder {
+header:after{
+  content:"";
   position:absolute;
-  inset:0;
-  z-index:2;
+  width:260px;height:260px;
+  border:1px solid #d8b66a55;
+  border-radius:50%;
+  top:-140px;right:-50px;
+}
+.logo{
+  font-size:45px;
+  margin-bottom:5px;
+}
+header h1{
+  color:var(--gold);
+  font-size:clamp(28px,5vw,46px);
+  margin:5px 0;
+}
+header p{
+  max-width:750px;
+  margin:10px auto;
+  color:#e6edf0;
+}
+.header-tag{
+  display:inline-block;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  padding:5px 18px;
+  border-radius:30px;
+  margin-top:15px;
+  font-size:14px;
+}
+nav{
+  background:#0b2030;
   display:flex;
-  flex-direction:column;
-  align-items:center;
   justify-content:center;
-  text-align:center;
-  padding:20px;
-  background:linear-gradient(135deg,#f5f0e5,#e6edf0);
-  color:var(--atlas-navy);
+  flex-wrap:wrap;
+  gap:8px;
+  padding:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
-#oman-heritage-atlas .viewer-placeholder .icon {
-  font-size:55px;
+nav a{
+  color:white;
+  text-decoration:none;
+  padding:8px 15px;
+  border-radius:7px;
+  font-size:14px;
 }
-#oman-heritage-atlas .viewer-placeholder p {
-  line-height:1.8;
+nav a:hover{background:#31566a;color:var(--gold)}
+.container{
+  width:min(1150px,94%);
+  margin:35px auto;
 }
-#oman-heritage-atlas .tour-status {
-  color:#f5e5bd;
-  line-height:1.8;
-  margin:12px 0;
+.section-title{
+  color:var(--navy);
+  font-size:25px;
+  margin-bottom:8px;
 }
-#oman-heritage-atlas .tour-actions {
+.section-intro{
+  color:var(--muted);
+  margin-top:0;
+}
+.intro-box{
+  background:white;
+  border-right:5px solid var(--gold);
+  padding:22px;
+  border-radius:12px;
+  box-shadow:0 5px 20px #142b3b0d;
+}
+.controls{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-top:12px;
+  margin:22px 0;
 }
-#oman-heritage-atlas .tour-actions a,
-#oman-heritage-atlas .tour-actions button {
-  display:inline-block;
-  padding:12px 16px;
+input,select{
+  padding:12px 14px;
+  border:1px solid #d6dce0;
+  border-radius:9px;
+  font-family:inherit;
+  font-size:14px;
+  background:white;
+  min-width:180px;
+}
+#search{flex:1}
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:20px;
+}
+.filter-btn,.action-btn{
+  border:0;
+  background:var(--navy);
+  color:white;
+  padding:10px 17px;
   border-radius:8px;
-  font-weight:bold;
-  text-decoration:none;
   cursor:pointer;
   font-family:inherit;
 }
-#oman-heritage-atlas .open-tour {
-  background:var(--atlas-gold);
-  color:var(--atlas-navy);
+.filter-btn.active,.filter-btn:hover,
+.action-btn:hover{background:#bd9650;color:#172b38}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+}
+.site-card{
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 5px 18px #152d3c12;
+  border:1px solid #e8e4da;
+  transition:.2s;
+}
+.site-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px #152d3c20;
+}
+.card-art{
+  height:145px;
+  background:linear-gradient(135deg,#173e53,#98784b);
+  color:#f4d99a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:55px;
+}
+.card-content{padding:17px}
+.card-content h3{margin:0;color:var(--navy)}
+.category{
+  color:#98733a;
+  font-size:12px;
+  font-weight:bold;
+}
+.card-content p{
+  color:#65737b;
+  font-size:13px;
+  min-height:65px;
+}
+.card-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.card-actions button,.card-actions a{
+  flex:1;
+  text-align:center;
+  text-decoration:none;
   border:0;
+  border-radius:7px;
+  padding:9px 7px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:12px;
 }
-#oman-heritage-atlas .reset-tour {
-  background:transparent;
+.tour-btn{background:var(--navy);color:white}
+.map-btn{background:#eee7d8;color:#3e4c50}
+#tour-section{
+  background:#102b3f;
   color:white;
-  border:1px solid var(--atlas-gold);
+  border-radius:17px;
+  padding:25px;
+  margin-top:45px;
 }
-#oman-heritage-atlas .atlas-note {
-  color:#536779;
-  line-height:1.9;
-  margin-top:14px;
+#tour-section h2{color:var(--gold)}
+.tour-layout{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:15px;
 }
-@media(max-width:600px) {
-  #oman-heritage-atlas .viewer-container {
-    height:350px;
-  }
-  #oman-heritage-atlas .heritage-choices {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
+#panorama{
+  width:100%;
+  height:430px;
+  background:#071722;
+  border-radius:12px;
+  overflow:hidden;
+}
+.tour-message{
+  background:#173e53;
+  padding:15px;
+  border-radius:10px;
+  color:#e8edf0;
+}
+.tour-tools{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+.tour-tools input{flex:1}
+.tour-tools button{
+  background:var(--gold);
+  color:#142b38;
+  border:0;
+  border-radius:8px;
+  padding:10px 16px;
+  cursor:pointer;
+  font-family:inherit;
+}
+#tourStatus{color:#f0d99e;font-size:13px}
+#demo-section{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  margin-top:35px;
+  box-shadow:0 5px 20px #142b3b0d;
+}
+#demoFrame{
+  width:100%;
+  height:520px;
+  border:0;
+  border-radius:12px;
+  display:none;
+  margin-top:18px;
+  background:#f1f3f4;
+}
+.demo-help{
+  background:#f5f1e8;
+  padding:14px;
+  border-radius:9px;
+  color:#53616a;
+  font-size:13px;
+}
+#demoStatus{font-size:13px;color:#52636c}
+footer{
+  background:#0b2030;
+  color:#dbe4e8;
+  text-align:center;
+  padding:28px 15px;
+  margin-top:55px;
+  font-size:13px;
+}
+footer strong{color:var(--gold)}
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#66747c;
+  background:white;
+  border-radius:10px;
+}
+@media(max-width:600px){
+  header{padding:38px 15px}
+  #panorama{height:310px}
+  nav a{padding:7px 9px;font-size:12px}
+  .container{width:92%}
 }
 </style>
+</head>
 
-<div class="atlas-header">
-  <div style="font-size:45px">🏛️</div>
-  <h2>مركز الجولات الافتراضية للتراث العُماني</h2>
+<body>
+
+<header>
+  <div class="logo">🏛️</div>
+  <h1>أطلس التراث العُماني</h1>
   <p>
-    استكشف القلاع والحصون العُمانية من خلال الجولات
-    الافتراضية والتقنيات الجغرافية الحديثة.
+    رحلة تفاعلية لاستكشاف القلاع والحصون والأسواق والقرى
+    التاريخية والمواقع الأثرية في سلطنة عُمان
   </p>
-</div>
+  <div class="header-tag">اكتشف المكان • تعرّف على التاريخ • تجوّل افتراضياً</div>
+</header>
 
-<h3 class="heritage-intro">🌐 اختر المعلم التاريخي</h3>
-<p>اختر أحد المعالم لعرض معلومات الجولة ومصدرها الرسمي.</p>
+<nav>
+  <a href="#about">عن الأطلس</a>
+  <a href="#heritage">المعالم التراثية</a>
+  <a href="#tour-section">الجولة 360°</a>
+  <a href="#demo-section">الشرح التفاعلي</a>
+</nav>
 
-<div class="heritage-choices">
-  <button type="button" data-site="jabreen">🏰 قلعة جبرين</button>
-  <button type="button" data-site="hazm">🏰 حصن الحزم</button>
-  <button type="button" data-site="sohar">🏰 حصن صحار</button>
-  <button type="button" data-site="khasab">🏰 حصن خصب</button>
-  <button type="button" data-site="mirbat">🏰 قلعة مرباط</button>
-</div>
+<main class="container">
 
-<div class="virtual-tour">
-
-  <div class="viewer-title">
-    <div>
-      <h3 id="atlas-tour-name">اختر معلمًا لبدء الاستكشاف</h3>
-      <p>مركز استكشاف التراث العُماني</p>
-    </div>
-    <span class="viewer-badge">360°</span>
+<section id="about">
+  <div class="intro-box">
+    <h2 class="section-title">اكتشف التراث العُماني</h2>
+    <p>
+      يتيح لك هذا الأطلس التعرف على مجموعة من المعالم التراثية
+      في سلطنة عُمان، واستكشاف معلوماتها ومواقعها الجغرافية.
+      ويمكن إضافة صور بانورامية حقيقية للانتقال إلى تجربة
+      التجول الافتراضي داخل المعالم.
+    </p>
   </div>
-
-  <div class="viewer-container">
-    <div class="viewer-placeholder" id="atlas-tour-placeholder">
-      <div class="icon">🏛️</div>
-      <h3>مرحبًا بك في أطلس التراث العُماني</h3>
-      <p>اختر أحد المعالم لعرض صفحته الرسمية.</p>
-    </div>
-    <iframe
-      id="atlas-tour-frame"
-      title="عرض الجولة الافتراضية"
-      allow="fullscreen; xr-spatial-tracking"
-      allowfullscreen
-      loading="lazy">
-    </iframe>
-  </div>
-
-  <p id="atlas-tour-status" class="tour-status">
-    في انتظار اختيار المعلم.
-  </p>
-
-  <div class="tour-actions">
-    <a id="atlas-open-tour"
-       class="open-tour"
-       href="https://experienceoman.om/360-virtual-tours"
-       target="_blank"
-       rel="noopener noreferrer">
-       ↗ فتح صفحة الجولة الرسمية
-    </a>
-
-    <button type="button"
-            id="atlas-reset-tour"
-            class="reset-tour">
-      إعادة العرض
-    </button>
-  </div>
-</div>
-
-<p class="atlas-note">
-  تنبيه: فتح صفحة المعلم الرسمية لا يعني بالضرورة توفر جولة
-  داخلية تفاعلية. يعتمد ذلك على توفر الجولة لدى الجهة الناشرة.
-</p>
-
 </section>
 
+<section id="heritage" style="margin-top:38px">
+  <h2 class="section-title">المعالم التراثية العُمانية</h2>
+  <p class="section-intro">
+    اختر معلماً لقراءة نبذة عنه أو فتح موقعه أو عرض جولته البانورامية.
+  </p>
+
+  <div class="controls">
+    <input id="search" type="search"
+      placeholder="ابحث عن قلعة أو سوق أو قرية...">
+    <select id="categorySelect">
+      <option value="all">جميع التصنيفات</option>
+      <option value="قلعة وحصن">القلاع والحصون</option>
+      <option value="سوق تراثي">الأسواق التراثية</option>
+      <option value="قرية تراثية">القرى التراثية</option>
+      <option value="موقع أثري">المواقع الأثرية</option>
+      <option value="نظام مائي">الأفلاج والأنظمة المائية</option>
+    </select>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">الكل</button>
+    <button class="filter-btn" data-filter="قلعة وحصن">القلاع والحصون</button>
+    <button class="filter-btn" data-filter="سوق تراثي">الأسواق</button>
+    <button class="filter-btn" data-filter="قرية تراثية">القرى</button>
+    <button class="filter-btn" data-filter="موقع أثري">المواقع الأثرية</button>
+    <button class="filter-btn" data-filter="نظام مائي">الأفلاج</button>
+  </div>
+
+  <div id="siteCards" class="cards"></div>
+</section>
+
+<section id="tour-section">
+  <h2>الجولة الافتراضية البانورامية 360°</h2>
+  <p>
+    اختر معلماً من البطاقات، ثم أضف رابط صورته البانورامية
+    الأصلية لبدء التجول الافتراضي.
+  </p>
+
+  <div class="tour-message" id="selectedSite">
+    لم يتم اختيار أي معلم بعد. اختر معلماً من القائمة أعلاه.
+  </div>
+
+  <div class="tour-tools">
+    <input id="panoramaUrl" type="url"
+      placeholder="ألصق رابط صورة 360° الخاصة بالمعلم هنا">
+    <button onclick="loadPanorama()">تشغيل الجولة</button>
+    <button onclick="clearPanorama()">إغلاق الجولة</button>
+  </div>
+
+  <div id="panorama"></div>
+  <p id="tourStatus">
+    تنبيه: صورة عادية أو رابط صفحة ويب لا يكفي؛ يلزم رابط مباشر
+    لصورة بانورامية 360° متاحة للعرض.
+  </p>
+</section>
+
+<section id="demo-section">
+  <h2 class="section-title">الشرح التاريخي التفاعلي</h2>
+  <p>
+    مساحة مخصصة لعرض جولة تعليمية تفاعلية تم إنشاؤها عبر Supademo،
+    مثل شرح تاريخ المعلم أو عرض مراحله ومكوناته.
+  </p>
+
+  <div class="demo-help">
+    بعد إنشاء العرض في Supademo، انسخ رابط المشاركة أو رابط التضمين
+    والصقه هنا. هذه الجولة التعليمية مكملة للجولة البانورامية
+    وليست بديلاً عنها.
+  </div>
+
+  <div class="tour-tools">
+    <input id="demoUrl" type="url"
+      placeholder="ألصق رابط Supademo المنشور هنا">
+    <button onclick="loadDemo()">عرض الجولة التفاعلية</button>
+    <button onclick="clearDemo()">إغلاق</button>
+  </div>
+
+  <p id="demoStatus">لم تتم إضافة جولة تعليمية بعد.</p>
+  <iframe id="demoFrame"
+    title="جولة تعليمية تفاعلية"
+    allow="fullscreen; clipboard-write"
+    allowfullscreen
+    loading="lazy">
+  </iframe>
+</section>
+
+</main>
+
+<footer>
+  <strong>أطلس التراث العُماني</strong>
+  <br>
+  مشروع تعليمي للتعريف بالتراث والتاريخ العُماني
+  <br>
+  سلطنة عُمان
+</footer>
+
 <script>
-(function () {
-  "use strict";
+const sites = [
+ {
+  id:"nizwa",
+  name:"قلعة نزوى",
+  category:"قلعة وحصن",
+  icon:"🏰",
+  area:"محافظة الداخلية",
+  description:"من أبرز المعالم التاريخية في ولاية نزوى، وتشتهر ببرجها الدائري الكبير.",
+  panorama:""
+ },
+ {
+  id:"bahla",
+  name:"قلعة بهلاء",
+  category:"قلعة وحصن",
+  icon:"🏯",
+  area:"محافظة الداخلية",
+  description:"قلعة تاريخية بارزة ترتبط بتاريخ واحة بهلاء ونظامها الدفاعي والعمراني.",
+  panorama:""
+ },
+ {
+  id:"jabrin",
+  name:"قلعة جبرين",
+  category:"قلعة وحصن",
+  icon:"🏛️",
+  area:"محافظة الداخلية",
+  description:"تتميز بتصميمها المعماري وزخارفها وأسقفها الخشبية.",
+  panorama:""
+ },
+ {
+  id:"rustaq",
+  name:"قلعة الرستاق",
+  category:"قلعة وحصن",
+  icon:"🏰",
+  area:"محافظة جنوب الباطنة",
+  description:"معلم تاريخي مهم في ولاية الرستاق، يرتبط بتاريخ المنطقة.",
+  panorama:""
+ },
+ {
+  id:"nakhal",
+  name:"قلعة نخل",
+  category:"قلعة وحصن",
+  icon:"🏯",
+  area:"محافظة جنوب الباطنة",
+  description:"تقع على مرتفع صخري وتحيط بها مناظر طبيعية مميزة.",
+  panorama:""
+ },
+ {
+  id:"muttrah",
+  name:"سوق مطرح",
+  category:"سوق تراثي",
+  icon:"🛍️",
+  area:"محافظة مسقط",
+  description:"من الأسواق التقليدية المعروفة في سلطنة عُمان، ويتميز بأزقته ومحاله التراثية.",
+  panorama:""
+ },
+ {
+  id:"misfat",
+  name:"قرية مسفاة العبريين",
+  category:"قرية تراثية",
+  icon:"🏘️",
+  area:"محافظة الداخلية",
+  description:"قرية جبلية تشتهر ببيوتها التقليدية ومدرجاتها الزراعية وأفلاجها.",
+  panorama:""
+ },
+ {
+  id:"wakan",
+  name:"قرية وكان",
+  category:"قرية تراثية",
+  icon:"🌄",
+  area:"محافظة جنوب الباطنة",
+  description:"قرية جبلية تشتهر بطبيعتها ومدرجاتها الزراعية.",
+  panorama:""
+ },
+ {
+  id:"bat",
+  name:"مواقع بات الأثرية",
+  category:"موقع أثري",
+  icon:"🗿",
+  area:"محافظة الظاهرة",
+  description:"مواقع أثرية تعود إلى عصور قديمة، وتضم مدافن ومنشآت أثرية.",
+  panorama:""
+ },
+ {
+  id:"rasaljinz",
+  name:"محمية رأس الجنز",
+  category:"موقع أثري",
+  icon:"🌊",
+  area:"محافظة جنوب الشرقية",
+  description:"منطقة ساحلية ذات أهمية طبيعية وأثرية، وترتبط بمواقع استيطان قديمة.",
+  panorama:""
+ },
+ {
+  id:"falaj",
+  name:"فلج دارس",
+  category:"نظام مائي",
+  icon:"💧",
+  area:"محافظة الداخلية",
+  description:"من الأفلاج العُمانية المعروفة، ويمثل نموذجاً لنظم إدارة المياه التقليدية.",
+  panorama:""
+ },
+ {
+  id:"bahlah",
+  name:"واحة بهلاء",
+  category:"قرية تراثية",
+  icon:"🌴",
+  area:"محافظة الداخلية",
+  description:"واحة تاريخية ارتبطت بالزراعة والاستقرار البشري ونظام الأفلاج.",
+  panorama:""
+ }
+];
 
-  function initOmanHeritageAtlas() {
-    const root = document.getElementById("oman-heritage-atlas");
+let selected = null;
+let viewer = null;
+let activeFilter = "all";
 
-    if (!root || root.dataset.initialized === "yes") return;
-    root.dataset.initialized = "yes";
+const cards = document.getElementById("siteCards");
 
-    const tours = {
-      jabreen: {
-        name: "قلعة جبرين",
-        url: "https://experienceoman.om/en/destinations/al-dakhiliyah/jabreen-castle"
-      },
-      hazm: {
-        name: "حصن الحزم",
-        url: "https://experienceoman.om/en/destinations/al-batinah-south/al-hazm-castle"
-      },
-      sohar: {
-        name: "حصن صحار",
-        url: "https://experienceoman.om/en/destinations/al-batinah-north/sohar-fort"
-      },
-      khasab: {
-        name: "حصن خصب",
-        url: "https://experienceoman.om/360-virtual-tours"
-      },
-      mirbat: {
-        name: "قلعة مرباط",
-        url: "https://experienceoman.om/360-virtual-tours"
-      }
-    };
+function renderSites(){
+ const query = document.getElementById("search").value.trim().toLowerCase();
+ const category = document.getElementById("categorySelect").value;
 
-    const frame = root.querySelector("#atlas-tour-frame");
-    const name = root.querySelector("#atlas-tour-name");
-    const open = root.querySelector("#atlas-open-tour");
-    const status = root.querySelector("#atlas-tour-status");
-    const placeholder = root.querySelector("#atlas-tour-placeholder");
-    const buttons = root.querySelectorAll(".heritage-choices button");
-    const reset = root.querySelector("#atlas-reset-tour");
+ const filtered = sites.filter(site=>{
+  const matchesText =
+   (site.name + " " + site.area + " " + site.description)
+   .toLowerCase().includes(query);
 
-    buttons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        const tour = tours[button.dataset.site];
-        if (!tour) return;
+  const matchesFilter =
+   activeFilter === "all" || site.category === activeFilter;
 
-        buttons.forEach(function (item) {
-          item.classList.remove("selected");
-        });
+  const matchesCategory =
+   category === "all" || site.category === category;
 
-        button.classList.add("selected");
-        name.textContent = tour.name;
-        status.textContent =
-          "يمكنك فتح الصفحة الرسمية للمعلم من الزر أدناه. لم يتم تأكيد توفر عرض داخلي مباشر.";
+  return matchesText && matchesFilter && matchesCategory;
+ });
 
-        frame.src = "about:blank";
-        placeholder.style.display = "flex";
-        placeholder.querySelector("h3").textContent = tour.name;
-        placeholder.querySelector("p").textContent =
-          "اضغط على زر فتح الصفحة الرسمية للاطلاع على محتوى المعلم والجولة المتاحة إن وجدت.";
+ if(!filtered.length){
+  cards.innerHTML='<div class="empty">لا توجد نتائج مطابقة للبحث.</div>';
+  return;
+ }
 
-        open.href = tour.url;
-      });
-    });
+ cards.innerHTML = filtered.map(site=>`
+  <article class="site-card">
+   <div class="card-art">${site.icon}</div>
+   <div class="card-content">
+    <div class="category">${site.category}</div>
+    <h3>${site.name}</h3>
+    <p>${site.description}</p>
+    <div class="category">📍 ${site.area}</div>
+    <div class="card-actions" style="margin-top:12px">
+     <button class="tour-btn" onclick="selectSite('${site.id}')">
+      استكشف المعلم
+     </button>
+     <a class="map-btn"
+       href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.name+' سلطنة عمان')}"
+       target="_blank" rel="noopener">
+       الموقع الجغرافي
+     </a>
+    </div>
+   </div>
+  </article>
+ `).join("");
+}
 
-    reset.addEventListener("click", function () {
-      frame.src = "about:blank";
-      placeholder.style.display = "flex";
+function selectSite(id){
+ selected = sites.find(site=>site.id===id);
+ if(!selected) return;
 
-      name.textContent = "اختر معلمًا لبدء الاستكشاف";
-      status.textContent = "في انتظار اختيار المعلم.";
+ document.getElementById("selectedSite").innerHTML =
+  `<strong>${selected.icon} ${selected.name}</strong>
+   <br>${selected.description}
+   <br>الموقع: ${selected.area}`;
 
-      placeholder.querySelector("h3").textContent =
-        "مرحبًا بك في أطلس التراث العُماني";
-      placeholder.querySelector("p").textContent =
-        "اختر أحد المعالم لعرض صفحته الرسمية.";
+ document.getElementById("panoramaUrl").value =
+  selected.panorama || "";
 
-      open.href = "https://experienceoman.om/360-virtual-tours";
+ document.getElementById("tourStatus").textContent =
+  selected.panorama
+   ? "يوجد رابط بانورامي مسجل لهذا المعلم."
+   : "لم تتم إضافة صورة 360° لهذا المعلم بعد. أضف رابط الصورة في الحقل أعلاه.";
 
-      buttons.forEach(function (button) {
-        button.classList.remove("selected");
-      });
-    });
+ document.getElementById("tour-section").scrollIntoView({
+  behavior:"smooth"
+ });
+
+ if(selected.panorama) loadPanorama();
+ else clearPanorama(false);
+}
+
+function loadPanorama(){
+ const url = document.getElementById("panoramaUrl").value.trim();
+
+ if(!selected){
+  alert("اختر معلماً من القائمة أولاً.");
+  return;
+ }
+
+ if(!url){
+  alert("أضف رابط صورة بانورامية 360° أولاً.");
+  return;
+ }
+
+ try{
+  const parsed = new URL(url);
+  if(!["http:","https:"].includes(parsed.protocol)){
+   throw new Error("Invalid URL");
+  }
+ }catch(e){
+  alert("الرابط غير صالح. تحقق من الرابط.");
+  return;
+ }
+
+ if(typeof pannellum === "undefined"){
+  document.getElementById("tourStatus").textContent =
+   "تعذر تحميل مكتبة العرض. تحقق من اتصال الإنترنت.";
+  return;
+ }
+
+ if(viewer){
+  try{viewer.destroy();}catch(e){}
+  viewer = null;
+ }
+
+ document.getElementById("panorama").innerHTML = "";
+
+ document.getElementById("tourStatus").textContent =
+  "جارٍ تحميل الصورة البانورامية...";
+
+ try{
+  viewer = pannellum.viewer("panorama",{
+   type:"equirectangular",
+   panorama:url,
+   autoLoad:true,
+   showZoomCtrl:true,
+   showFullscreenCtrl:true,
+   compass:true,
+   mouseZoom:true,
+   hfov:100,
+   pitch:0,
+   yaw:0
+  });
+
+  viewer.on("load",()=>{
+   document.getElementById("tourStatus").textContent =
+    "تم تحميل الجولة. اسحب الصورة للتحرك حول المكان واستخدم أدوات التكبير.";
+   selected.panorama = url;
+  });
+
+  viewer.on("error",()=>{
+   document.getElementById("tourStatus").textContent =
+    "تعذر تحميل الصورة. تأكد أنها صورة 360° مباشرة وتسمح بالعرض من موقع خارجي.";
+  });
+
+ }catch(error){
+  document.getElementById("tourStatus").textContent =
+   "حدث خطأ أثناء تشغيل الجولة. تحقق من رابط الصورة.";
+ }
+}
+
+function clearPanorama(showMessage=true){
+ if(viewer){
+  try{viewer.destroy();}catch(e){}
+  viewer=null;
+ }
+ document.getElementById("panorama").innerHTML="";
+ if(showMessage){
+  document.getElementById("tourStatus").textContent =
+   "تم إغلاق الجولة البانورامية.";
+ }
+}
+
+function loadDemo(){
+ const raw = document.getElementById("demoUrl").value.trim();
+ const status = document.getElementById("demoStatus");
+ const frame = document.getElementById("demoFrame");
+
+ if(!raw){
+  alert("ألصق رابط Supademo المنشور أولاً.");
+  return;
+ }
+
+ try{
+  const parsed = new URL(raw);
+  if(parsed.hostname !== "app.supademo.com"){
+   throw new Error("Invalid host");
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initOmanHeritageAtlas);
-  } else {
-    initOmanHeritageAtlas();
+  const parts = parsed.pathname.split("/").filter(Boolean);
+  let id = "";
+
+  if(parts[0] === "demo" || parts[0] === "showcase"){
+   id = parts[1] || "";
+  }else if(parts[0] === "embed"){
+   id = parts[1] || "";
   }
-})();
+
+  if(!id || !/^[a-zA-Z0-9_-]+$/.test(id)){
+   throw new Error("Invalid demo ID");
+  }
+
+  frame.src = "https://app.supademo.com/embed/" + id;
+  frame.style.display = "block";
+  status.textContent = "تم تجهيز العرض التفاعلي. إذا لم يظهر، تحقق من إعدادات المشاركة والتضمين في Supademo.";
+ }catch(e){
+  alert("الرابط غير معروف. استخدم رابط Supademo المنشور من صفحة المشاركة.");
+ }
+}
+
+function clearDemo(){
+ const frame = document.getElementById("demoFrame");
+ frame.src = "about:blank";
+ frame.style.display = "none";
+ document.getElementById("demoStatus").textContent =
+  "تم إغلاق العرض التفاعلي.";
+}
+
+document.getElementById("search").addEventListener("input",renderSites);
+document.getElementById("categorySelect").addEventListener("change",renderSites);
+
+document.querySelectorAll(".filter-btn").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  activeFilter = button.dataset.filter;
+  document.getElementById("categorySelect").value = "all";
+  renderSites();
+ });
+});
+
+renderSites();
 </script>
+
+</body>
+</html>
