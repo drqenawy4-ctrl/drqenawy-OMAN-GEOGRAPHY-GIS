@@ -1,499 +1,70 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102b3f">
-<meta name="description" content="أطلس التراث العماني التفاعلي">
-<title>أطلس التراث العماني | الجغرافيا الذكية</title>
-
-<link rel="stylesheet"
- href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
 <style>
-:root{
-  --navy:#102b3f;
-  --teal:#087f75;
-  --gold:#d5a84f;
-  --light:#f3f6f7;
-  --white:#fff;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:var(--light);
-  color:#243746;
-}
-header{
-  background:linear-gradient(120deg,#102b3f,#087f75);
+.virtual-tour {
+  background:#102b3f;
   color:white;
-  text-align:center;
-  padding:35px 15px;
-}
-header h1{margin:0 0 12px;font-size:30px}
-header p{margin:0;line-height:1.8}
-nav{
-  background:#0b2132;
-  padding:12px;
-  text-align:center;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-nav a{
-  color:white;
-  text-decoration:none;
-  margin:7px 12px;
-  display:inline-block;
-}
-.container{
-  width:min(1200px,94%);
-  margin:25px auto;
-}
-.section-title{
-  color:var(--navy);
-  border-right:5px solid var(--gold);
-  padding-right:12px;
-  margin:30px 0 18px;
-}
-#map{
-  height:520px;
-  width:100%;
+  padding:16px;
   border-radius:15px;
-  border:2px solid #dce5e9;
-  z-index:1;
-  background:#e7eef1;
+  margin-top:18px;
 }
-#map-status{
-  display:none;
-  padding:14px;
-  margin:12px 0;
-  background:#fff2d8;
-  color:#624500;
-  border-radius:9px;
-  line-height:1.8;
-}
-.controls{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin:15px 0;
-}
-input,select{
-  padding:12px;
-  border:1px solid #ccd7dc;
-  border-radius:8px;
-  font-size:15px;
-  flex:1;
-  min-width:180px;
-}
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-.card{
-  background:white;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 4px 15px #102b3f12;
-  border:1px solid #e2e9ec;
-}
-.card img{
+.virtual-tour iframe {
   width:100%;
-  height:190px;
-  object-fit:cover;
-  background:#dce5e9;
-}
-.card-content{padding:17px}
-.card h3{color:var(--navy);margin:0 0 10px}
-.card p{line-height:1.8}
-button,.tour-link{
+  height:470px;
   border:0;
-  border-radius:8px;
-  padding:11px 15px;
-  background:var(--teal);
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-  text-decoration:none;
+  border-radius:12px;
+  background:#172b3c;
+}
+.virtual-tour h3 { color:#e5c47b; }
+.virtual-tour a {
   display:inline-block;
-  margin:4px 0;
-}
-button:hover,.tour-link:hover{background:#05645d}
-.secondary{background:var(--navy)}
-.tour-note{
-  color:#596c76;
-  font-size:13px;
-}
-footer{
-  background:var(--navy);
-  color:white;
-  text-align:center;
-  padding:25px 12px;
-  margin-top:40px;
-  line-height:1.8;
-}
-@media(max-width:600px){
-  header h1{font-size:23px}
-  #map{height:400px}
+  padding:11px 15px;
+  background:#d5a84f;
+  color:#102b3f;
+  text-decoration:none;
+  border-radius:8px;
+  margin-top:10px;
+  font-weight:bold;
 }
 </style>
-</head>
 
-<body>
-
-<header>
-  <h1>🏰 أطلس التراث العُماني التفاعلي</h1>
-  <p>رحلة جغرافية وتاريخية لاستكشاف القلاع والحصون والمعالم الحضارية في سلطنة عُمان</p>
-  <p>مدرسة ثابت بن قيس للتعليم الأساسي</p>
-</header>
-
-<nav>
-  <a href="#map-section">الخريطة التفاعلية</a>
-  <a href="#heritage">المعالم التراثية</a>
-  <a href="#about">عن الأطلس</a>
-</nav>
-
-<main class="container">
-
-<section id="map-section">
-  <h2 class="section-title">الخريطة التراثية التفاعلية لسلطنة عُمان</h2>
-  <p>اختر علامة المعلم على الخريطة لعرض معلوماته وصورته وخيار الجولة الافتراضية.</p>
-
-  <div class="controls">
-    <input id="search" type="search" placeholder="ابحث عن حصن أو قلعة...">
-    <select id="region">
-      <option value="all">جميع المعالم</option>
-      <option value="الداخلية">محافظة الداخلية</option>
-      <option value="جنوب الباطنة">محافظة جنوب الباطنة</option>
-      <option value="شمال الباطنة">محافظة شمال الباطنة</option>
-      <option value="مسندم">محافظة مسندم</option>
-      <option value="ظفار">محافظة ظفار</option>
-    </select>
-  </div>
-
-  <div id="map-status"></div>
-  <div id="map"></div>
-</section>
-
-<section id="heritage">
-  <h2 class="section-title">المعالم التاريخية والجولات الافتراضية</h2>
-  <div id="cards" class="cards"></div>
-</section>
-
-<section id="about">
-  <h2 class="section-title">عن الأطلس</h2>
-  <p>
-    يهدف الأطلس إلى توظيف نظم المعلومات الجغرافية والخرائط الرقمية
-    والتقنيات التفاعلية في التعرف على التراث العماني، وربط المعرفة
-    الجغرافية بالهوية الوطنية والسياحة الثقافية.
-  </p>
-</section>
-
-</main>
-
-<footer>
-  أطلس التراث العُماني التفاعلي
-  <br>
-  مدرسة ثابت بن قيس للتعليم الأساسي
-  <br>
-  تصميم وتطوير: د. قناوي حسين
-</footer>
-
-<!-- تحميل مكتبة الخرائط -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<div class="virtual-tour">
+  <h3>🌐 جولة داخل المعلم بزاوية 360°</h3>
+  <p id="tour-name">اختر معلمًا لبدء الجولة</p>
+  <iframe id="matterport-frame"
+    title="الجولة الافتراضية"
+    allow="fullscreen; vr"
+    allowfullscreen>
+  </iframe>
+  <a id="open-tour" href="#" target="_blank"
+     rel="noopener noreferrer">
+     فتح الجولة بحجم كامل
+  </a>
+</div>
 
 <script>
-"use strict";
+const officialTours = {
+  jabreen: "https://my.matterport.com/show/?m=QgqPGf6a5Np",
+  hazm: "https://my.matterport.com/show/?m=kfEWtigW7cj",
+  sohar: "https://my.matterport.com/show/?m=Cd2DPdi93XH",
+  khasab: "https://my.matterport.com/show/?m=rUNhaKWuT5K",
+  mirbat: "https://my.matterport.com/show/?m=ugqMv9i3dob"
+};
 
-/* بيانات المعالم */
-const heritageSites = [
- {
-  id:"nizwa",name:"قلعة نزوى",region:"الداخلية",
-  lat:22.9333,lng:57.5333,
-  image:"https://placehold.co/700x450?text=Nizwa+Fort",
-  description:"من أبرز المعالم التاريخية في سلطنة عمان، وتتميز ببرجها الدائري الكبير.",
-  tour:""
- },
- {
-  id:"bahla",name:"قلعة بهلاء",region:"الداخلية",
-  lat:22.9647,lng:57.3000,
-  image:"https://placehold.co/700x450?text=Bahla+Fort",
-  description:"قلعة تاريخية مدرجة ضمن قائمة التراث العالمي.",
-  tour:""
- },
- {
-  id:"jabreen",name:"قلعة جبرين",region:"الداخلية",
-  lat:22.9000,lng:57.2500,
-  image:"https://placehold.co/700x450?text=Jabreen+Castle",
-  description:"قصر حصين يشتهر بفنونه المعمارية وزخارفه الداخلية.",
-  tour:"https://experienceoman.om/360-virtual-tours"
- },
- {
-  id:"nakhal",name:"قلعة نخل",region:"جنوب الباطنة",
-  lat:23.3940,lng:57.8310,
-  image:"https://placehold.co/700x450?text=Nakhal+Fort",
-  description:"قلعة تاريخية شامخة فوق مرتفع صخري.",
-  tour:""
- },
- {
-  id:"hazm",name:"حصن الحزم",region:"جنوب الباطنة",
-  lat:23.5000,lng:56.3000,
-  image:"https://placehold.co/700x450?text=Al+Hazm+Fort",
-  description:"من الحصون العمانية المميزة بتصميمها الدفاعي.",
-  tour:"https://experienceoman.om/360-virtual-tours"
- },
- {
-  id:"rustaq",name:"حصن الرستاق",region:"جنوب الباطنة",
-  lat:23.3900,lng:57.4240,
-  image:"https://placehold.co/700x450?text=Rustaq+Fort",
-  description:"معلم تاريخي بارز في ولاية الرستاق.",
-  tour:""
- },
- {
-  id:"sohar",name:"حصن صحار",region:"شمال الباطنة",
-  lat:24.3470,lng:56.7310,
-  image:"https://placehold.co/700x450?text=Sohar+Fort",
-  description:"حصن تاريخي يرتبط بتاريخ مدينة صحار البحري والتجاري.",
-  tour:"https://experienceoman.om/360-virtual-tours"
- },
- {
-  id:"khasab",name:"حصن خصب",region:"مسندم",
-  lat:26.1910,lng:56.2470,
-  image:"https://placehold.co/700x450?text=Khasab+Fort",
-  description:"معلم تاريخي في محافظة مسندم.",
-  tour:"https://experienceoman.om/360-virtual-tours"
- },
- {
-  id:"mirbat",name:"حصن مرباط",region:"ظفار",
-  lat:16.9920,lng:54.6920,
-  image:"https://placehold.co/700x450?text=Mirbat+Fort",
-  description:"حصن تاريخي في ولاية مرباط بمحافظة ظفار.",
-  tour:"https://experienceoman.om/360-virtual-tours"
- }
-];
+function showVirtualTour(siteId, siteName) {
+  const url = officialTours[siteId];
+  const frame = document.getElementById("matterport-frame");
+  const open = document.getElementById("open-tour");
+  const name = document.getElementById("tour-name");
 
-/* رابط صفحة الجولات الرسمية */
-const officialTourPage =
- "https://experienceoman.om/360-virtual-tours";
+  name.textContent = siteName;
 
-/* متغيرات الخريطة */
-let map = null;
-const markers = [];
-
-/* إظهار رسالة حالة الخريطة */
-function showMapStatus(message){
-  const status = document.getElementById("map-status");
-  status.textContent = message;
-  status.style.display = "block";
-}
-
-/* إنشاء الخريطة بأمان */
-function initializeMap(){
-
-  if(typeof L === "undefined"){
-    showMapStatus(
-      "تعذر تحميل مكتبة الخرائط. تأكد من الاتصال بالإنترنت، ويمكنك استخدام بطاقات المعالم أدناه."
-    );
+  if (!url) {
+    frame.src = "about:blank";
+    open.href = "https://experienceoman.om/360-virtual-tours";
+    name.textContent += " — لا توجد جولة مؤكدة لهذا المعلم في القائمة الرسمية.";
     return;
   }
 
-  try{
-
-    map = L.map("map").setView([21.3,57.0],6);
-
-    L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        attribution:'&copy; OpenStreetMap contributors',
-        maxZoom:19
-      }
-    ).addTo(map);
-
-    heritageSites.forEach(site=>{
-
-      const marker = L.marker([site.lat,site.lng]).addTo(map);
-
-      marker.bindPopup(`
-        <strong>${site.name}</strong><br>
-        ${site.region}<br>
-        <button onclick="focusSite('${site.id}')">
-          عرض تفاصيل المعلم
-        </button>
-      `);
-
-      markers.push({
-        id:site.id,
-        marker:marker
-      });
-
-    });
-
-    setTimeout(()=>{
-      if(map) map.invalidateSize();
-    },300);
-
-    showMapStatus("تم تحميل الخريطة التفاعلية بنجاح.");
-    document.getElementById("map-status").style.background="#e5f5ec";
-    document.getElementById("map-status").style.color="#145b34";
-
-  }catch(error){
-
-    console.error("Map initialization error:",error);
-
-    showMapStatus(
-      "حدث خطأ أثناء إنشاء الخريطة. بقية بيانات المعالم متاحة أدناه."
-    );
-  }
+  frame.src = url + "&play=1";
+  open.href = url;
 }
-
-/* زر الجولة: فتح المصدر الخارجي لتجنب أخطاء iframe */
-function tourButton(site){
-
-  if(!site.tour){
-    return `
-      <p class="tour-note">
-        لا تتوفر جولة مباشرة مؤكدة لهذا المعلم حاليًا.
-      </p>
-    `;
-  }
-
-  return `
-    <a class="tour-link"
-       href="${officialTourPage}"
-       target="_blank"
-       rel="noopener noreferrer">
-       🎥 استكشاف الجولات الافتراضية الرسمية
-    </a>
-    <p class="tour-note">
-      ستفتح صفحة الجولات الرسمية؛ تحقق من توفر جولة هذا المعلم فيها.
-    </p>
-  `;
-}
-
-/* إنشاء بطاقات المعالم */
-function renderCards(list){
-
-  const container = document.getElementById("cards");
-  container.innerHTML = "";
-
-  list.forEach(site=>{
-
-    const card = document.createElement("article");
-    card.className = "card";
-
-    card.innerHTML = `
-      <img
-        src="${site.image}"
-        alt="${site.name}"
-        loading="lazy"
-        onerror="this.onerror=null;this.src='https://placehold.co/700x450?text=Oman+Heritage'">
-
-      <div class="card-content">
-
-        <h3>${site.name}</h3>
-
-        <p>
-          <strong>المحافظة:</strong> ${site.region}
-        </p>
-
-        <p>${site.description}</p>
-
-        ${tourButton(site)}
-
-        <button class="secondary"
-          type="button"
-          onclick="focusSite('${site.id}')">
-          عرض على الخريطة
-        </button>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-/* الانتقال إلى موقع المعلم */
-function focusSite(id){
-
-  const site = heritageSites.find(x=>x.id===id);
-
-  if(!site) return;
-
-  if(!map){
-    showMapStatus(
-      "الخريطة غير متاحة حاليًا، لكن بيانات المعلم موجودة في البطاقة."
-    );
-    return;
-  }
-
-  map.setView([site.lat,site.lng],13);
-
-  const item = markers.find(x=>x.id===id);
-
-  if(item){
-    item.marker.openPopup();
-  }
-
-  document.getElementById("map-section")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* البحث والتصفية */
-function filterSites(){
-
-  const q = document
-    .getElementById("search")
-    .value
-    .trim()
-    .toLowerCase();
-
-  const region = document.getElementById("region").value;
-
-  const filtered = heritageSites.filter(site=>{
-
-    const matchName = site.name.toLowerCase().includes(q);
-    const matchRegion = region==="all" || site.region===region;
-
-    return matchName && matchRegion;
-
-  });
-
-  renderCards(filtered);
-
-  if(!map) return;
-
-  markers.forEach(item=>{
-
-    const visible = filtered.some(x=>x.id===item.id);
-
-    if(visible && !map.hasLayer(item.marker)){
-      item.marker.addTo(map);
-    }
-
-    if(!visible && map.hasLayer(item.marker)){
-      map.removeLayer(item.marker);
-    }
-
-  });
-}
-
-/* تشغيل البحث */
-document.getElementById("search")
-  .addEventListener("input",filterSites);
-
-document.getElementById("region")
-  .addEventListener("change",filterSites);
-
-/* بدء الموقع */
-renderCards(heritageSites);
-initializeMap();
-
 </script>
-
-</body>
-</html>
